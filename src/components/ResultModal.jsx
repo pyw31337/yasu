@@ -41,6 +41,29 @@ export default function ResultModal({ resultData, onNextYear, onRestart }) {
       <div className={`result-container ${isProfit ? 'profit-glow' : 'loss-glow'}`}>
         <div className="result-header">
           <div className="result-year-badge">{resultData.year}년 투자 결산</div>
+          
+          {/* 비주얼 스프라이트 덩어리 연출 */}
+          <div className="result-sprite-stage">
+            {isProfit ? (
+              <div className="jackpot-visual-badge">
+                <img 
+                  src="./assets/item_cash_gold.png" 
+                  alt="골드바 돈다발 잭팟" 
+                  className="result-cash-sprite-img" 
+                />
+                <div className="jackpot-aura-rays"></div>
+              </div>
+            ) : (
+              <div className="panic-visual-badge">
+                <img 
+                  src="./assets/sprite_panicked_ant.png" 
+                  alt="패닉 개미 투자자" 
+                  className="result-panic-sprite-img" 
+                />
+              </div>
+            )}
+          </div>
+
           <h2 className={`result-title ${isProfit ? 'text-bull' : 'text-bear'}`}>
             {isBankrupt ? '💀 깡통 및 파산 (GAME OVER)' : isProfit ? '🔥 인생역전 떡상 성공!' : '📉 뼈아픈 손실 기록'}
           </h2>

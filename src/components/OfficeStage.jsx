@@ -108,10 +108,32 @@ export default function OfficeStage({
               <div className="sprite-tag bg-red-950 text-red-400 border border-red-700">
                 명동 사채왕 마동석 (연 35%)
               </div>
+              <div className="relative">
+                <img 
+                  src="./assets/sprite_loanshark.png" 
+                  alt="사채왕 마동석" 
+                  className="aaa-character-img shark-shadow"
+                />
+                {/* 각서 도장 아이템 스프라이트 */}
+                <img 
+                  src="./assets/item_debt_contract.png" 
+                  alt="사채 각서" 
+                  className="debt-contract-item-stamp"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* 패닉에 빠진 동학개미 (폭락/마진콜 시 등장) */}
+          {characterState === 'PANICKING' && (
+            <div className="sprite-box sprite-ant-panic-enter">
+              <div className="sprite-tag bg-blue-950 text-blue-400 border border-blue-700">
+                비명지르는 개미 투자자
+              </div>
               <img 
-                src="./assets/sprite_loanshark.png" 
-                alt="사채왕 마동석" 
-                className="aaa-character-img shark-shadow"
+                src="./assets/sprite_panicked_ant.png" 
+                alt="패닉 개미" 
+                className="aaa-character-img ant-panic-shake"
               />
             </div>
           )}
@@ -121,11 +143,21 @@ export default function OfficeStage({
             <div className="sprite-tag bg-slate-900 text-amber-400 border border-amber-600">
               야수의 심장 김트레이더 ({tier?.title || '투자자'})
             </div>
-            <img 
-              src="./assets/sprite_trader.png" 
-              alt="주인공 김트레이더" 
-              className="aaa-character-img trader-shadow"
-            />
+            <div className="relative">
+              <img 
+                src="./assets/sprite_trader.png" 
+                alt="주인공 김트레이더" 
+                className="aaa-character-img trader-shadow"
+              />
+              {/* 상한가/대박 시 전면에 쏟아지는 골드바 & 돈다발 아이템 스프라이트 */}
+              {characterState === 'CHEERING' && (
+                <img 
+                  src="./assets/item_cash_gold.png" 
+                  alt="돈다발 골드바" 
+                  className="jackpot-cash-gold-pile"
+                />
+              )}
+            </div>
           </div>
 
         </div>

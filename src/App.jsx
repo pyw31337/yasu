@@ -17,6 +17,8 @@ import NewspaperModal from './components/NewspaperModal';
 import ResultModal from './components/ResultModal';
 import OfficeStage from './components/OfficeStage';
 import AnimatedCandleBoard from './components/AnimatedCandleBoard';
+import BeastHeartRate from './components/BeastHeartRate';
+import RollingNumber from './components/RollingNumber';
 import {
   TrendingUp,
   TrendingDown,
@@ -413,13 +415,24 @@ export default function App() {
         </div>
       </div>
 
-      {/* 자산 상태 배너 */}
+      {/* 자산 상태 배너 (골드바 & 돈다발 비주얼 스프라이트 탑재) */}
       <div className="asset-summary-card">
-        <div>
-          <div className="asset-main-title">현재 보유 순자산</div>
-          <div className="asset-main-value text-bull">{formatKRW(assets)}</div>
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
-            원금 대비: {assets >= INITIAL_ASSETS ? '+' : ''}{(((assets - INITIAL_ASSETS) / INITIAL_ASSETS) * 100).toFixed(1)}%
+        <div className="flex items-center gap-4">
+          <div className="asset-sprite-thumbnail">
+            <img 
+              src="./assets/item_cash_gold.png" 
+              alt="보유 자산 현금 골드바" 
+              className="w-16 h-16 object-contain filter drop-shadow(0 4px 12px rgba(255, 190, 26, 0.4))"
+            />
+          </div>
+          <div>
+            <div className="asset-main-title">현재 보유 순자산 (CASINO ODOMETER)</div>
+            <div className="asset-main-value text-bull">
+              <RollingNumber value={assets} suffix=" 원" />
+            </div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
+              원금 대비: {assets >= INITIAL_ASSETS ? '+' : ''}{(((assets - INITIAL_ASSETS) / INITIAL_ASSETS) * 100).toFixed(1)}%
+            </div>
           </div>
         </div>
 
@@ -442,7 +455,7 @@ export default function App() {
         lastResult={resultData}
       />
 
-      {/* ANIMATED CANDLE BOARD (실시간 호가 시세판 & 캔들 차트) */}
+      {/* ANIMATED CANDLE BOARD (실시간 캔들스틱 차트 & 5단계 호가창 게이지) */}
       <AnimatedCandleBoard
         stocks={yearData.stocks}
         allocations={allocations}
@@ -450,7 +463,7 @@ export default function App() {
         isTrading={isTrading}
       />
 
-      {/* 주문 터미널 (야수의 심장 콘솔) */}
+      {/* 주문 터미널 (야수의 심장 트레이딩 콘솔 & 실시간 ECG 심박수 모니터) */}
       <div className="order-terminal">
         <div className="terminal-header">
           <div className="terminal-title">
@@ -461,11 +474,19 @@ export default function App() {
           </div>
         </div>
 
+        {/* 실시간 야수의 심박수 ECG 파형 모니터 */}
+        <div className="mb-4">
+          <BeastHeartRate leverage={leverage} loan={loan} isTrading={isTrading} />
+        </div>
+
         <div className="terminal-grid">
           {/* 사채 차입 슬라이더 */}
           <div className="terminal-control-group">
             <div className="control-label">
-              <span>명동 사채 대출 (사채왕 마동석)</span>
+              <span className="flex items-center gap-1.5">
+                <img src="./assets/item_debt_contract.png" alt="각서" className="w-5 h-5 object-contain inline" />
+                명동 사채 대출 (사채왕 마동석)
+              </span>
               <span className="text-bear">{formatKRW(loan)}</span>
             </div>
             <input
