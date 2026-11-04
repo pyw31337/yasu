@@ -68,6 +68,7 @@ export default function App() {
   const [resultData, setResultData] = useState(null);
   const [isTrading, setIsTrading] = useState(false);
   const [activeInfo, setActiveInfo] = useState(null); // (i) 정보 도감 팝업 제어
+  const [lobbyTheme, setLobbyTheme] = useState('noir'); // 'noir', 'casino', 'arcade'
 
   // 주문 설정
   const [loan, setLoan] = useState(0); // 사채
@@ -207,19 +208,59 @@ export default function App() {
     setLeverage(lvls[nextIdx]);
   };
 
-  // ==================== LOBBY SCREEN (AAA 메이저 게임 스타일) ====================
+  // ==================== LOBBY SCREEN (3대 게임 배리에이션 실시간 지원) ====================
   if (gameState === 'LOBBY') {
+    const bgUrl = lobbyTheme === 'noir' 
+      ? './assets/concept_noir.jpg' 
+      : lobbyTheme === 'casino' 
+      ? './assets/concept_casino.jpg' 
+      : './assets/concept_arcade.jpg';
+
     return (
       <div className="hero-lobby-container">
-        <div className="hero-lobby-bg" style={{ backgroundImage: "url('./assets/key_art.jpg')" }}></div>
+        <div className="hero-lobby-bg" style={{ backgroundImage: `url('${bgUrl}')` }}></div>
         <div className="hero-lobby-overlay"></div>
 
         <div className="hero-lobby">
-          <div className="hero-badge-top">
-            <Flame size={16} /> AAA CINEMATIC K-STOCK SURVIVAL SIMULATION
+          {/* 게임 디자인 컨셉 배리에이션 실시간 스위처 */}
+          <div className="lobby-concept-switcher-bar mb-3">
+            <button
+              type="button"
+              onClick={() => { sound.playBuy(); setLobbyTheme('noir'); }}
+              className={`btn-theme-chip ${lobbyTheme === 'noir' ? 'active-noir' : ''}`}
+            >
+              ⚔️ 01. 범죄도시 느와르
+            </button>
+            <button
+              type="button"
+              onClick={() => { sound.playBuy(); setLobbyTheme('casino'); }}
+              className={`btn-theme-chip ${lobbyTheme === 'casino' ? 'active-casino' : ''}`}
+            >
+              ⚡ 02. 사이버 카지노
+            </button>
+            <button
+              type="button"
+              onClick={() => { sound.playBuy(); setLobbyTheme('arcade'); }}
+              className={`btn-theme-chip ${lobbyTheme === 'arcade' ? 'active-arcade' : ''}`}
+            >
+              🕹️ 03. 16비트 오락실
+            </button>
           </div>
-          <h1 className="hero-title">야수의 심장</h1>
-          <p className="hero-subtitle">THE HEART OF THE BEAST : 1980 ~ 2026 대한민국 증시 50년사</p>
+
+          <div className="hero-badge-top">
+            {lobbyTheme === 'noir' && '★ 1980 명동 사채골목 느와르 금융 스릴러'}
+            {lobbyTheme === 'casino' && '⚡ HIGH-ROLLER CYBER CASINO VIP TERMINAL'}
+            {lobbyTheme === 'arcade' && '🪙 1988 SEOUL STOCK RETRO ARCADE CABINET'}
+          </div>
+
+          <h1 className="hero-title">
+            {lobbyTheme === 'casino' ? 'BEAST MODE' : '야수의 심장'}
+          </h1>
+          <p className="hero-subtitle">
+            {lobbyTheme === 'noir' && 'THE HEART OF THE BEAST : 1980 ~ 2026 대한민국 증시 50년사'}
+            {lobbyTheme === 'casino' && 'ULTRA HIGH-LEVERAGE CYBER STOCK MATRIX 2026'}
+            {lobbyTheme === 'arcade' && 'INSERT COIN TO START : 50-YEAR CHRONICLE'}
+          </p>
 
           {/* 주요 등장인물 쇼케이스 카드 (아케이드 컴팩트 디자인) */}
           <div className="lobby-character-showcase">
@@ -330,9 +371,12 @@ export default function App() {
             </div>
           </div>
 
-          {/* 메인 캠페인 시작 버튼 */}
+          {/* 메인 캠페인 시작 버튼 (컨셉별 타이틀 연동) */}
           <button className="btn-fire-order" onClick={() => startGame(1980)} style={{ marginBottom: '1.2rem' }}>
-            <Flame size={24} /> 01. 1980년 명동 사채골목 연대기 시작 (초기 1,000만 원)
+            <Flame size={24} /> 
+            {lobbyTheme === 'noir' && '⚔️ 01. 1980년 명동 사채골목 출진 (초기 1,000만 원)'}
+            {lobbyTheme === 'casino' && '⚡ 01. 하이롤러 VIP 카지노 입장 (초기 1,000만 원)'}
+            {lobbyTheme === 'arcade' && '🕹️ 01. INSERT COIN 1P 모드 시작 (초기 1,000만 원)'}
           </button>
 
           {/* 시대별 결전 특수 작전 즉시 참전 */}

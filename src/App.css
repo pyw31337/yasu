@@ -2911,3 +2911,82 @@ html, body {
   animation: pulseNeon 0.4s infinite;
 }
 
+/* ==================== LOBBY CONCEPT SWITCHER BAR (TITLE VARIATIONS) ==================== */
+.lobby-concept-switcher-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.2rem;
+  z-index: 20;
+  position: relative;
+  width: 100%;
+  max-width: 580px;
+}
+
+.btn-theme-chip {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  color: #94a3b8;
+  padding: 0.42rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.btn-theme-chip:hover {
+  transform: translateY(-2px);
+  color: #f8fafc;
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+}
+
+.btn-theme-chip:active {
+  transform: translateY(1px) scale(0.97);
+}
+
+.btn-theme-chip.active-noir {
+  background: linear-gradient(135deg, rgba(225, 29, 72, 0.35), rgba(15, 23, 42, 0.9));
+  border-color: #ff334b;
+  color: #ffa8b5;
+  box-shadow: 0 0 16px rgba(255, 51, 75, 0.6), inset 0 0 10px rgba(255, 51, 75, 0.3);
+  text-shadow: 0 0 8px rgba(255, 51, 75, 0.8);
+}
+
+.btn-theme-chip.active-casino {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.35), rgba(15, 23, 42, 0.9));
+  border-color: #00e5ff;
+  color: #a5f3fc;
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.6), inset 0 0 10px rgba(0, 229, 255, 0.3);
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.8);
+}
+
+.btn-theme-chip.active-arcade {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.35), rgba(15, 23, 42, 0.9));
+  border-color: #ffbe1a;
+  color: #fde68a;
+  box-shadow: 0 0 16px rgba(255, 190, 26, 0.6), inset 0 0 10px rgba(255, 190, 26, 0.3);
+  text-shadow: 0 0 8px rgba(255, 190, 26, 0.8);
+}
+
+@media (max-width: 480px) {
+  .lobby-concept-switcher-bar {
+    gap: 0.35rem;
+    margin-bottom: 0.9rem;
+  }
+  .btn-theme-chip {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.72rem;
+  }
+}
+
+
