@@ -127,14 +127,32 @@ function StockArcadeCard({ stock, alloc, onSetAlloc, isTrading }) {
 
   return (
     <div className={`stock-arcade-card ${alloc > 0 ? 'card-active-alloc' : ''} ${isTrading ? 'card-trading-flash' : ''}`}>
+      <span className="hud-corner-tl"></span>
+      <span className="hud-corner-br"></span>
+
       {/* 카드 상단: 종목 정보 & 가격 */}
       <div className="flex justify-between items-start mb-2">
         <div>
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 mb-0.5">
             <span className="stock-code-tag">{stock.code}</span>
             <span className="stock-cat-pill">{stock.category}</span>
           </div>
-          <h3 className="stock-name-title">{stock.name}</h3>
+          <div className="flex items-center gap-1.5">
+            <h3 className="stock-name-title">{stock.name}</h3>
+            {/* 정보 숨김 i 버튼 */}
+            <button 
+              type="button" 
+              onClick={() => onOpenInfo && onOpenInfo({
+                title: `${stock.name} (${stock.code}) 실화 팩트`,
+                content: stock.detail,
+                tip: `${stock.name}은 ${isUp ? '해당 연도 상승 랠리를 주도' : '역사적 급락 및 위기'}를 겪었습니다.`
+              })}
+              className="btn-arcade-info"
+              title="역사적 팩트 보기"
+            >
+              i
+            </button>
+          </div>
         </div>
 
         <div className="text-right">
@@ -165,8 +183,8 @@ function StockArcadeCard({ stock, alloc, onSetAlloc, isTrading }) {
       {/* 실시간 미니 5단계 호가창 게이지 */}
       <div className="orderbook-mini-hud">
         <div className="flex justify-between text-[10px] font-mono mb-1">
-          <span className="text-bear">매도잔량: {(ask1Vol + ask2Vol).toLocaleString()}주</span>
-          <span className="text-bull">매수잔량: {(bid1Vol + bid2Vol).toLocaleString()}주</span>
+          <span className="text-bear">매도: {(ask1Vol + ask2Vol).toLocaleString()}</span>
+          <span className="text-bull">매수: {(bid1Vol + bid2Vol).toLocaleString()}</span>
         </div>
         <div className="orderbook-gauge-track">
           <div className="orderbook-gauge-fill-bear" style={{ width: `${100 - bidPct}%` }}></div>
@@ -174,17 +192,12 @@ function StockArcadeCard({ stock, alloc, onSetAlloc, isTrading }) {
         </div>
       </div>
 
-      {/* 실화 역사 비하인드 코멘트 */}
-      <p className="stock-history-snippet">
-        {stock.detail}
-      </p>
-
-      {/* 투자 비중 슬라이더 & 아케이드 원클릭 버튼 */}
+      {/* 투자 비중 슬라이더 & 아케이드 원클릭 버튼 (군더더기 텍스트 완전 제거) */}
       <div className="alloc-control-box">
-        <div className="flex justify-between items-center text-xs mb-1.5 font-mono">
-          <span className="text-slate-400 font-bold">투자 비중 설정</span>
+        <div className="flex justify-between items-center text-xs mb-1 font-mono">
+          <span className="text-slate-400">비중 설정</span>
           <span className={`text-sm font-black ${alloc > 0 ? 'text-amber-400' : 'text-slate-500'}`}>
-            {alloc}% <span className="text-[10px] font-normal text-slate-400">({alloc === 100 ? '몰빵 풀매수' : alloc > 0 ? '분할매수' : '미보유'})</span>
+            {alloc}%
           </span>
         </div>
 
@@ -199,7 +212,7 @@ function StockArcadeCard({ stock, alloc, onSetAlloc, isTrading }) {
         />
 
         {/* 아케이드 4단 비중 버튼 */}
-        <div className="grid grid-cols-4 gap-1.5 mt-2.5">
+        <div className="grid grid-cols-4 gap-1.5 mt-2">
           <button 
             type="button" 
             onClick={() => onSetAlloc(stock.code, 0)} 
@@ -238,23 +251,24 @@ export default function AnimatedCandleBoard({
   stocks,
   allocations,
   onSetAlloc,
-  isTrading
+  isTrading,
+  onOpenInfo
 }) {
   return (
     <div className="candle-board-container">
       <div className="candle-board-header">
         <div className="flex items-center gap-2">
-          <Zap size={20} className="text-amber-400 animate-pulse" />
-          <h2 className="font-black text-base text-slate-100 tracking-wide uppercase">
-            실시간 HTS 시세판 & 호가창 (LIVE ORDERBOOK)
+          <Zap size={18} className="text-amber-400 animate-pulse" />
+          <h2 className="font-black text-sm text-slate-100 tracking-wide uppercase">
+            실시간 HTS 시세판
           </h2>
         </div>
-        <div className="text-xs font-mono text-slate-400 flex items-center gap-3">
+        <div className="text-[11px] font-mono text-slate-400 flex items-center gap-2.5">
           <span className="flex items-center gap-1">
-            <span className="inline-block w-2.5 h-2.5 bg-bull-red rounded-sm"></span> 붉은 양봉 (상승)
+            <span className="inline-block w-2 h-2 bg-bull-red rounded-sm"></span> 상승
           </span>
           <span className="flex items-center gap-1">
-            <span className="inline-block w-2.5 h-2.5 bg-bear-blue rounded-sm"></span> 파란 음봉 (하락)
+            <span className="inline-block w-2 h-2 bg-bear-blue rounded-sm"></span> 하락
           </span>
         </div>
       </div>
@@ -267,6 +281,7 @@ export default function AnimatedCandleBoard({
             alloc={allocations[stock.code] || 0}
             onSetAlloc={onSetAlloc}
             isTrading={isTrading}
+            onOpenInfo={onOpenInfo}
           />
         ))}
       </div>

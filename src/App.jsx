@@ -19,6 +19,7 @@ import OfficeStage from './components/OfficeStage';
 import AnimatedCandleBoard from './components/AnimatedCandleBoard';
 import BeastHeartRate from './components/BeastHeartRate';
 import RollingNumber from './components/RollingNumber';
+import ArcadeInfoModal from './components/ArcadeInfoModal';
 import {
   TrendingUp,
   TrendingDown,
@@ -31,7 +32,8 @@ import {
   RotateCcw,
   Sparkles,
   Trophy,
-  DollarSign
+  DollarSign,
+  Info
 } from 'lucide-react';
 import './App.css';
 
@@ -64,6 +66,7 @@ export default function App() {
   const [showNewspaper, setShowNewspaper] = useState(false);
   const [resultData, setResultData] = useState(null);
   const [isTrading, setIsTrading] = useState(false);
+  const [activeInfo, setActiveInfo] = useState(null); // (i) 정보 도감 팝업 제어
 
   // 주문 설정
   const [loan, setLoan] = useState(0); // 사채
@@ -195,60 +198,112 @@ export default function App() {
           <h1 className="hero-title">야수의 심장</h1>
           <p className="hero-subtitle">THE HEART OF THE BEAST : 1980 ~ 2026 대한민국 증시 50년사</p>
 
-          {/* 주요 등장인물 쇼케이스 카드 */}
+          {/* 주요 등장인물 쇼케이스 카드 (아케이드 컴팩트 디자인) */}
           <div className="lobby-character-showcase">
             <div className="character-card card-trader">
+              <span className="hud-corner-tl"></span>
+              <span className="hud-corner-br"></span>
               <div className="card-avatar-wrapper">
                 <img src="./assets/sprite_trader.png" alt="김트레이더" className="card-avatar-img" />
               </div>
-              <div>
-                <div className="card-char-name text-amber-400">김트레이더 (주인공)</div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <div className="card-char-name text-amber-400">김트레이더 (주인공)</div>
+                  <button 
+                    type="button" 
+                    className="btn-arcade-info"
+                    title="캐릭터 스토리 보기"
+                    onClick={() => {
+                      sound.playBuy();
+                      setActiveInfo({
+                        title: '김트레이더 (주인공)',
+                        content: '1980년 종잣돈 1,000만 원으로 시작해 50년의 파도를 넘어 1조 원의 신화를 노리는 청년 투신. 신용 미수와 레버리지를 다루는 대담한 배짱을 지녔습니다.',
+                        tip: '1천만 원 종잣돈으로 1조 원 신화를 쓰고 여의도 꼭대기 펜트하우스로 진격하세요!'
+                      });
+                    }}
+                  >
+                    i
+                  </button>
+                </div>
                 <div className="card-char-role">🔥 야수의 심장을 품은 청년 투자자</div>
-                <p className="card-char-quote">"1천만 원 종잣돈으로 1조 원 신화를 쓰고 여의도 꼭대기 펜트하우스로 간다!"</p>
               </div>
             </div>
 
             <div className="character-card card-shark">
+              <span className="hud-corner-tl"></span>
+              <span className="hud-corner-br"></span>
               <div className="card-avatar-wrapper">
                 <img src="./assets/sprite_loanshark.png" alt="사채왕 마동석" className="card-avatar-img" />
               </div>
-              <div>
-                <div className="card-char-name text-bull">명동 사채왕 마동석</div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <div className="card-char-name text-bull">명동 사채왕 마동석</div>
+                  <button 
+                    type="button" 
+                    className="btn-arcade-info"
+                    title="사채 규칙 보기"
+                    onClick={() => {
+                      sound.playBuy();
+                      setActiveInfo({
+                        title: '명동 사채왕 마동석',
+                        content: '지하 금융가의 거물. 원금의 최대 3배까지 즉시 대출해주지만 연이율 35%에 달하는 고금리와 가차 없는 강제 반대매매가 도사립니다.',
+                        tip: '이봐 김 사장, 원금 못 갚으면 각서대로 손모가지 날아가는 거야. 땡겨줄까?'
+                      });
+                    }}
+                  >
+                    i
+                  </button>
+                </div>
                 <div className="card-char-role">👺 지하 금융가 거물 (연이율 35%)</div>
-                <p className="card-char-quote">"이봐 김 사장, 원금 못 갚으면 각서대로 손모가지 날아가는 거야. 땡겨줄까?"</p>
               </div>
             </div>
           </div>
 
-          <div className="lobby-feature-list">
-            <div className="feature-item">
-              <Sparkles size={22} color="#ffbe1a" />
-              <div>
-                <strong>실존 역사 사건 & 경제 충격 100% 실화 재현</strong>
-                <p style={{ margin: '4px 0 0 0', color: 'var(--text-muted)' }}>
-                  장영자 어음 사기, 88 올림픽, 깡통계좌 정리, 1997 IMF 외환위기, 1999 닷컴버블, 2008 리먼브라더스, 2020 동학개미, 2023 2차전지, 2024 AI 반도체까지 총망라!
-                </p>
-              </div>
+          {/* 군더더기 텍스트 제거 -> 심플 아케이드 뱃지 바 (클릭 시 i 도감 오픈) */}
+          <div className="lobby-arcade-badges">
+            <div 
+              className="arcade-pill" 
+              onClick={() => {
+                sound.playBuy();
+                setActiveInfo({
+                  title: '🏛️ 50년 대한민국 증시 실화',
+                  content: '1980년대 건설주 붐, 88 올림픽, 1997 IMF 환란, 1999 닷컴버블, 2008 금융위기, 2020 동학개미, 2024 AI 반도체까지 50년 실존 경제 사건과 실제 상장 종목이 100% 구현되어 있습니다.',
+                  tip: '각 연도마다 호외 신문을 확인하고 역사적 대세 상승주를 포착하세요!'
+                });
+              }}
+            >
+              <span>🏛️ 50년 실존 역사</span>
+              <button type="button" className="btn-arcade-info">i</button>
             </div>
 
-            <div className="feature-item">
-              <DollarSign size={22} color="#00f37c" />
-              <div>
-                <strong>실제 종목코드 & 당시 환율/금리 리얼 반영</strong>
-                <p style={{ margin: '4px 0 0 0', color: 'var(--text-muted)' }}>
-                  삼성전자(005930), 현대차, 새롬기술(035610), 신풍제약, 에코프로(086520) 등 역사적 상장 종목들의 실제 주가 폭등과 부도 스토리.
-                </p>
-              </div>
+            <div 
+              className="arcade-pill" 
+              onClick={() => {
+                sound.playBuy();
+                setActiveInfo({
+                  title: '⚡ 실시간 호가 & 캔들스틱',
+                  content: '매 턴마다 5단계 실시간 매수/매도 호가창 잔량과 캔들스틱 차트 파동이 요동치며, 상한가(쩜상)와 하한가의 도파민을 선사합니다.',
+                  tip: '호가창의 매수/매도 잔량 비율을 보면 그 해의 시장 심리를 읽을 수 있습니다.'
+                });
+              }}
+            >
+              <span>⚡ 실시간 호가 & 차트</span>
+              <button type="button" className="btn-arcade-info">i</button>
             </div>
 
-            <div className="feature-item">
-              <Flame size={22} color="#ff334b" />
-              <div>
-                <strong>극상의 도파민: 사채 & 5배 풀레버리지 & 쩜상 폭죽 & 반대매매 사이렌</strong>
-                <p style={{ margin: '4px 0 0 0', color: 'var(--text-muted)' }}>
-                  상한가 돈다발 비와 반대매매 사이렌의 짜릿한 긴장감 속에서 대한민국 최고 부호 티어에 도전하세요.
-                </p>
-              </div>
+            <div 
+              className="arcade-pill" 
+              onClick={() => {
+                sound.playBuy();
+                setActiveInfo({
+                  title: '💥 5배 레버리지 & 명동 사채',
+                  content: '합법적인 신용 미수 레버리지(최대 5배)와 지하 금융가 명동 사채 대출(최대 3배)을 활용해 단숨에 수백억을 벌거나 깡통 계좌로 전락할 수 있습니다.',
+                  tip: '과도한 레버리지는 마포대교 한강 수온 체크로 이어질 수 있으니 주의하세요!'
+                });
+              }}
+            >
+              <span>💥 5배 레버리지 & 사채</span>
+              <button type="button" className="btn-arcade-info">i</button>
             </div>
           </div>
 
@@ -292,6 +347,14 @@ export default function App() {
             </div>
           </div>
         </div>
+
+        {/* 정보 도감 모달 (로비) */}
+        {activeInfo && (
+          <ArcadeInfoModal
+            info={activeInfo}
+            onClose={() => setActiveInfo(null)}
+          />
+        )}
       </div>
     );
   }
@@ -390,7 +453,24 @@ export default function App() {
       <div className="top-nav">
         <div className="nav-left">
           <div className="year-indicator">{year}년</div>
-          <div className="era-tag">{yearData.era}</div>
+          <div className="era-tag flex items-center gap-1">
+            <span>{yearData.era}</span>
+            <button 
+              type="button" 
+              className="btn-arcade-info ml-1"
+              title="연도별 배경 팩트 보기"
+              onClick={() => {
+                sound.playBuy();
+                setActiveInfo({
+                  title: `${year}년 시대 배경: ${yearData.era}`,
+                  content: yearData.headline ? `${yearData.headline}\n\n${yearData.article || ''}` : `${year}년 대한민국 경제 상황 및 증시 상황입니다.`,
+                  tip: `KOSPI: ${yearData.kospi} | 환율: ${yearData.exchangeRate}원 | 기준금리: ${yearData.interestRate}%`
+                });
+              }}
+            >
+              i
+            </button>
+          </div>
         </div>
 
         <div className="nav-indices">
@@ -407,7 +487,7 @@ export default function App() {
 
         <div className="nav-actions">
           <button className="btn-icon" onClick={() => setShowNewspaper(true)}>
-            <Newspaper size={16} /> 호외 특보
+            <Newspaper size={16} /> 호외
           </button>
           <button className="btn-icon" onClick={toggleSound}>
             {isMuted ? <VolumeX size={16} color="#ff334b" /> : <Volume2 size={16} color="#00f37c" />}
@@ -426,7 +506,7 @@ export default function App() {
             />
           </div>
           <div>
-            <div className="asset-main-title">현재 보유 순자산 (CASINO ODOMETER)</div>
+            <div className="asset-main-title">현재 보유 순자산</div>
             <div className="asset-main-value text-bull">
               <RollingNumber value={assets} suffix=" 원" />
             </div>
@@ -461,17 +541,21 @@ export default function App() {
         allocations={allocations}
         onSetAlloc={handleSetAlloc}
         isTrading={isTrading}
+        onOpenInfo={setActiveInfo}
       />
 
-      {/* 주문 터미널 (야수의 심장 트레이딩 콘솔 & 실시간 ECG 심박수 모니터) */}
+      {/* 주문 터미널 (아케이드 콘솔) */}
       <div className="order-terminal">
+        <span className="hud-corner-tl"></span>
+        <span className="hud-corner-tr"></span>
+        <span className="hud-corner-bl"></span>
+        <span className="hud-corner-br"></span>
+
         <div className="terminal-header">
           <div className="terminal-title">
-            <Flame size={22} /> 야수의 심장 트레이딩 콘솔
+            <Flame size={20} /> 야수의 심장 콘솔
           </div>
-          <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-            명동 사채와 신용 미수로 레버리지를 극대화하세요
-          </div>
+          <span className="terminal-badge-pulse">LEVERAGE TERMINAL</span>
         </div>
 
         {/* 실시간 야수의 심박수 ECG 파형 모니터 */}
@@ -485,9 +569,24 @@ export default function App() {
             <div className="control-label">
               <span className="flex items-center gap-1.5">
                 <img src="./assets/item_debt_contract.png" alt="각서" className="w-5 h-5 object-contain inline" />
-                명동 사채 대출 (사채왕 마동석)
+                명동 사채
+                <button
+                  type="button"
+                  className="btn-arcade-info"
+                  title="사채 이율 및 위험 안내"
+                  onClick={() => {
+                    sound.playBuy();
+                    setActiveInfo({
+                      title: '👺 명동 사채 대출 (연이율 35%)',
+                      content: `현재 보유 자산의 최대 3배(${formatKRW(maxLoanPossible)})까지 즉시 차입할 수 있습니다. 단, 연이율 ${(yearData.interestRate + 15).toFixed(1)}%가 부과되며, 투자 실패 시 즉시 강제 반대매매(청산) 및 담보 몰수가 집행됩니다.`,
+                      tip: '상한가(쩜상)에 올인하면 잭팟이지만, 하한가를 맞으면 즉시 깡통 계좌로 전락합니다.'
+                    });
+                  }}
+                >
+                  i
+                </button>
               </span>
-              <span className="text-bear">{formatKRW(loan)}</span>
+              <span className="text-bear font-mono font-bold">{formatKRW(loan)}</span>
             </div>
             <input
               type="range"
@@ -498,16 +597,30 @@ export default function App() {
               onChange={(e) => setLoan(Number(e.target.value))}
               style={{ width: '100%', accentColor: 'var(--bull-red)' }}
             />
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.4rem' }}>
-              * 연이율 {(yearData.interestRate + 15).toFixed(1)}% (원금 미상환 시 반대매매 및 담보몰수)
-            </div>
           </div>
 
           {/* 신용 레버리지 선택 버튼 */}
           <div className="terminal-control-group">
             <div className="control-label">
-              <span>신용 미수 레버리지</span>
-              <span className="text-bull" style={{ fontWeight: 800 }}>x{leverage} 배</span>
+              <span className="flex items-center gap-1.5">
+                신용 미수 레버리지
+                <button
+                  type="button"
+                  className="btn-arcade-info"
+                  title="레버리지 위험 안내"
+                  onClick={() => {
+                    sound.playBuy();
+                    setActiveInfo({
+                      title: '⚡ 신용 미수 레버리지 (1x ~ 5x)',
+                      content: '가용 자본 대비 최대 5배까지 주식을 추가 매수합니다. 수익률도 5배가 되지만, 손실률도 5배가 되어 주가가 20%만 하락해도 원금이 100% 전액 증발하며 강제 청산됩니다.',
+                      tip: '확실한 대세 상승 국면에서만 3x~5x 영끌 레버리지를 구사하세요.'
+                    });
+                  }}
+                >
+                  i
+                </button>
+              </span>
+              <span className="text-bull font-black">x{leverage} 배</span>
             </div>
             <div className="leverage-btn-group">
               {[1, 2, 3, 5].map((lvl) => (
@@ -523,23 +636,20 @@ export default function App() {
                 </button>
               ))}
             </div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.4rem' }}>
-              * 레버리지 활용 시 원금 초과 손실 및 반대매매(강제청산) 위험 존재
-            </div>
           </div>
         </div>
 
         {/* 최종 주문 예상 요약 */}
         <div className="terminal-summary-row">
           <div>
-            <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>총 가용 투자금: </span>
-            <strong style={{ fontSize: '1.25rem', color: 'var(--accent)' }}>
+            <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>가용 투자금: </span>
+            <strong style={{ fontSize: '1.15rem', color: 'var(--accent)' }}>
               {formatKRW(totalAvailableCapital)}
             </strong>
           </div>
           <div>
-            <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>실제 주문 체결액: </span>
-            <strong style={{ fontSize: '1.25rem' }}>
+            <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>주문 체결액: </span>
+            <strong style={{ fontSize: '1.15rem' }}>
               {formatKRW(totalAvailableCapital * (Math.min(100, totalAllocatedPct) / 100))}
             </strong>
           </div>
@@ -589,6 +699,14 @@ export default function App() {
           resultData={resultData}
           onNextYear={handleAdvanceYear}
           onRestart={startGame}
+        />
+      )}
+
+      {/* 정보 도감 모달 */}
+      {activeInfo && (
+        <ArcadeInfoModal
+          info={activeInfo}
+          onClose={() => setActiveInfo(null)}
         />
       )}
     </div>

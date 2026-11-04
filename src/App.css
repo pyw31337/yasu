@@ -712,11 +712,15 @@ html, body {
 .hero-lobby-container {
   position: relative;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  padding: 2rem 1rem;
+  justify-content: flex-start;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: calc(1.5rem + env(safe-area-inset-top, 0px)) 1rem calc(2rem + env(safe-area-inset-bottom, 0px)) 1rem;
+  box-sizing: border-box;
 }
 
 .hero-lobby-bg {
@@ -1731,7 +1735,8 @@ html, body {
   .hero-lobby-container {
     min-height: 100vh;
     min-height: 100dvh;
-    padding: 1.2rem 0.75rem calc(1.5rem + env(safe-area-inset-bottom, 0px)) 0.75rem;
+    justify-content: flex-start;
+    padding: calc(1.5rem + env(safe-area-inset-top, 0px)) 0.75rem calc(2rem + env(safe-area-inset-bottom, 0px)) 0.75rem;
   }
 
   .hero-title {
@@ -2070,5 +2075,169 @@ html, body {
   .btn-mobile-quick-trade {
     font-size: 0.85rem;
     padding: 0.65rem 0.8rem;
+  }
+}
+
+/* ==================== 아케이드 HUD 브라켓 및 정보 버튼 / 모달 ==================== */
+
+/* 전술 HUD 코너 브라켓 */
+.hud-corner-tl, .hud-corner-tr, .hud-corner-bl, .hud-corner-br {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  pointer-events: none;
+  z-index: 5;
+}
+.hud-corner-tl {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid var(--accent);
+  border-left: 2px solid var(--accent);
+}
+.hud-corner-tr {
+  top: -1px;
+  right: -1px;
+  border-top: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
+}
+.hud-corner-bl {
+  bottom: -1px;
+  left: -1px;
+  border-bottom: 2px solid var(--accent);
+  border-left: 2px solid var(--accent);
+}
+.hud-corner-br {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
+}
+
+/* 터치 친화적 아케이드 (i) 정보 버튼 */
+.btn-arcade-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
+  border-radius: 50%;
+  background: rgba(255, 190, 26, 0.15);
+  border: 1px solid rgba(255, 190, 26, 0.6);
+  color: #ffbe1a;
+  font-size: 11px;
+  font-family: ui-monospace, monospace;
+  font-weight: 900;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 6px rgba(255, 190, 26, 0.25);
+  vertical-align: middle;
+}
+
+.btn-arcade-info:hover {
+  background: #ffbe1a;
+  color: #000;
+  box-shadow: 0 0 12px rgba(255, 190, 26, 0.8);
+  transform: scale(1.18);
+}
+
+.btn-arcade-info:active {
+  transform: scale(0.92);
+}
+
+/* 아케이드 정보 도감 모달 다이얼로그 */
+.arcade-info-dialog {
+  position: relative;
+  background: #111823;
+  border: 1.5px solid rgba(255, 190, 26, 0.7);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.95), 0 0 20px rgba(255, 190, 26, 0.2);
+  border-radius: 12px;
+  padding: 1.25rem;
+  max-width: 440px;
+  width: 90%;
+  color: var(--text-main);
+  animation: arcadeModalPop 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-sizing: border-box;
+}
+
+@keyframes arcadeModalPop {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 로비 아케이드 요약 뱃지 리스트 */
+.lobby-arcade-badges {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+  margin-bottom: 1.4rem;
+  width: 100%;
+}
+
+.arcade-pill {
+  position: relative;
+  background: rgba(19, 25, 34, 0.85);
+  border: 1px solid rgba(255, 190, 26, 0.3);
+  border-radius: 8px;
+  padding: 0.65rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.3rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.arcade-pill:hover {
+  border-color: var(--accent);
+  background: rgba(30, 41, 59, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 190, 26, 0.25);
+}
+
+.arcade-pill:active {
+  transform: translateY(0);
+}
+
+.terminal-badge-pulse {
+  font-size: 0.7rem;
+  font-family: monospace;
+  font-weight: 900;
+  padding: 0.2rem 0.5rem;
+  background: rgba(255, 51, 75, 0.15);
+  border: 1px solid rgba(255, 51, 75, 0.5);
+  color: #ff4d63;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  animation: pulseNeon 2s infinite ease-in-out;
+}
+
+@keyframes pulseNeon {
+  0%, 100% { opacity: 1; border-color: rgba(255, 51, 75, 0.6); }
+  50% { opacity: 0.65; border-color: rgba(255, 51, 75, 0.2); }
+}
+
+@media (max-width: 640px) {
+  .lobby-arcade-badges {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .arcade-pill {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.82rem;
   }
 }
