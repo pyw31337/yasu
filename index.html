@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>야수의 심장 1980</title>
+<style>
+  :root {
+    --bg: #07070a;
+    --card: #121218;
+    --accent: #ff4d00;
+    --gold: #ffd700;
+    --text: #e8e8e8;
+    --good: #00e676;
+    --bad: #ff5252;
+    --muted: #888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', 'Noto Sans KR', system-ui, sans-serif;
+    line-height: 1.55;
+    min-height: 100vh;
+  }
+  .container { max-width: 920px; margin: 0 auto; padding: 16px; }
+  header {
+    text-align: center;
+    padding: 48px 20px 32px;
+    background: linear-gradient(180deg, #1a0a0a 0%, #07070a 100%);
+    border-bottom: 2px solid var(--accent);
+  }
+  h1 { font-size: 2.6rem; color: var(--accent); text-shadow: 0 0 24px #ff4d0088; letter-spacing: -0.5px; }
+  .subtitle { margin-top: 8px; opacity: 0.85; font-size: 1.05rem; }
+  .btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 13px 28px;
+    font-size: 1.05rem;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 8px 4px;
+    transition: 0.15s;
+    font-weight: 600;
+  }
+  .btn:hover { background: #1d4ed8; transform: translateY(-1px); }
+  .btn.danger { background: var(--bad); }
+  .btn.secondary { background: #333; }
+  .card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 18px;
+    margin: 14px 0;
+    border: 1px solid #2a2a32;
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+    margin: 14px 0;
+  }
+  .stat { background: #0e0e14; padding: 12px; border-radius: 10px; text-align: center; }
+  .stat .label { font-size: 0.8rem; color: var(--muted); margin-bottom: 4px; }
+  .stat .value { font-size: 1.35rem; font-weight: 700; color: var(--gold); }
+  .news {
+    border-left: 4px solid var(--accent);
+    padding: 10px 14px;
+    margin: 12px 0;
+    background: #1a1010;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.95rem;
+  }
+  .news strong { color: var(--accent); }
+  input[type="range"] { width: 100%; accent-color: var(--accent); height: 6px; }
+  label { display: block; margin: 10px 0 4px; font-size: 0.95rem; }
+  .hidden { display: none !important; }
+  .end-screen { text-align: center; padding: 48px 20px; }
+  .positive { color: var(--good); }
+  .negative { color: var(--bad); }
+  #log { max-height: 180px; overflow-y: auto; font-size: 0.85rem; color: #aaa; margin-top: 10px; }
+  #log div { padding: 3px 0; border-bottom: 1px solid #222; }
+  .year-badge { display: inline-block; background: var(--accent); color: #000; font-weight: 800; padding: 2px 10px; border-radius: 20px; font-size: 0.9rem; }
+  footer { text-align: center; padding: 20px; color: var(--muted); font-size: 0.8rem; }
+</style>
+</head>
+<body>
+<div id="landing">
+  <header>
+    <h1>야수의 심장 1980</h1>
+    <p class="subtitle">1980년, 1,000만원으로 시작하는 주식 투자 생존 시뮬레이션</p>
+    <p style="margin-top:12px;">레버리지와 사채를 활용해 2025년까지 살아남아라.</p>
+    <p style="margin-top:16px; font-size:0.88rem; opacity:0.7;">실제 코스피 연도별 수익률 · 주요 역사적 사건 기반</p>
+  </header>
+  <div class="container" style="text-align:center; padding-top:36px;">
+    <button class="btn" onclick="startGame()">게임 시작</button>
+  </div>
+</div>
+
+<div id="game" class="hidden container">
+  <div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+      <h2 id="yearDisplay" style="margin:0;">1980년</h2>
+      <span class="year-badge" id="progress">1 / 46</span>
+    </div>
+    <div class="stat-grid">
+      <div class="stat"><div class="label">총자산</div><div class="value" id="assets">10,000,000</div></div>
+      <div class="stat"><div class="label">부채</div><div class="value" id="debt">0</div></div>
+      <div class="stat"><div class="label">순자산</div><div class="value" id="net">10,000,000</div></div>
+      <div class="stat"><div class="label">레버리지</div><div class="value" id="lev">1.0x</div></div>
+    </div>
+    <div id="newsArea"></div>
+    <div class="card" style="margin-top:8px;">
+      <label>주식 비중: <span id="stockPct">60</span>%</label>
+      <input type="range" id="stockSlider" min="0" max="100" value="60" oninput="document.getElementById('stockPct').textContent=this.value">
+      <label>레버리지 배율: <span id="levPct">1.0</span>x <span style="color:#888;font-size:0.85rem;">(사채 가능)</span></label>
+      <input type="range" id="levSlider" min="10" max="40" value="10" oninput="document.getElementById('levPct').textContent=(this.value/10).toFixed(1)">
+      <div style="margin-top:14px; text-align:center;">
+        <button class="btn" onclick="nextYear()">다음 해로 진행</button>
+      </div>
+    </div>
+    <div id="log"></div>
+  </div>
+</div>
+
+<div id="end" class="hidden end-screen">
+  <h1 id="endTitle" style="font-size:2.2rem; margin-bottom:16px;"></h1>
+  <p id="endMessage" style="font-size:1.1rem; line-height:1.7;"></p>
+  <div style="margin-top:28px;">
+    <button class="btn" onclick="location.reload()">다시 도전</button>
+  </div>
+</div>
+
+<footer>
+  야수의 심장 1980 · 역사적 사실 기반 코스피 시뮬레이션
+</footer>
+
+<script>
+const KOSPI = {
+  1980: 0.07, 1981: 0.23, 1982: -0.018, 1983: -0.060, 1984: 0.175,
+  1985: 0.147, 1986: 0.669, 1987: 0.926, 1988: 0.728, 1989: 0.003,
+  1990: -0.235, 1991: -0.122, 1992: 0.111, 1993: 0.277, 1994: 0.186,
+  1995: -0.141, 1996: -0.262, 1997: -0.422, 1998: 0.499, 1999: 0.828,
+  2000: -0.509, 2001: 0.375, 2002: -0.095, 2003: 0.292, 2004: 0.105,
+  2005: 0.540, 2006: 0.040, 2007: 0.323, 2008: -0.407, 2009: 0.497,
+  2010: 0.219, 2011: -0.110, 2012: 0.094, 2013: 0.007, 2014: -0.048,
+  2015: 0.024, 2016: 0.033, 2017: 0.218, 2018: -0.173, 2019: 0.077,
+  2020: 0.308, 2021: 0.036, 2022: -0.249, 2023: 0.187, 2024: -0.096,
+  2025: 0.756
+};
+
+const EVENTS = {
+  1980: "박정희 대통령 서거 여파와 전두환 신군부 등장. 정치적 불안과 건설주 후유증이 시장을 짓누른다.",
+  1981: "신군부 정권 안정화 시도. 증시는 바닥에서 서서히 반등 조짐을 보인다.",
+  1985: "플라자 합의 이후 3저 호황(저유가·저금리·저환율)의 서막. 수출 기업들이 기지개를 켜다.",
+  1986: "3저 호황이 본격화. 무역수지 흑자와 경기 과열 조짐.",
+  1987: "서울 올림픽을 1년 앞두고 경기가 뜨겁다. 10월 블랙먼데이의 충격이 바다를 건너온다.",
+  1988: "서울 올림픽 개최. 국민적 자부심과 함께 증시가 폭등한다.",
+  1989: "코스피 사상 첫 1,000 돌파! 그러나 과열과 깡통계좌 우려가 커지고 있다.",
+  1990: "거품 붕괴 시작. 부동산 과열과 증시 조정.",
+  1995: "외환위기 전조. 엔고와 수출 경쟁력 약화 우려.",
+  1997: "아시아 외환위기. 한보·기아 등 대기업 연쇄 부도. 12월 IMF 구제금융 신청.",
+  1998: "IMF 관리 체제. 코스피 280선까지 추락. 고금리·구조조정·정리해고의 시대.",
+  1999: "닷컴 버블. 코스닥이 뜨겁다. 새롬기술·다음 등이 폭등하며 개인 투자자 열풍.",
+  2000: "IT 버블 붕괴. 코스피 반토막. 9·11 테러 여파까지 겹친다.",
+  2001: "9·11 테러 직후 패닉. 그러나 IT 회복과 함께 반등.",
+  2007: "서브프라임 위기 조짐. 코스피 2,000 돌파의 환희.",
+  2008: "글로벌 금융위기. 리먼 브라더스 파산. 코스피 1,000 붕괴. '도시락 폭탄' 장세.",
+  2009: "금융위기 바닥 탈출. 강력한 반등 시작.",
+  2010: "유럽 재정위기 속 코스피 2,000 재돌파.",
+  2018: "미중 무역전쟁 본격화. 반도체 사이클 조정.",
+  2020: "코로나19 팬데믹. 3월 폭락 후 역대급 유동성 장세.",
+  2022: "인플레이션과 금리 인상. 우크라이나 전쟁 충격.",
+  2025: "역사적 대세 상승. 코스피 4,000 시대 진입."
+};
+
+let year = 1980;
+let cash = 10000000;
+let stocks = 0;
+let debt = 0;
+let history = [];
+
+function format(n) {
+  return Math.round(n).toLocaleString('ko-KR') + "원";
+}
+
+function startGame() {
+  document.getElementById("landing").classList.add("hidden");
+  document.getElementById("game").classList.remove("hidden");
+  updateUI();
+  showNews(1980);
+}
+
+function showNews(y) {
+  const news = EVENTS[y] || "시장은 비교적 조용히 흐러간다. 개인의 선택만이 결과를 가른다.";
+  document.getElementById("newsArea").innerHTML = `<div class="news"><strong>${y}년</strong> — ${news}</div>`;
+}
+
+function getNet() {
+  return cash + stocks - debt;
+}
+
+function updateUI() {
+  const totalAssets = cash + stocks;
+  const net = getNet();
+  document.getElementById("yearDisplay").textContent = year + "년";
+  document.getElementById("progress").textContent = (year - 1979) + " / 46";
+  document.getElementById("assets").textContent = format(totalAssets);
+  document.getElementById("debt").textContent = format(debt);
+  document.getElementById("net").textContent = format(net);
+  document.getElementById("net").className = "value " + (net >= 0 ? "positive" : "negative");
+  document.getElementById("lev").textContent = (document.getElementById("levSlider").value / 10).toFixed(1) + "x";
+}
+
+function nextYear() {
+  if (year >= 2025) {
+    endGame(true);
+    return;
+  }
+
+  const stockPct = parseInt(document.getElementById("stockSlider").value) / 100;
+  const lev = parseInt(document.getElementById("levSlider").value) / 10;
+
+  // 이자 먼저 적용 (사채 연 12~22%, 위기 시 더 높음)
+  const isCrisis = [1997,1998,2000,2008,2020,2022].includes(year);
+  const interestRate = isCrisis ? 0.22 : 0.15;
+  if (debt > 0) {
+    debt *= (1 + interestRate);
+  }
+
+  const equity = getNet();
+  if (equity <= 0) {
+    endGame(false);
+    return;
+  }
+
+  // 재배분: 목표 주식 노출 = equity * stockPct * lev
+  const targetStock = equity * stockPct * lev;
+  const cashNeeded = equity - targetStock; // 음수면 추가 차입
+
+  if (cashNeeded < 0) {
+    debt += Math.abs(cashNeeded);
+    cash = 0;
+    stocks = targetStock;
+  } else {
+    cash = cashNeeded;
+    stocks = targetStock;
+    // 여유 현금으로 일부 부채 상환
+    if (debt > 0 && cash > debt * 0.3) {
+      const repay = Math.min(debt, cash * 0.5);
+      debt -= repay;
+      cash -= repay;
+    }
+  }
+
+  // 현금은 저금리 (시대별로 약간 다름)
+  cash *= (1 + (year < 2000 ? 0.08 : 0.04));
+
+  year++;
+  const ret = KOSPI[year] ?? 0.05;
+  stocks *= (1 + ret);
+
+  const net = getNet();
+  history.push({year, ret, net});
+
+  if (net <= 0) {
+    endGame(false);
+    return;
+  }
+
+  showNews(year);
+  updateUI();
+  const retPct = (ret * 100).toFixed(1);
+  const color = ret >= 0 ? "positive" : "negative";
+  document.getElementById("log").innerHTML = `<div><span class="${color}">${year}년 수익률 ${retPct}%</span> | 순자산 ${format(net)}</div>` + document.getElementById("log").innerHTML;
+}
+
+function endGame(survived) {
+  document.getElementById("game").classList.add("hidden");
+  document.getElementById("end").classList.remove("hidden");
+  const net = getNet();
+  const start = 10000000;
+  const multiple = (net / start).toFixed(1);
+
+  if (survived) {
+    document.getElementById("endTitle").textContent = "생존 성공";
+    document.getElementById("endMessage").innerHTML = 
+      `2025년까지 살아남았습니다.<br><br>
+       최종 순자산: <span class="positive">${format(net)}</span><br>
+       초기 대비 <strong>${multiple}배</strong><br><br>
+       야수의 심장을 가진 당신, 축하합니다.`;
+  } else {
+    document.getElementById("endTitle").textContent = "파산";
+    document.getElementById("endMessage").innerHTML = 
+      `${year}년, 레버리지와 사채에 무너졌습니다.<br><br>
+       순자산: <span class="negative">${format(net)}</span><br><br>
+       역사의 파고 앞에서 야수의 심장은 충분하지 않았습니다.`;
+  }
+}
+</script>
+</body>
+</html>
