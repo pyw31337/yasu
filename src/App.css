@@ -886,6 +886,22 @@ body {
   margin-bottom: 0;
 }
 
+.btn-scenario-chip {
+  padding: 0.85rem 1.1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.btn-scenario-chip:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+  filter: brightness(1.25);
+}
+
 /* ==================== AAA CINEMATIC STAGE & SPRITES ==================== */
 .aaa-stage-container {
   position: relative;

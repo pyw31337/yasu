@@ -85,11 +85,14 @@ export default function App() {
     setIsMuted(muted);
   };
 
-  const startGame = () => {
+  const startGame = (startYear = 1980) => {
     sound.init();
     sound.playBuy();
-    setYear(1980);
-    setAssets(INITIAL_ASSETS);
+    const initialCapital = startYear === 1980 ? INITIAL_ASSETS :
+                           startYear === 1997 ? 50000000 :
+                           startYear === 1999 ? 100000000 : 200000000;
+    setYear(startYear);
+    setAssets(initialCapital);
     setHistory([]);
     setAllocations({});
     setLoan(0);
@@ -247,9 +250,45 @@ export default function App() {
             </div>
           </div>
 
-          <button className="btn-fire-order" onClick={startGame}>
-            <Flame size={24} /> 1980년 명동 사채골목에서 게임 시작 (초기 자본 1,000만원)
+          {/* 메인 캠페인 시작 버튼 */}
+          <button className="btn-fire-order" onClick={() => startGame(1980)} style={{ marginBottom: '1.2rem' }}>
+            <Flame size={24} /> 01. 1980년 명동 사채골목 연대기 시작 (초기 1,000만 원)
           </button>
+
+          {/* 시대별 결전 특수 작전 즉시 참전 */}
+          <div style={{ textAlign: 'left', marginBottom: '1rem' }}>
+            <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-gold)', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <Sparkles size={16} /> 시대별 결전 특수 작전 즉시 참전 (HISTORICAL OPS):
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.8rem' }}>
+              <button 
+                onClick={() => startGame(1997)}
+                className="btn-scenario-chip"
+                style={{ background: 'rgba(255, 51, 75, 0.15)', border: '1px solid #ff334b', color: '#ff4d63' }}
+              >
+                <strong>⚡ 1997 IMF 환란 외환위기</strong>
+                <span style={{ fontSize: '0.75rem', opacity: 0.85, display: 'block', marginTop: '2px' }}>대폭락장 공매도·달러 사투 (초기 5,000만)</span>
+              </button>
+
+              <button 
+                onClick={() => startGame(1999)}
+                className="btn-scenario-chip"
+                style={{ background: 'rgba(255, 190, 26, 0.15)', border: '1px solid #ffbe1a', color: '#ffbe1a' }}
+              >
+                <strong>🌐 1999 새롬기술 닷컴 광풍</strong>
+                <span style={{ fontSize: '0.75rem', opacity: 0.85, display: 'block', marginTop: '2px' }}>100배 쩜상 롤러코스터 (초기 1억 원)</span>
+              </button>
+
+              <button 
+                onClick={() => startGame(2020)}
+                className="btn-scenario-chip"
+                style={{ background: 'rgba(0, 243, 124, 0.15)', border: '1px solid #00f37c', color: '#00f37c' }}
+              >
+                <strong>🔥 2020 동학개미운동</strong>
+                <span style={{ fontSize: '0.75rem', opacity: 0.85, display: 'block', marginTop: '2px' }}>삼성전자·바이오 풀미수 (초기 2억 원)</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
