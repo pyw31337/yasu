@@ -20,6 +20,7 @@ import AnimatedCandleBoard from './components/AnimatedCandleBoard';
 import BeastHeartRate from './components/BeastHeartRate';
 import RollingNumber from './components/RollingNumber';
 import ArcadeInfoModal from './components/ArcadeInfoModal';
+import ArcadeStage from './components/ArcadeStage';
 import {
   TrendingUp,
   TrendingDown,
@@ -183,6 +184,28 @@ export default function App() {
   const currentTier = getAssetTier(assets);
   const totalAvailableCapital = (assets + loan) * leverage;
   const maxLoanPossible = Math.max(0, assets * 3); // 자산의 최대 3배까지 사채 대출 가능
+
+  // 1-탭 사채 단계 순환 (0원 -> 1배 -> 2배 -> 3배(최대) -> 0원)
+  const handleCycleLoan = () => {
+    sound.playBuy();
+    const step = Math.max(10000000, Math.floor(assets * 1));
+    const maxL = maxLoanPossible;
+    if (maxL <= 0) return;
+    setLoan(prev => {
+      if (prev === 0) return Math.min(step, maxL);
+      if (prev < step * 2) return Math.min(step * 2, maxL);
+      if (prev < maxL) return maxL;
+      return 0;
+    });
+  };
+
+  // 1-탭 레버리지 순환 (1x -> 2x -> 3x -> 5x -> 1x)
+  const handleCycleLeverage = () => {
+    sound.playBuy();
+    const lvls = [1, 2, 3, 5];
+    const nextIdx = (lvls.indexOf(leverage) + 1) % lvls.length;
+    setLeverage(lvls[nextIdx]);
+  };
 
   // ==================== LOBBY SCREEN (AAA 메이저 게임 스타일) ====================
   if (gameState === 'LOBBY') {
@@ -446,24 +469,24 @@ export default function App() {
     );
   }
 
-  // ==================== MAIN PLAYING SCREEN ====================
+  // ==================== MAIN PLAYING SCREEN (10x 간소화 아케이드 HUD) ====================
   return (
-    <div className="app-wrapper">
-      {/* 탑 네비게이션 바 */}
-      <div className="top-nav">
-        <div className="nav-left">
-          <div className="year-indicator">{year}년</div>
-          <div className="era-tag flex items-center gap-1">
+    <div className="arcade-app-wrapper">
+      {/* 1. 슬림 탑 게임 HUD */}
+      <div className="arcade-top-hud">
+        <div className="flex items-center gap-1.5">
+          <div className="hud-year-badge">{year}년</div>
+          <div className="hud-era-pill">
             <span>{yearData.era}</span>
             <button 
               type="button" 
               className="btn-arcade-info ml-1"
-              title="연도별 배경 팩트 보기"
+              title="시대 배경 정보"
               onClick={() => {
                 sound.playBuy();
                 setActiveInfo({
                   title: `${year}년 시대 배경: ${yearData.era}`,
-                  content: yearData.headline ? `${yearData.headline}\n\n${yearData.article || ''}` : `${year}년 대한민국 경제 상황 및 증시 상황입니다.`,
+                  content: yearData.headline ? `${yearData.headline}\n\n${yearData.article || ''}` : `${year}년 대한민국 경제 상황입니다.`,
                   tip: `KOSPI: ${yearData.kospi} | 환율: ${yearData.exchangeRate}원 | 기준금리: ${yearData.interestRate}%`
                 });
               }}
@@ -471,219 +494,55 @@ export default function App() {
               i
             </button>
           </div>
-        </div>
-
-        <div className="nav-indices">
-          <div className="index-chip">
-            KOSPI <strong>{yearData.kospi}</strong> ({yearData.kospiChange >= 0 ? '+' : ''}{(yearData.kospiChange * 100).toFixed(1)}%)
-          </div>
-          <div className="index-chip">
-            환율 <strong>{yearData.exchangeRate}원</strong>
-          </div>
-          <div className="index-chip">
-            금리 <strong>{yearData.interestRate}%</strong>
-          </div>
-        </div>
-
-        <div className="nav-actions">
-          <button className="btn-icon" onClick={() => setShowNewspaper(true)}>
-            <Newspaper size={16} /> 호외
-          </button>
-          <button className="btn-icon" onClick={toggleSound}>
-            {isMuted ? <VolumeX size={16} color="#ff334b" /> : <Volume2 size={16} color="#00f37c" />}
+          <button 
+            type="button"
+            className="hud-btn-news" 
+            onClick={() => {
+              sound.playBuy();
+              setShowNewspaper(true);
+            }}
+            title="호외 신문 보기"
+          >
+            <Newspaper size={13} /> 호외
           </button>
         </div>
-      </div>
 
-      {/* 자산 상태 배너 (골드바 & 돈다발 비주얼 스프라이트 탑재) */}
-      <div className="asset-summary-card">
-        <div className="flex items-center gap-4">
-          <div className="asset-sprite-thumbnail">
-            <img 
-              src="./assets/item_cash_gold.png" 
-              alt="보유 자산 현금 골드바" 
-              className="w-16 h-16 object-contain filter drop-shadow(0 4px 12px rgba(255, 190, 26, 0.4))"
-            />
-          </div>
-          <div>
-            <div className="asset-main-title">현재 보유 순자산</div>
-            <div className="asset-main-value text-bull">
-              <RollingNumber value={assets} suffix=" 원" />
-            </div>
-            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
-              원금 대비: {assets >= INITIAL_ASSETS ? '+' : ''}{(((assets - INITIAL_ASSETS) / INITIAL_ASSETS) * 100).toFixed(1)}%
-            </div>
-          </div>
+        {/* 중앙: 실시간 코인/골드 자산 뱃지 (스프라이트 탑재) */}
+        <div className="hud-asset-badge">
+          <img 
+            src="./assets/item_cash_gold.png" 
+            alt="자산" 
+            className="w-5 h-5 object-contain inline-block mr-1.5 filter drop-shadow(0 2px 6px rgba(255, 190, 26, 0.5))" 
+          />
+          <span className="hud-asset-num text-bull">
+            <RollingNumber value={assets} suffix=" 원" />
+          </span>
+          <span className="hud-return-rate">
+            ({assets >= INITIAL_ASSETS ? '+' : ''}{(((assets - INITIAL_ASSETS) / INITIAL_ASSETS) * 100).toFixed(0)}%)
+          </span>
         </div>
 
-        <div className="asset-tier-pill" style={{ borderColor: currentTier.color }}>
-          <div className="tier-badge-icon">{currentTier.badge.split(' ')[0]}</div>
-          <div>
-            <div className="tier-label-name" style={{ color: currentTier.color }}>{currentTier.title}</div>
-            <div className="tier-label-sub">{currentTier.lifestyle}</div>
-          </div>
-        </div>
+        {/* 우측: 사운드 토글 */}
+        <button type="button" className="hud-btn-sound" onClick={toggleSound}>
+          {isMuted ? <VolumeX size={15} color="#ff334b" /> : <Volume2 size={15} color="#00f37c" />}
+        </button>
       </div>
 
-      {/* 16-BIT RETRO ANIMATED OFFICE STAGE (그래픽 오피스 & 캐릭터 스프라이트 무대) */}
-      <OfficeStage
+      {/* 2. 10x 간소화 단일화면 아케이드 스테이지 */}
+      <ArcadeStage
         year={year}
+        yearData={yearData}
         assets={assets}
-        tier={currentTier}
         loan={loan}
-        isTrading={isTrading}
-        lastResult={resultData}
-      />
-
-      {/* ANIMATED CANDLE BOARD (실시간 캔들스틱 차트 & 5단계 호가창 게이지) */}
-      <AnimatedCandleBoard
-        stocks={yearData.stocks}
+        leverage={leverage}
         allocations={allocations}
         onSetAlloc={handleSetAlloc}
+        onCycleLoan={handleCycleLoan}
+        onCycleLeverage={handleCycleLeverage}
+        onExecuteTrade={handleExecuteTrade}
         isTrading={isTrading}
         onOpenInfo={setActiveInfo}
       />
-
-      {/* 주문 터미널 (아케이드 콘솔) */}
-      <div className="order-terminal">
-        <span className="hud-corner-tl"></span>
-        <span className="hud-corner-tr"></span>
-        <span className="hud-corner-bl"></span>
-        <span className="hud-corner-br"></span>
-
-        <div className="terminal-header">
-          <div className="terminal-title">
-            <Flame size={20} /> 야수의 심장 콘솔
-          </div>
-          <span className="terminal-badge-pulse">LEVERAGE TERMINAL</span>
-        </div>
-
-        {/* 실시간 야수의 심박수 ECG 파형 모니터 */}
-        <div className="mb-4">
-          <BeastHeartRate leverage={leverage} loan={loan} isTrading={isTrading} />
-        </div>
-
-        <div className="terminal-grid">
-          {/* 사채 차입 슬라이더 */}
-          <div className="terminal-control-group">
-            <div className="control-label">
-              <span className="flex items-center gap-1.5">
-                <img src="./assets/item_debt_contract.png" alt="각서" className="w-5 h-5 object-contain inline" />
-                명동 사채
-                <button
-                  type="button"
-                  className="btn-arcade-info"
-                  title="사채 이율 및 위험 안내"
-                  onClick={() => {
-                    sound.playBuy();
-                    setActiveInfo({
-                      title: '👺 명동 사채 대출 (연이율 35%)',
-                      content: `현재 보유 자산의 최대 3배(${formatKRW(maxLoanPossible)})까지 즉시 차입할 수 있습니다. 단, 연이율 ${(yearData.interestRate + 15).toFixed(1)}%가 부과되며, 투자 실패 시 즉시 강제 반대매매(청산) 및 담보 몰수가 집행됩니다.`,
-                      tip: '상한가(쩜상)에 올인하면 잭팟이지만, 하한가를 맞으면 즉시 깡통 계좌로 전락합니다.'
-                    });
-                  }}
-                >
-                  i
-                </button>
-              </span>
-              <span className="text-bear font-mono font-bold">{formatKRW(loan)}</span>
-            </div>
-            <input
-              type="range"
-              min="0"
-              max={maxLoanPossible}
-              step={Math.max(1000000, Math.floor(maxLoanPossible / 20))}
-              value={loan}
-              onChange={(e) => setLoan(Number(e.target.value))}
-              style={{ width: '100%', accentColor: 'var(--bull-red)' }}
-            />
-          </div>
-
-          {/* 신용 레버리지 선택 버튼 */}
-          <div className="terminal-control-group">
-            <div className="control-label">
-              <span className="flex items-center gap-1.5">
-                신용 미수 레버리지
-                <button
-                  type="button"
-                  className="btn-arcade-info"
-                  title="레버리지 위험 안내"
-                  onClick={() => {
-                    sound.playBuy();
-                    setActiveInfo({
-                      title: '⚡ 신용 미수 레버리지 (1x ~ 5x)',
-                      content: '가용 자본 대비 최대 5배까지 주식을 추가 매수합니다. 수익률도 5배가 되지만, 손실률도 5배가 되어 주가가 20%만 하락해도 원금이 100% 전액 증발하며 강제 청산됩니다.',
-                      tip: '확실한 대세 상승 국면에서만 3x~5x 영끌 레버리지를 구사하세요.'
-                    });
-                  }}
-                >
-                  i
-                </button>
-              </span>
-              <span className="text-bull font-black">x{leverage} 배</span>
-            </div>
-            <div className="leverage-btn-group">
-              {[1, 2, 3, 5].map((lvl) => (
-                <button
-                  key={lvl}
-                  className={`btn-leverage ${leverage === lvl ? 'active' : ''}`}
-                  onClick={() => {
-                    sound.playBuy();
-                    setLeverage(lvl);
-                  }}
-                >
-                  {lvl === 1 ? '1x 기본' : lvl === 2 ? '2x 야수' : lvl === 3 ? '3x 불나방' : '5x 영끌🔥'}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* 최종 주문 예상 요약 */}
-        <div className="terminal-summary-row">
-          <div>
-            <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>가용 투자금: </span>
-            <strong style={{ fontSize: '1.15rem', color: 'var(--accent)' }}>
-              {formatKRW(totalAvailableCapital)}
-            </strong>
-          </div>
-          <div>
-            <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>주문 체결액: </span>
-            <strong style={{ fontSize: '1.15rem' }}>
-              {formatKRW(totalAvailableCapital * (Math.min(100, totalAllocatedPct) / 100))}
-            </strong>
-          </div>
-        </div>
-
-        <button
-          className="btn-fire-order"
-          disabled={totalAllocatedPct > 100 || isTrading}
-          onClick={handleExecuteTrade}
-        >
-          <Flame size={24} /> {isTrading ? '⚡ 주문 체결 중...' : `${year}년 장 개장 및 주문 전송 (야수의 심장 발동!)`}
-        </button>
-      </div>
-
-      {/* 모바일 전용 하단 스티키 트레이딩 독 (320px 사파리 & 삼성 브라우저 최적화) */}
-      <div className="mobile-sticky-dock">
-        <div className="mobile-dock-info">
-          <div className="mobile-dock-pct">
-            체결: <span className={totalAllocatedPct === 100 ? 'text-emerald-400 font-bold' : totalAllocatedPct > 100 ? 'text-red-400 font-bold' : 'text-amber-400 font-bold'}>
-              {totalAllocatedPct}% / 100%
-            </span>
-          </div>
-          <div className="mobile-dock-amt">
-            {formatKRW(totalAvailableCapital * (Math.min(100, totalAllocatedPct) / 100))}
-          </div>
-        </div>
-        <button
-          className="btn-mobile-quick-trade"
-          disabled={totalAllocatedPct > 100 || isTrading}
-          onClick={handleExecuteTrade}
-        >
-          {isTrading ? '⚡ 체결 중...' : '🔥 장 개장 (풀매수)'}
-        </button>
-      </div>
 
       {/* 신문 호외 모달 */}
       {showNewspaper && (
