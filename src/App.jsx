@@ -472,60 +472,63 @@ export default function App() {
   // ==================== MAIN PLAYING SCREEN (10x 간소화 아케이드 HUD) ====================
   return (
     <div className="arcade-app-wrapper">
-      {/* 1. 슬림 탑 게임 HUD */}
-      <div className="arcade-top-hud">
-        <div className="flex items-center gap-1.5">
-          <div className="hud-year-badge">{year}년</div>
-          <div className="hud-era-pill">
-            <span>{yearData.era}</span>
+      {/* 1. 슬림 탑 게임 HUD (hud_header.png 스프라이트 탑재) */}
+      <div className="arcade-top-hud sprite-hud-box">
+        <img src="./assets/hud_header.png" alt="HUD Header" className="hud-header-sprite-bg" />
+        <div className="hud-header-inner-row">
+          <div className="flex items-center gap-1.5">
+            <div className="hud-year-badge">{year}년</div>
+            <div className="hud-era-pill">
+              <span>{yearData.era}</span>
+              <button 
+                type="button" 
+                className="btn-arcade-info ml-1"
+                title="시대 배경 정보"
+                onClick={() => {
+                  sound.playBuy();
+                  setActiveInfo({
+                    title: `${year}년 시대 배경: ${yearData.era}`,
+                    content: yearData.headline ? `${yearData.headline}\n\n${yearData.article || ''}` : `${year}년 대한민국 경제 상황입니다.`,
+                    tip: `KOSPI: ${yearData.kospi} | 환율: ${yearData.exchangeRate}원 | 기준금리: ${yearData.interestRate}%`
+                  });
+                }}
+              >
+                i
+              </button>
+            </div>
             <button 
-              type="button" 
-              className="btn-arcade-info ml-1"
-              title="시대 배경 정보"
+              type="button"
+              className="hud-btn-news" 
               onClick={() => {
                 sound.playBuy();
-                setActiveInfo({
-                  title: `${year}년 시대 배경: ${yearData.era}`,
-                  content: yearData.headline ? `${yearData.headline}\n\n${yearData.article || ''}` : `${year}년 대한민국 경제 상황입니다.`,
-                  tip: `KOSPI: ${yearData.kospi} | 환율: ${yearData.exchangeRate}원 | 기준금리: ${yearData.interestRate}%`
-                });
+                setShowNewspaper(true);
               }}
+              title="호외 신문 보기"
             >
-              i
+              <Newspaper size={13} /> 호외
             </button>
           </div>
-          <button 
-            type="button"
-            className="hud-btn-news" 
-            onClick={() => {
-              sound.playBuy();
-              setShowNewspaper(true);
-            }}
-            title="호외 신문 보기"
-          >
-            <Newspaper size={13} /> 호외
+
+          {/* 중앙: 실시간 코인/골드 자산 뱃지 (스프라이트 탑재) */}
+          <div className="hud-asset-badge">
+            <img 
+              src="./assets/item_cash_gold.png" 
+              alt="자산" 
+              className="w-5 h-5 object-contain inline-block mr-1.5 filter drop-shadow(0 2px 6px rgba(255, 190, 26, 0.5))" 
+            />
+            <span className="hud-asset-num text-bull">
+              <RollingNumber value={assets} suffix=" 원" />
+            </span>
+            <span className="hud-return-rate">
+              ({assets >= INITIAL_ASSETS ? '+' : ''}{(((assets - INITIAL_ASSETS) / INITIAL_ASSETS) * 100).toFixed(0)}%)
+            </span>
+          </div>
+
+          {/* 우측: 사운드 토글 */}
+          <button type="button" className="hud-btn-sound" onClick={toggleSound}>
+            {isMuted ? <VolumeX size={15} color="#ff334b" /> : <Volume2 size={15} color="#00f37c" />}
           </button>
         </div>
-
-        {/* 중앙: 실시간 코인/골드 자산 뱃지 (스프라이트 탑재) */}
-        <div className="hud-asset-badge">
-          <img 
-            src="./assets/item_cash_gold.png" 
-            alt="자산" 
-            className="w-5 h-5 object-contain inline-block mr-1.5 filter drop-shadow(0 2px 6px rgba(255, 190, 26, 0.5))" 
-          />
-          <span className="hud-asset-num text-bull">
-            <RollingNumber value={assets} suffix=" 원" />
-          </span>
-          <span className="hud-return-rate">
-            ({assets >= INITIAL_ASSETS ? '+' : ''}{(((assets - INITIAL_ASSETS) / INITIAL_ASSETS) * 100).toFixed(0)}%)
-          </span>
-        </div>
-
-        {/* 우측: 사운드 토글 */}
-        <button type="button" className="hud-btn-sound" onClick={toggleSound}>
-          {isMuted ? <VolumeX size={15} color="#ff334b" /> : <Volume2 size={15} color="#00f37c" />}
-        </button>
       </div>
 
       {/* 2. 10x 간소화 단일화면 아케이드 스테이지 */}

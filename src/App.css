@@ -2726,3 +2726,188 @@ html, body {
   justify-content: center;
 }
 
+/* ==================== 순수 게임 스프라이트 기반 UI 그래픽스 ==================== */
+
+/* 1. HUD 헤더 바 스프라이트 프레임 (hud_header.png) */
+.sprite-hud-box {
+  position: relative;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  overflow: visible;
+}
+
+.hud-header-sprite-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+  z-index: 1;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
+  border-radius: 10px;
+}
+
+.hud-header-inner-row {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 0.8rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 2. 메인 액티브 카드 스프라이트 프레임 (card_frame.png) */
+.arcade-active-stock-card.sprite-framed {
+  position: relative;
+  background: rgba(14, 20, 28, 0.9) !important;
+  border: none !important;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8) !important;
+  padding: 0.8rem 1rem !important;
+}
+
+.card-frame-sprite-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.85;
+}
+
+.active-stock-inner-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* 3. 액션 버튼 스프라이트 (btn_loanshark.png, btn_leverage.png, btn_allin.png) */
+.btn-sprite-button {
+  position: relative;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  transition: transform 0.08s ease, filter 0.15s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 52px;
+}
+
+.btn-sprite-texture {
+  width: 100%;
+  height: 52px;
+  object-fit: fill;
+  display: block;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7));
+  border-radius: 8px;
+}
+
+.btn-sprite-overlay-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  pointer-events: none;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.95);
+  padding: 0 0.2rem;
+}
+
+.btn-sprite-title {
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.3px;
+  line-height: 1.1;
+}
+
+.btn-sprite-val {
+  font-size: 0.7rem;
+  font-weight: 800;
+  font-family: ui-monospace, monospace;
+  line-height: 1.1;
+  margin-top: 2px;
+}
+
+.btn-sprite-button:hover {
+  filter: brightness(1.15) drop-shadow(0 0 10px rgba(255, 190, 26, 0.5));
+}
+
+.btn-sprite-button:active {
+  transform: translateY(3px) scale(0.97);
+  filter: brightness(0.95);
+}
+
+.btn-sprite-button.active {
+  filter: drop-shadow(0 0 12px rgba(255, 51, 75, 0.6)) brightness(1.1);
+}
+
+/* 4. 메가 레드 푸시 버튼 스프라이트 (btn_big_red.png) */
+.mega-red-sprite-btn {
+  position: relative;
+  width: 100%;
+  height: 64px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  transition: transform 0.08s ease, filter 0.15s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mega-red-sprite-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  filter: drop-shadow(0 6px 16px rgba(255, 51, 75, 0.6));
+  border-radius: 12px;
+}
+
+.mega-red-btn-label {
+  position: relative;
+  z-index: 2;
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mega-red-sprite-btn:hover {
+  filter: brightness(1.12) drop-shadow(0 0 20px rgba(255, 51, 75, 0.8));
+}
+
+.mega-red-sprite-btn:active {
+  transform: translateY(4px) scale(0.98);
+  filter: brightness(0.95);
+}
+
+.mega-red-sprite-btn.trading {
+  opacity: 0.85;
+  pointer-events: none;
+  animation: pulseNeon 0.4s infinite;
+}
+

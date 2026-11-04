@@ -70,9 +70,9 @@ export default function ArcadeStage({
     ctx.clearRect(0, 0, w, h);
 
     // 미니 그리드
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
     ctx.lineWidth = 1;
-    for (let y = 15; y < h; y += 15) {
+    for (let y = 14; y < h; y += 14) {
       ctx.beginPath();
       ctx.moveTo(0, y);
       ctx.lineTo(w, y);
@@ -189,70 +189,73 @@ export default function ArcadeStage({
         </div>
       </div>
 
-      {/* 2. 메인 액티브 종목 카드 ("내용은 내용처럼") */}
-      <div className="arcade-active-stock-card">
-        <span className="hud-corner-tl"></span>
-        <span className="hud-corner-tr"></span>
-        <span className="hud-corner-bl"></span>
-        <span className="hud-corner-br"></span>
-
-        <div className="active-stock-header">
-          <div className="flex items-center gap-2">
-            <span className="stock-code-pill font-mono">{activeStock.code}</span>
-            <h2 className="active-stock-name text-lg font-black m-0 tracking-tight text-amber-300">
-              {activeStock.name}
-            </h2>
-            <button
-              type="button"
-              className="btn-arcade-info"
-              onClick={() => onOpenInfo({
-                title: `${activeStock.name} (${activeStock.code})`,
-                content: activeStock.detail,
-                tip: `${activeStock.name}은 ${isUp ? '해당 연도 대세 상승을 주도' : '역사적 조정'}을 겪었습니다.`
-              })}
-            >
-              i
-            </button>
-          </div>
-
-          <div className="text-right">
-            <div className="text-base font-black font-mono">
-              {activeStock.price?.toLocaleString()}
-              <span className="text-xs text-slate-400 font-normal ml-0.5">원</span>
+      {/* 2. 메인 액티브 종목 카드 (스프라이트 프레임 card_frame.png 탑재) */}
+      <div className="arcade-active-stock-card sprite-framed">
+        <img 
+          src="./assets/card_frame.png" 
+          alt="Card Frame" 
+          className="card-frame-sprite-bg" 
+        />
+        
+        <div className="active-stock-inner-content">
+          <div className="active-stock-header">
+            <div className="flex items-center gap-1.5">
+              <span className="stock-code-pill font-mono">{activeStock.code}</span>
+              <h2 className="active-stock-name text-lg font-black m-0 tracking-tight text-amber-300">
+                {activeStock.name}
+              </h2>
+              <button
+                type="button"
+                className="btn-arcade-info"
+                onClick={() => onOpenInfo({
+                  title: `${activeStock.name} (${activeStock.code})`,
+                  content: activeStock.detail,
+                  tip: `${activeStock.name}은 ${isUp ? '해당 연도 대세 상승을 주도' : '역사적 조정'}을 겪었습니다.`
+                })}
+              >
+                i
+              </button>
             </div>
-            <div className={`text-xs font-black font-mono ${isUp ? 'text-bull' : 'text-bear'}`}>
-              {isUp ? '▲ +' : '▼ '}{((activeStock.rate || 0) * 100).toFixed(1)}%
-              {Math.abs(activeStock.rate || 0) >= 0.28 && (
-                <span className="ml-1 px-1 rounded bg-red-950 text-red-300 border border-red-600 text-[10px]">
-                  ★ 쩜상
-                </span>
-              )}
+
+            <div className="text-right">
+              <div className="text-base font-black font-mono">
+                {activeStock.price?.toLocaleString()}
+                <span className="text-xs text-slate-400 font-normal ml-0.5">원</span>
+              </div>
+              <div className={`text-xs font-black font-mono ${isUp ? 'text-bull' : 'text-bear'}`}>
+                {isUp ? '▲ +' : '▼ '}{((activeStock.rate || 0) * 100).toFixed(1)}%
+                {Math.abs(activeStock.rate || 0) >= 0.28 && (
+                  <span className="ml-1 px-1 rounded bg-red-950 text-red-300 border border-red-600 text-[10px]">
+                    ★ 쩜상
+                  </span>
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* 캔들 차트 */}
-        <div className="active-stock-canvas-wrap">
-          <canvas ref={canvasRef} width={300} height={60} className="w-full h-[60px] block" />
-          <div className="canvas-badge-live">
-            <span className="live-dot animate-ping"></span>
-            LIVE TICKS
+          {/* 캔들 차트 */}
+          <div className="active-stock-canvas-wrap">
+            <canvas ref={canvasRef} width={300} height={58} className="w-full h-[58px] block" />
+            <div className="canvas-badge-live">
+              <span className="live-dot animate-ping"></span>
+              LIVE TICKS
+            </div>
           </div>
-        </div>
 
-        {/* 비중 표시 바 */}
-        <div className="active-stock-alloc-indicator">
-          <div className="flex justify-between items-center text-xs mb-1">
-            <span className="text-slate-400 font-bold">투자 체결 비중</span>
-            <span className={`font-mono font-black ${activeAlloc === 100 ? 'text-emerald-400' : 'text-amber-400'}`}>
-              {activeAlloc}% {activeAlloc === 100 ? '(올인 몰빵!)' : ''}
-            </span>
-          </div>
-          <div className="alloc-track-bar">
-            <div 
-              className="alloc-track-fill" 
-              style={{ width: `${activeAlloc}%` }}
-            ></div>
+          {/* 비중 표시 바 */}
+          <div className="active-stock-alloc-indicator">
+            <div className="flex justify-between items-center text-xs mb-1">
+              <span className="text-slate-300 font-bold">투자 체결 비중</span>
+              <span className={`font-mono font-black ${activeAlloc === 100 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                {activeAlloc}% {activeAlloc === 100 ? '(올인 몰빵!)' : ''}
+              </span>
+            </div>
+            <div className="alloc-track-bar">
+              <div 
+                className="alloc-track-fill" 
+                style={{ width: `${activeAlloc}%` }}
+              ></div>
+            </div>
           </div>
         </div>
       </div>
@@ -270,7 +273,6 @@ export default function ArcadeStage({
               onClick={() => {
                 sound.playBuy();
                 setSelectedStockCode(s.code);
-                // 1-탭 전환 시 해당 종목으로 100% 몰빵 편의성 제공
                 onSetAlloc(s.code, 100);
               }}
               className={`stock-selector-chip ${isSelected ? 'active' : ''}`}
@@ -287,68 +289,79 @@ export default function ArcadeStage({
         })}
       </div>
 
-      {/* 4. 아케이드 물리 버튼 콘솔 ("버튼은 버튼처럼!") */}
+      {/* 4. 순수 그래픽 스프라이트 아케이드 버튼 콘솔 ("버튼은 진짜 게임 버튼 스프라이트로!") */}
       <div className="arcade-controller-console">
-        {/* 상단 3개 3D 아케이드 비벨 버튼 세트 */}
+        {/* 상단 3개 3D 게임 스프라이트 액션 버튼 */}
         <div className="arcade-btn-row">
-          {/* 사채 대출 3D 버튼 */}
+          {/* 사채 대출 스프라이트 버튼 */}
           <button
             type="button"
             onClick={() => {
               sound.playBuy();
               onCycleLoan();
             }}
-            className={`btn-3d-arcade btn-3d-loan ${loan > 0 ? 'active' : ''}`}
+            className={`btn-sprite-button ${loan > 0 ? 'active' : ''}`}
+            title="명동 사채 차입"
           >
-            <div className="btn-3d-icon">
-              <img src="./assets/item_debt_contract.png" alt="사채" className="w-5 h-5 object-contain" />
-            </div>
-            <div className="btn-3d-content">
-              <span className="btn-3d-title">명동 사채</span>
-              <span className="btn-3d-sub">{loan > 0 ? formatKRW(loan) : '0원 (클릭)'}</span>
+            <img 
+              src="./assets/btn_loanshark.png" 
+              alt="사채 버튼" 
+              className="btn-sprite-texture" 
+            />
+            <div className="btn-sprite-overlay-text">
+              <span className="btn-sprite-title">명동 사채</span>
+              <span className="btn-sprite-val text-red-200">
+                {loan > 0 ? formatKRW(loan) : '0원 (클릭)'}
+              </span>
             </div>
           </button>
 
-          {/* 신용 레버리지 3D 버튼 */}
+          {/* 신용 레버리지 스프라이트 버튼 */}
           <button
             type="button"
             onClick={() => {
               sound.playBuy();
               onCycleLeverage();
             }}
-            className={`btn-3d-arcade btn-3d-leverage ${leverage > 1 ? 'active' : ''}`}
+            className={`btn-sprite-button ${leverage > 1 ? 'active' : ''}`}
+            title="신용 미수 레버리지"
           >
-            <div className="btn-3d-icon">
-              <Zap size={18} className="text-cyan-300" />
-            </div>
-            <div className="btn-3d-content">
-              <span className="btn-3d-title">신용 레버리지</span>
-              <span className="btn-3d-sub text-cyan-300 font-mono font-black">
+            <img 
+              src="./assets/btn_leverage.png" 
+              alt="레버리지 버튼" 
+              className="btn-sprite-texture" 
+            />
+            <div className="btn-sprite-overlay-text">
+              <span className="btn-sprite-title">신용 레버리지</span>
+              <span className="btn-sprite-val text-cyan-200">
                 x{leverage}배 {leverage === 5 ? '🔥영끌' : leverage === 3 ? '불나방' : leverage === 2 ? '야수' : '기본'}
               </span>
             </div>
           </button>
 
-          {/* 100% 몰빵 3D 버튼 */}
+          {/* 100% 몰빵 스프라이트 버튼 */}
           <button
             type="button"
             onClick={() => {
               sound.playBuy();
               onSetAlloc(activeStock.code, 100);
             }}
-            className="btn-3d-arcade btn-3d-allin"
+            className="btn-sprite-button"
+            title="선택 종목 100% 올인"
           >
-            <div className="btn-3d-icon">
-              <Flame size={18} className="text-amber-300" />
-            </div>
-            <div className="btn-3d-content">
-              <span className="btn-3d-title">몰빵 세팅</span>
-              <span className="btn-3d-sub text-amber-300 font-mono font-black">100% 올인</span>
+            <img 
+              src="./assets/btn_allin.png" 
+              alt="올인 버튼" 
+              className="btn-sprite-texture" 
+            />
+            <div className="btn-sprite-overlay-text">
+              <span className="btn-sprite-title">몰빵 세팅</span>
+              <span className="btn-sprite-val text-emerald-200">100% 올인</span>
             </div>
           </button>
         </div>
 
-        {/* 하단: 초특대 3D 아케이드 레드 푸시 버튼 (스프라이트 탑재 & 기계식 푸시) */}
+        {/* 하단: 초특대 3D 아케이드 레드 푸시 버튼 (btn_big_red.png 스프라이트 탑재) */}
         <div className="arcade-big-button-wrapper">
           <button
             type="button"
@@ -357,14 +370,14 @@ export default function ArcadeStage({
               sound.playArcadePush();
               onExecuteTrade();
             }}
-            className={`arcade-big-red-btn ${isTrading ? 'trading' : ''}`}
+            className={`mega-red-sprite-btn ${isTrading ? 'trading' : ''}`}
           >
             <img 
-              src="./assets/ui_red_button.png" 
+              src="./assets/btn_big_red.png" 
               alt="장 개장 버튼" 
-              className="red-btn-sprite-img" 
+              className="mega-red-sprite-img" 
             />
-            <div className="red-btn-overlay-text">
+            <div className="mega-red-btn-label">
               <Flame size={24} className="inline mr-1 text-yellow-300 animate-pulse" />
               <span>{isTrading ? '⚡ 주문 체결 중...' : `${year}년 장 개장 (주문 전송)`}</span>
             </div>
