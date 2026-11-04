@@ -176,48 +176,81 @@ export default function App() {
   const totalAvailableCapital = (assets + loan) * leverage;
   const maxLoanPossible = Math.max(0, assets * 3); // 자산의 최대 3배까지 사채 대출 가능
 
-  // ==================== LOBBY SCREEN ====================
+  // ==================== LOBBY SCREEN (AAA 메이저 게임 스타일) ====================
   if (gameState === 'LOBBY') {
     return (
-      <div className="hero-lobby">
-        <h1 className="hero-title text-bull">🔥 야수의 심장</h1>
-        <p className="hero-subtitle">대한민국 증시 50년사 (1980 ~ 2026) 주식투자 시뮬레이션</p>
+      <div className="hero-lobby-container">
+        <div className="hero-lobby-bg" style={{ backgroundImage: "url('./assets/key_art.jpg')" }}></div>
+        <div className="hero-lobby-overlay"></div>
 
-        <div className="lobby-feature-list">
-          <div className="feature-item">
-            <Sparkles size={22} color="#ffbe1a" />
-            <div>
-              <strong>실존 역사 사건 & 경제 충격 재현</strong>
-              <p style={{ margin: '4px 0 0 0', color: 'var(--text-muted)' }}>
-                이철희·장영자 어음 사기, 88 올림픽, 깡통계좌 정리, IMF 외환위기, 닷컴버블, 금융위기, 코로나 동학개미, 2차전지 광풍, AI 반도체까지 실화 바탕 100% 반영!
-              </p>
+        <div className="hero-lobby">
+          <div className="hero-badge-top">
+            <Flame size={16} /> AAA CINEMATIC K-STOCK SURVIVAL SIMULATION
+          </div>
+          <h1 className="hero-title">야수의 심장</h1>
+          <p className="hero-subtitle">THE HEART OF THE BEAST : 1980 ~ 2026 대한민국 증시 50년사</p>
+
+          {/* 주요 등장인물 쇼케이스 카드 */}
+          <div className="lobby-character-showcase">
+            <div className="character-card card-trader">
+              <div className="card-avatar-wrapper">
+                <img src="./assets/sprite_trader.png" alt="김트레이더" className="card-avatar-img" />
+              </div>
+              <div>
+                <div className="card-char-name text-amber-400">김트레이더 (주인공)</div>
+                <div className="card-char-role">🔥 야수의 심장을 품은 청년 투자자</div>
+                <p className="card-char-quote">"1천만 원 종잣돈으로 1조 원 신화를 쓰고 여의도 꼭대기 펜트하우스로 간다!"</p>
+              </div>
+            </div>
+
+            <div className="character-card card-shark">
+              <div className="card-avatar-wrapper">
+                <img src="./assets/sprite_loanshark.png" alt="사채왕 마동석" className="card-avatar-img" />
+              </div>
+              <div>
+                <div className="card-char-name text-bull">명동 사채왕 마동석</div>
+                <div className="card-char-role">👺 지하 금융가 거물 (연이율 35%)</div>
+                <p className="card-char-quote">"이봐 김 사장, 원금 못 갚으면 각서대로 손모가지 날아가는 거야. 땡겨줄까?"</p>
+              </div>
             </div>
           </div>
 
-          <div className="feature-item">
-            <DollarSign size={22} color="#00f37c" />
-            <div>
-              <strong>실제 상장 종목코드 & 당시 환율/금리</strong>
-              <p style={{ margin: '4px 0 0 0', color: 'var(--text-muted)' }}>
-                삼성전자(005930), 조흥은행, 새롬기술(035610), 신풍제약, 에코프로(086520) 등 실존 종목들의 실제 주가 폭등과 부도 스토리 수록.
-              </p>
+          <div className="lobby-feature-list">
+            <div className="feature-item">
+              <Sparkles size={22} color="#ffbe1a" />
+              <div>
+                <strong>실존 역사 사건 & 경제 충격 100% 실화 재현</strong>
+                <p style={{ margin: '4px 0 0 0', color: 'var(--text-muted)' }}>
+                  장영자 어음 사기, 88 올림픽, 깡통계좌 정리, 1997 IMF 외환위기, 1999 닷컴버블, 2008 리먼브라더스, 2020 동학개미, 2023 2차전지, 2024 AI 반도체까지 총망라!
+                </p>
+              </div>
+            </div>
+
+            <div className="feature-item">
+              <DollarSign size={22} color="#00f37c" />
+              <div>
+                <strong>실제 종목코드 & 당시 환율/금리 리얼 반영</strong>
+                <p style={{ margin: '4px 0 0 0', color: 'var(--text-muted)' }}>
+                  삼성전자(005930), 현대차, 새롬기술(035610), 신풍제약, 에코프로(086520) 등 역사적 상장 종목들의 실제 주가 폭등과 부도 스토리.
+                </p>
+              </div>
+            </div>
+
+            <div className="feature-item">
+              <Flame size={22} color="#ff334b" />
+              <div>
+                <strong>극상의 도파민: 사채 & 5배 풀레버리지 & 쩜상 폭죽 & 반대매매 사이렌</strong>
+                <p style={{ margin: '4px 0 0 0', color: 'var(--text-muted)' }}>
+                  상한가 돈다발 비와 반대매매 사이렌의 짜릿한 긴장감 속에서 대한민국 최고 부호 티어에 도전하세요.
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="feature-item">
-            <Flame size={22} color="#ff334b" />
-            <div>
-              <strong>극상의 도파민: 사채 & 5배 풀레버리지 & 반대매매</strong>
-              <p style={{ margin: '4px 0 0 0', color: 'var(--text-muted)' }}>
-                인생 역전을 위한 영끌 풀미수! 쩜상 폭죽과 반대매매 사이렌의 짜릿한 손맛을 느껴보세요.
-              </p>
-            </div>
-          </div>
+          <button className="btn-fire-order" onClick={startGame}>
+            <Flame size={24} /> 1980년 명동 사채골목에서 게임 시작 (초기 자본 1,000만원)
+          </button>
         </div>
-
-        <button className="btn-fire-order" onClick={startGame}>
-          <Flame size={24} /> 1980년 명동 사채골목에서 게임 시작 (초기 자본 1,000만원)
-        </button>
       </div>
     );
   }
@@ -225,24 +258,37 @@ export default function App() {
   // ==================== GAME OVER SCREEN ====================
   if (gameState === 'GAMEOVER') {
     return (
-      <div className="hero-lobby">
-        <h1 className="hero-title text-bear" style={{ fontSize: '3rem' }}>💀 깡통 및 파산</h1>
-        <p className="hero-subtitle" style={{ color: 'var(--bear-blue)' }}>
-          {year}년, 모든 자산을 잃고 신용불량자로 전락했습니다.
-        </p>
+      <div className="hero-lobby-container">
+        <div className="hero-lobby-bg" style={{ backgroundImage: "url('./assets/key_art.jpg')" }}></div>
+        <div className="hero-lobby-overlay"></div>
 
-        <div className="lobby-feature-list" style={{ borderColor: 'var(--bear-blue)', textAlign: 'center' }}>
-          <ShieldAlert size={48} color="#ff334b" style={{ margin: '0 auto 1rem auto' }} />
-          <h3 style={{ margin: '0 0 0.5rem 0' }}>현재 마포대교 한강 수온: 14.8 ℃</h3>
-          <p style={{ color: 'var(--text-muted)' }}>
-            과도한 사채와 레버리지로 인해 반대매매가 집행되었거나 상장폐지 폭탄을 맞았습니다.<br />
-            최종 잔고: <strong>{formatKRW(assets)}</strong>
+        <div className="hero-lobby">
+          <h1 className="hero-title text-bear" style={{ fontSize: '3.5rem' }}>💀 깡통 및 파산</h1>
+          <p className="hero-subtitle" style={{ color: 'var(--bear-blue)' }}>
+            {year}년, 모든 자산을 잃고 신용불량자로 전락했습니다.
           </p>
-        </div>
 
-        <button className="btn-fire-order" onClick={startGame}>
-          <RotateCcw size={22} /> 다시 1980년으로 환생하기
-        </button>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
+            <img 
+              src="./assets/sprite_loanshark.png" 
+              alt="사채왕 마동석" 
+              style={{ height: '220px', filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.8))' }} 
+            />
+          </div>
+
+          <div className="lobby-feature-list" style={{ borderColor: 'var(--bear-blue)', textAlign: 'center' }}>
+            <ShieldAlert size={48} color="#ff334b" style={{ margin: '0 auto 1rem auto' }} />
+            <h3 style={{ margin: '0 0 0.5rem 0' }}>현재 마포대교 한강 수온: 14.8 ℃</h3>
+            <p style={{ color: 'var(--text-muted)' }}>
+              과도한 사채와 레버리지로 인해 반대매매가 집행되었거나 상장폐지 폭탄을 맞았습니다.<br />
+              최종 잔고: <strong>{formatKRW(assets)}</strong>
+            </p>
+          </div>
+
+          <button className="btn-fire-order" onClick={startGame}>
+            <RotateCcw size={22} /> 다시 1980년으로 환생하기
+          </button>
+        </div>
       </div>
     );
   }
@@ -251,9 +297,21 @@ export default function App() {
   if (gameState === 'VICTORY') {
     const totalReturnRate = ((assets - INITIAL_ASSETS) / INITIAL_ASSETS) * 100;
     return (
-      <div className="hero-lobby">
-        <h1 className="hero-title text-gold" style={{ fontSize: '3.2rem' }}>👑 전설의 월가 투신</h1>
-        <p className="hero-subtitle">1980년부터 2026년까지 50년 대한민국 격동의 증시를 정복했습니다!</p>
+      <div className="hero-lobby-container">
+        <div className="hero-lobby-bg" style={{ backgroundImage: "url('./assets/key_art.jpg')" }}></div>
+        <div className="hero-lobby-overlay"></div>
+
+        <div className="hero-lobby">
+          <h1 className="hero-title text-gold" style={{ fontSize: '3.6rem' }}>👑 전설의 월가 투신</h1>
+          <p className="hero-subtitle">1980년부터 2026년까지 50년 대한민국 격동의 증시를 정복했습니다!</p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
+            <img 
+              src="./assets/sprite_trader.png" 
+              alt="주인공 김트레이더" 
+              style={{ height: '240px', filter: 'drop-shadow(0 15px 30px rgba(255, 190, 26, 0.4))' }} 
+            />
+          </div>
 
         <div className="lobby-feature-list" style={{ borderColor: '#ffbe1a' }}>
           <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
@@ -276,9 +334,10 @@ export default function App() {
           </div>
         </div>
 
-        <button className="btn-fire-order" onClick={startGame}>
-          <RotateCcw size={22} /> 새로운 야수의 심장으로 재도전
-        </button>
+          <button className="btn-fire-order" onClick={startGame}>
+            <RotateCcw size={22} /> 새로운 야수의 심장으로 재도전
+          </button>
+        </div>
       </div>
     );
   }
