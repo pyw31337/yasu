@@ -6,41 +6,44 @@
 <title>야수의 심장 1980</title>
 <style>
   :root {
-    --bg: #07070a;
-    --card: #121218;
+    --bg: #050508;
+    --card: #101018;
     --accent: #ff4d00;
-    --gold: #ffd700;
-    --text: #e8e8e8;
+    --gold: #ffd54a;
+    --text: #f0f0f0;
     --good: #00e676;
     --bad: #ff5252;
     --muted: #888;
+    --panel: #161622;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     background: var(--bg);
     color: var(--text);
     font-family: 'Segoe UI', 'Noto Sans KR', system-ui, sans-serif;
-    line-height: 1.55;
+    line-height: 1.5;
     min-height: 100vh;
+    overflow-x: hidden;
   }
-  .container { max-width: 920px; margin: 0 auto; padding: 16px; }
+  .container { max-width: 980px; margin: 0 auto; padding: 12px; }
   header {
     text-align: center;
-    padding: 48px 20px 32px;
-    background: linear-gradient(180deg, #1a0a0a 0%, #07070a 100%);
+    padding: 40px 16px 28px;
+    background: linear-gradient(180deg, #1a0808 0%, #050508 100%);
     border-bottom: 2px solid var(--accent);
+    position: relative;
   }
-  h1 { font-size: 2.6rem; color: var(--accent); text-shadow: 0 0 24px #ff4d0088; letter-spacing: -0.5px; }
-  .subtitle { margin-top: 8px; opacity: 0.85; font-size: 1.05rem; }
+  h1 { font-size: 2.4rem; color: var(--accent); text-shadow: 0 0 20px #ff4d0099; letter-spacing: -0.5px; }
+  .subtitle { margin-top: 6px; opacity: 0.85; }
   .btn {
     background: #2563eb;
     color: white;
     border: none;
-    padding: 13px 28px;
-    font-size: 1.05rem;
+    padding: 12px 26px;
+    font-size: 1rem;
     border-radius: 8px;
     cursor: pointer;
-    margin: 8px 4px;
+    margin: 6px 4px;
     transition: 0.15s;
     font-weight: 600;
   }
@@ -50,57 +53,84 @@
   .card {
     background: var(--card);
     border-radius: 14px;
-    padding: 18px;
-    margin: 14px 0;
-    border: 1px solid #2a2a32;
+    padding: 16px;
+    margin: 12px 0;
+    border: 1px solid #2a2a38;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
   }
   .stat-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 10px;
-    margin: 14px 0;
+    margin: 12px 0;
   }
-  .stat { background: #0e0e14; padding: 12px; border-radius: 10px; text-align: center; }
-  .stat .label { font-size: 0.8rem; color: var(--muted); margin-bottom: 4px; }
-  .stat .value { font-size: 1.35rem; font-weight: 700; color: var(--gold); }
+  .stat { background: #0c0c14; padding: 10px; border-radius: 10px; text-align: center; }
+  .stat .label { font-size: 0.75rem; color: var(--muted); margin-bottom: 2px; }
+  .stat .value { font-size: 1.25rem; font-weight: 700; color: var(--gold); transition: color 0.3s; }
   .news {
     border-left: 4px solid var(--accent);
-    padding: 10px 14px;
-    margin: 12px 0;
-    background: #1a1010;
-    border-radius: 0 8px 8px 0;
-    font-size: 0.95rem;
+    padding: 12px 14px;
+    margin: 10px 0;
+    background: #1a1012;
+    border-radius: 0 10px 10px 0;
+    animation: slideIn 0.4s ease-out;
   }
-  .news strong { color: var(--accent); }
-  input[type="range"] { width: 100%; accent-color: var(--accent); height: 6px; }
-  label { display: block; margin: 10px 0 4px; font-size: 0.95rem; }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: none; } }
+  input[type="range"] { width: 100%; accent-color: var(--accent); }
+  label { display: block; margin: 8px 0 4px; font-size: 0.9rem; }
   .hidden { display: none !important; }
-  .end-screen { text-align: center; padding: 48px 20px; }
+  .end-screen { text-align: center; padding: 40px 16px; }
   .positive { color: var(--good); }
   .negative { color: var(--bad); }
-  #log { max-height: 180px; overflow-y: auto; font-size: 0.85rem; color: #aaa; margin-top: 10px; }
-  #log div { padding: 3px 0; border-bottom: 1px solid #222; }
-  .year-badge { display: inline-block; background: var(--accent); color: #000; font-weight: 800; padding: 2px 10px; border-radius: 20px; font-size: 0.9rem; }
-  footer { text-align: center; padding: 20px; color: var(--muted); font-size: 0.8rem; }
+  #log { max-height: 160px; overflow-y: auto; font-size: 0.82rem; color: #aaa; margin-top: 8px; }
+  #log div { padding: 2px 0; border-bottom: 1px solid #222; }
+  .year-badge { background: var(--accent); color: #000; font-weight: 800; padding: 3px 12px; border-radius: 20px; font-size: 0.85rem; }
+  .heart {
+    width: 48px; height: 48px; margin: 0 auto 8px;
+    background: radial-gradient(circle, #ff4d00 0%, #aa2200 70%);
+    border-radius: 50%;
+    animation: beat 1.2s infinite;
+    box-shadow: 0 0 20px #ff4d0066;
+  }
+  @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+  .risk-bar { height: 8px; background: #222; border-radius: 4px; overflow: hidden; margin: 6px 0; }
+  .risk-fill { height: 100%; background: linear-gradient(90deg, #00e676, #ffd54a, #ff5252); width: 0%; transition: width 0.4s; }
+  canvas { width: 100%; height: 140px; background: #0a0a12; border-radius: 8px; margin: 8px 0; display: block; }
+  .toast {
+    position: fixed; top: 20px; right: 20px; background: #1a1a28; border: 1px solid var(--accent);
+    padding: 12px 16px; border-radius: 10px; z-index: 100; animation: toastIn 0.3s;
+    max-width: 280px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+  @keyframes toastIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
+  .choice-btn { display: block; width: 100%; text-align: left; margin: 6px 0; padding: 10px; background: #1e1e2e; border: 1px solid #333; border-radius: 8px; color: var(--text); cursor: pointer; }
+  .choice-btn:hover { border-color: var(--accent); }
+  footer { text-align: center; padding: 16px; color: var(--muted); font-size: 0.75rem; }
+  .flash { animation: flash 0.5s; }
+  @keyframes flash { 0% { filter: brightness(1.8); } 100% { filter: none; } }
 </style>
 </head>
 <body>
 <div id="landing">
   <header>
+    <div class="heart" id="landingHeart"></div>
     <h1>야수의 심장 1980</h1>
     <p class="subtitle">1980년, 1,000만원으로 시작하는 주식 투자 생존 시뮬레이션</p>
-    <p style="margin-top:12px;">레버리지와 사채를 활용해 2025년까지 살아남아라.</p>
-    <p style="margin-top:16px; font-size:0.88rem; opacity:0.7;">실제 코스피 연도별 수익률 · 주요 역사적 사건 기반</p>
+    <p style="margin-top:10px;">레버리지·사채·역사의 파고를 넘고 2025년까지 살아남아라.</p>
+    <p style="margin-top:12px; font-size:0.85rem; opacity:0.7;">실제 코스피 수익률 · 주요 역사적 사건 · 게이미피케이션 요소</p>
   </header>
-  <div class="container" style="text-align:center; padding-top:36px;">
+  <div class="container" style="text-align:center; padding-top:32px;">
     <button class="btn" onclick="startGame()">게임 시작</button>
+    <button class="btn secondary" onclick="loadGame()">이어하기</button>
   </div>
 </div>
 
 <div id="game" class="hidden container">
   <div class="card">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-      <h2 id="yearDisplay" style="margin:0;">1980년</h2>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+      <div>
+        <div class="heart" style="width:36px;height:36px;margin:0;"></div>
+        <h2 id="yearDisplay" style="margin:0; display:inline;">1980년</h2>
+      </div>
       <span class="year-badge" id="progress">1 / 46</span>
     </div>
     <div class="stat-grid">
@@ -109,30 +139,37 @@
       <div class="stat"><div class="label">순자산</div><div class="value" id="net">10,000,000</div></div>
       <div class="stat"><div class="label">레버리지</div><div class="value" id="lev">1.0x</div></div>
     </div>
+    <div class="risk-bar"><div class="risk-fill" id="riskFill"></div></div>
+    <div style="font-size:0.8rem; color:#aaa; text-align:center;" id="riskLabel">리스크: 낮음</div>
+    <canvas id="chart"></canvas>
     <div id="newsArea"></div>
-    <div class="card" style="margin-top:8px;">
+    <div id="choiceArea"></div>
+    <div class="card" style="margin-top:8px; background:var(--panel);">
       <label>주식 비중: <span id="stockPct">60</span>%</label>
-      <input type="range" id="stockSlider" min="0" max="100" value="60" oninput="document.getElementById('stockPct').textContent=this.value">
-      <label>레버리지 배율: <span id="levPct">1.0</span>x <span style="color:#888;font-size:0.85rem;">(사채 가능)</span></label>
-      <input type="range" id="levSlider" min="10" max="40" value="10" oninput="document.getElementById('levPct').textContent=(this.value/10).toFixed(1)">
-      <div style="margin-top:14px; text-align:center;">
-        <button class="btn" onclick="nextYear()">다음 해로 진행</button>
+      <input type="range" id="stockSlider" min="0" max="100" value="60" oninput="document.getElementById('stockPct').textContent=this.value; updateRiskPreview()">
+      <label>레버리지 배율: <span id="levPct">1.0</span>x <span style="color:#888;font-size:0.8rem;">(사채·마진)</span></label>
+      <input type="range" id="levSlider" min="10" max="50" value="10" oninput="document.getElementById('levPct').textContent=(this.value/10).toFixed(1); updateRiskPreview()">
+      <div style="margin-top:12px; text-align:center;">
+        <button class="btn" id="nextBtn" onclick="nextYear()">다음 해로 진행</button>
+        <button class="btn secondary" onclick="saveGame()">저장</button>
       </div>
     </div>
     <div id="log"></div>
+    <div id="achievements" style="margin-top:8px; font-size:0.8rem; color:#aaa;"></div>
   </div>
 </div>
 
 <div id="end" class="hidden end-screen">
-  <h1 id="endTitle" style="font-size:2.2rem; margin-bottom:16px;"></h1>
-  <p id="endMessage" style="font-size:1.1rem; line-height:1.7;"></p>
-  <div style="margin-top:28px;">
+  <h1 id="endTitle" style="font-size:2rem; margin-bottom:12px;"></h1>
+  <p id="endMessage" style="font-size:1.05rem; line-height:1.7;"></p>
+  <div id="endStats" style="margin:16px 0;"></div>
+  <div style="margin-top:20px;">
     <button class="btn" onclick="location.reload()">다시 도전</button>
   </div>
 </div>
 
 <footer>
-  야수의 심장 1980 · 역사적 사실 기반 코스피 시뮬레이션
+  야수의 심장 1980 · 역사적 사실 기반 코스피 생존 시뮬레이션 · 효과음은 Web Audio API로 생성
 </footer>
 
 <script>
@@ -150,9 +187,9 @@ const KOSPI = {
 };
 
 const EVENTS = {
-  1980: "박정희 대통령 서거 여파와 전두환 신군부 등장. 정치적 불안과 건설주 후유증이 시장을 짓누른다.",
+  1980: "박정희 대통령 서거 여파와 전두환 신군부. 정치적 불안과 건설주 후유증이 시장을 짓누른다.",
   1981: "신군부 정권 안정화 시도. 증시는 바닥에서 서서히 반등 조짐을 보인다.",
-  1985: "플라자 합의 이후 3저 호황(저유가·저금리·저환율)의 서막. 수출 기업들이 기지개를 켜다.",
+  1985: "플라자 합의 이후 3저 호황(저유가·저금리·저환율)의 서막. 수출 기업들이 기지개를 켬다.",
   1986: "3저 호황이 본격화. 무역수지 흑자와 경기 과열 조짐.",
   1987: "서울 올림픽을 1년 앞두고 경기가 뜨겁다. 10월 블랙먼데이의 충격이 바다를 건너온다.",
   1988: "서울 올림픽 개최. 국민적 자부심과 함께 증시가 폭등한다.",
@@ -174,105 +211,232 @@ const EVENTS = {
   2025: "역사적 대세 상승. 코스피 4,000 시대 진입."
 };
 
-let year = 1980;
-let cash = 10000000;
-let stocks = 0;
-let debt = 0;
-let history = [];
+const DECISIONS = {
+  1997: [
+    { text: "보수적으로 레버리지 축소 (리스크 감소)", effect: { levMod: -0.5, retMod: 0 } },
+    { text: "위기를 기회로 더 공격적 매수", effect: { levMod: 0.3, retMod: -0.05 } },
+    { text: "현상 유지", effect: { levMod: 0, retMod: 0 } }
+  ],
+  1999: [
+    { text: "닷컴 열풍에 적극 참여", effect: { retMod: 0.08 } },
+    { text: "거품을 의심하고 현금 비중 확대", effect: { retMod: -0.1 } },
+    { text: "중립", effect: { retMod: 0 } }
+  ],
+  2008: [
+    { text: "패닉 셀, 현금 확보", effect: { retMod: -0.08, debtRelief: 0.2 } },
+    { text: "바닥 매수 시도", effect: { retMod: 0.05, levMod: 0.2 } },
+    { text: "버틴다", effect: { retMod: 0 } }
+  ],
+  2020: [
+    { text: "코로나 폭락 때 풀매수", effect: { retMod: 0.1 } },
+    { text: "유동성 장세 의심, 일부 차익", effect: { retMod: -0.05 } },
+    { text: "유지", effect: { retMod: 0 } }
+  ]
+};
+
+let state = {
+  year: 1980,
+  cash: 10000000,
+  stocks: 0,
+  debt: 0,
+  history: [],
+  achievements: new Set(),
+  pendingEffect: null
+};
+
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playTone(freq, duration, type = 'sine', gain = 0.1) {
+  const osc = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+  g.gain.setValueAtTime(gain, audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+  osc.connect(g);
+  g.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + duration);
+}
+
+function playUp() { playTone(440, 0.15); setTimeout(() => playTone(550, 0.2), 100); }
+function playDown() { playTone(300, 0.25, 'sawtooth', 0.08); }
+function playAlert() { playTone(800, 0.1); setTimeout(() => playTone(600, 0.15), 120); }
+function playSuccess() { playTone(523, 0.2); setTimeout(() => playTone(659, 0.25), 150); setTimeout(() => playTone(784, 0.3), 300); }
 
 function format(n) {
   return Math.round(n).toLocaleString('ko-KR') + "원";
 }
 
+function getNet() {
+  return state.cash + state.stocks - state.debt;
+}
+
+function updateRiskPreview() {
+  const lev = parseInt(document.getElementById("levSlider").value) / 10;
+  const stock = parseInt(document.getElementById("stockSlider").value) / 100;
+  const risk = Math.min(100, (lev - 1) * 40 + stock * 30);
+  document.getElementById("riskFill").style.width = risk + "%";
+  const label = risk < 30 ? "낮음" : risk < 60 ? "중간" : risk < 85 ? "높음" : "매우 높음";
+  document.getElementById("riskLabel").textContent = `리스크: ${label}`;
+}
+
+function drawChart() {
+  const canvas = document.getElementById("chart");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  const w = canvas.width = canvas.offsetWidth;
+  const h = canvas.height = 140;
+  ctx.clearRect(0, 0, w, h);
+  if (state.history.length < 2) return;
+  const nets = state.history.map(h => h.net);
+  const min = Math.min(...nets, 0);
+  const max = Math.max(...nets);
+  const range = max - min || 1;
+  ctx.strokeStyle = "#ff4d00";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  nets.forEach((n, i) => {
+    const x = (i / (nets.length - 1)) * (w - 10) + 5;
+    const y = h - 10 - ((n - min) / range) * (h - 20);
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+  ctx.fillStyle = "rgba(255,77,0,0.15)";
+  ctx.lineTo(w - 5, h - 5);
+  ctx.lineTo(5, h - 5);
+  ctx.fill();
+}
+
+function showToast(msg) {
+  const t = document.createElement("div");
+  t.className = "toast";
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2800);
+  playAlert();
+}
+
+function checkAchievements() {
+  const net = getNet();
+  const ach = state.achievements;
+  if (net >= 50000000 && !ach.has("50M")) { ach.add("50M"); showToast("🏆 성취: 순자산 5천만 원 돌파"); }
+  if (net >= 100000000 && !ach.has("100M")) { ach.add("100M"); showToast("🏆 성취: 1억 원 돌파"); }
+  if (net >= 1000000000 && !ach.has("1B")) { ach.add("1B"); showToast("🏆 성취: 10억 원 돌파"); }
+  if (state.year >= 1998 && !ach.has("IMF")) { ach.add("IMF"); showToast("🏆 성취: IMF 외환위기 생존"); }
+  if (state.year >= 2009 && !ach.has("GFC")) { ach.add("GFC"); showToast("🏆 성취: 글로벌 금융위기 생존"); }
+  if (state.year >= 2021 && !ach.has("COVID")) { ach.add("COVID"); showToast("🏆 성취: 코로나 장세 생존"); }
+  document.getElementById("achievements").textContent = "성취: " + [...ach].join(", ") || "성취 없음";
+}
+
 function startGame() {
   document.getElementById("landing").classList.add("hidden");
   document.getElementById("game").classList.remove("hidden");
+  audioCtx.resume();
   updateUI();
   showNews(1980);
+  updateRiskPreview();
+  drawChart();
 }
 
 function showNews(y) {
-  const news = EVENTS[y] || "시장은 비교적 조용히 흐러간다. 개인의 선택만이 결과를 가른다.";
+  const news = EVENTS[y] || "시장은 비교적 조용히 흘러간다. 개인의 선택만이 결과를 가른다.";
   document.getElementById("newsArea").innerHTML = `<div class="news"><strong>${y}년</strong> — ${news}</div>`;
-}
-
-function getNet() {
-  return cash + stocks - debt;
+  const choices = DECISIONS[y];
+  const area = document.getElementById("choiceArea");
+  if (choices) {
+    area.innerHTML = `<div style="margin:8px 0; font-size:0.9rem; color:#ffd54a;">⚡ 역사적 선택:</div>`;
+    choices.forEach((c, i) => {
+      const btn = document.createElement("button");
+      btn.className = "choice-btn";
+      btn.textContent = c.text;
+      btn.onclick = () => {
+        state.pendingEffect = c.effect;
+        area.innerHTML = `<div style="color:#00e676; font-size:0.85rem;">선택됨: ${c.text}</div>`;
+        playTone(600, 0.1);
+      };
+      area.appendChild(btn);
+    });
+  } else {
+    area.innerHTML = "";
+    state.pendingEffect = null;
+  }
 }
 
 function updateUI() {
-  const totalAssets = cash + stocks;
+  const totalAssets = state.cash + state.stocks;
   const net = getNet();
-  document.getElementById("yearDisplay").textContent = year + "년";
-  document.getElementById("progress").textContent = (year - 1979) + " / 46";
+  document.getElementById("yearDisplay").textContent = state.year + "년";
+  document.getElementById("progress").textContent = (state.year - 1979) + " / 46";
   document.getElementById("assets").textContent = format(totalAssets);
-  document.getElementById("debt").textContent = format(debt);
+  document.getElementById("debt").textContent = format(state.debt);
   document.getElementById("net").textContent = format(net);
   document.getElementById("net").className = "value " + (net >= 0 ? "positive" : "negative");
   document.getElementById("lev").textContent = (document.getElementById("levSlider").value / 10).toFixed(1) + "x";
+  checkAchievements();
+  drawChart();
 }
 
 function nextYear() {
-  if (year >= 2025) {
+  if (state.year >= 2025) {
     endGame(true);
     return;
   }
 
   const stockPct = parseInt(document.getElementById("stockSlider").value) / 100;
-  const lev = parseInt(document.getElementById("levSlider").value) / 10;
-
-  // 이자 먼저 적용 (사채 연 12~22%, 위기 시 더 높음)
-  const isCrisis = [1997,1998,2000,2008,2020,2022].includes(year);
-  const interestRate = isCrisis ? 0.22 : 0.15;
-  if (debt > 0) {
-    debt *= (1 + interestRate);
+  let lev = parseInt(document.getElementById("levSlider").value) / 10;
+  let retMod = 0;
+  if (state.pendingEffect) {
+    if (state.pendingEffect.levMod) lev = Math.max(1, lev + state.pendingEffect.levMod);
+    if (state.pendingEffect.retMod) retMod = state.pendingEffect.retMod;
+    if (state.pendingEffect.debtRelief) state.debt *= (1 - state.pendingEffect.debtRelief);
   }
 
-  const equity = getNet();
-  if (equity <= 0) {
-    endGame(false);
-    return;
-  }
+  const isCrisis = [1997,1998,2000,2008,2020,2022].includes(state.year);
+  const interestRate = isCrisis ? 0.24 : 0.16;
+  if (state.debt > 0) state.debt *= (1 + interestRate);
 
-  // 재배분: 목표 주식 노출 = equity * stockPct * lev
+  let equity = getNet();
+  if (equity <= 0) { endGame(false); return; }
+
   const targetStock = equity * stockPct * lev;
-  const cashNeeded = equity - targetStock; // 음수면 추가 차입
+  const cashNeeded = equity - targetStock;
 
   if (cashNeeded < 0) {
-    debt += Math.abs(cashNeeded);
-    cash = 0;
-    stocks = targetStock;
+    state.debt += Math.abs(cashNeeded);
+    state.cash = 0;
+    state.stocks = targetStock;
   } else {
-    cash = cashNeeded;
-    stocks = targetStock;
-    // 여유 현금으로 일부 부채 상환
-    if (debt > 0 && cash > debt * 0.3) {
-      const repay = Math.min(debt, cash * 0.5);
-      debt -= repay;
-      cash -= repay;
+    state.cash = cashNeeded;
+    state.stocks = targetStock;
+    if (state.debt > 0 && state.cash > state.debt * 0.25) {
+      const repay = Math.min(state.debt, state.cash * 0.4);
+      state.debt -= repay;
+      state.cash -= repay;
     }
   }
 
-  // 현금은 저금리 (시대별로 약간 다름)
-  cash *= (1 + (year < 2000 ? 0.08 : 0.04));
+  state.cash *= (1 + (state.year < 2000 ? 0.07 : 0.035));
 
-  year++;
-  const ret = KOSPI[year] ?? 0.05;
-  stocks *= (1 + ret);
+  state.year++;
+  let ret = (KOSPI[state.year] ?? 0.05) + retMod;
+  state.stocks *= (1 + ret);
 
   const net = getNet();
-  history.push({year, ret, net});
+  state.history.push({ year: state.year, ret, net });
 
-  if (net <= 0) {
-    endGame(false);
-    return;
-  }
+  if (net <= 0) { endGame(false); return; }
 
-  showNews(year);
+  showNews(state.year);
   updateUI();
   const retPct = (ret * 100).toFixed(1);
   const color = ret >= 0 ? "positive" : "negative";
-  document.getElementById("log").innerHTML = `<div><span class="${color}">${year}년 수익률 ${retPct}%</span> | 순자산 ${format(net)}</div>` + document.getElementById("log").innerHTML;
+  document.getElementById("log").innerHTML = `<div><span class="${color}">${state.year}년 수익률 ${retPct}%</span> | 순자산 ${format(net)}</div>` + document.getElementById("log").innerHTML;
+
+  document.getElementById("net").classList.add("flash");
+  setTimeout(() => document.getElementById("net").classList.remove("flash"), 500);
+  if (ret >= 0) playUp(); else playDown();
+  state.pendingEffect = null;
 }
 
 function endGame(survived) {
@@ -281,22 +445,38 @@ function endGame(survived) {
   const net = getNet();
   const start = 10000000;
   const multiple = (net / start).toFixed(1);
+  const bh = start * (4214 / 100);
+  const vsBH = ((net / bh) * 100).toFixed(0);
 
-  if (survived) {
-    document.getElementById("endTitle").textContent = "생존 성공";
-    document.getElementById("endMessage").innerHTML = 
-      `2025년까지 살아남았습니다.<br><br>
-       최종 순자산: <span class="positive">${format(net)}</span><br>
-       초기 대비 <strong>${multiple}배</strong><br><br>
-       야수의 심장을 가진 당신, 축하합니다.`;
-  } else {
-    document.getElementById("endTitle").textContent = "파산";
-    document.getElementById("endMessage").innerHTML = 
-      `${year}년, 레버리지와 사채에 무너졌습니다.<br><br>
-       순자산: <span class="negative">${format(net)}</span><br><br>
-       역사의 파고 앞에서 야수의 심장은 충분하지 않았습니다.`;
-  }
+  let title = survived ? "생존 성공" : "파산";
+  let msg = survived
+    ? `2025년까지 살아남았습니다.<br><br>최종 순자산: <span class="positive">${format(net)}</span><br>초기 대비 <strong>${multiple}배</strong><br>순수 코스피 대비 약 ${vsBH}%`
+    : `${state.year}년, 레버리지와 사채에 무너졌습니다.<br><br>순자산: <span class="negative">${format(net)}</span>`;
+
+  document.getElementById("endTitle").textContent = title;
+  document.getElementById("endMessage").innerHTML = msg;
+  document.getElementById("endStats").innerHTML = `성취 ${state.achievements.size}개 달성 · 진행 ${state.year - 1979}년`;
+  if (survived) playSuccess(); else playDown();
 }
+
+function saveGame() {
+  localStorage.setItem("yasu1980", JSON.stringify({
+    ...state,
+    achievements: [...state.achievements]
+  }));
+  showToast("저장 완료");
+}
+
+function loadGame() {
+  const raw = localStorage.getItem("yasu1980");
+  if (!raw) { showToast("저장된 게임이 없습니다"); return; }
+  const data = JSON.parse(raw);
+  state = { ...data, achievements: new Set(data.achievements || []) };
+  startGame();
+  showToast("이어하기 완료");
+}
+
+updateRiskPreview();
 </script>
 </body>
 </html>
