@@ -262,7 +262,7 @@ export default function App() {
             <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-gold)', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
               <Sparkles size={16} /> 시대별 결전 특수 작전 즉시 참전 (HISTORICAL OPS):
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.8rem' }}>
+            <div className="lobby-scenario-grid">
               <button 
                 onClick={() => startGame(1997)}
                 className="btn-scenario-chip"
@@ -551,6 +551,27 @@ export default function App() {
           onClick={handleExecuteTrade}
         >
           <Flame size={24} /> {isTrading ? '⚡ 주문 체결 중...' : `${year}년 장 개장 및 주문 전송 (야수의 심장 발동!)`}
+        </button>
+      </div>
+
+      {/* 모바일 전용 하단 스티키 트레이딩 독 (320px 사파리 & 삼성 브라우저 최적화) */}
+      <div className="mobile-sticky-dock">
+        <div className="mobile-dock-info">
+          <div className="mobile-dock-pct">
+            체결: <span className={totalAllocatedPct === 100 ? 'text-emerald-400 font-bold' : totalAllocatedPct > 100 ? 'text-red-400 font-bold' : 'text-amber-400 font-bold'}>
+              {totalAllocatedPct}% / 100%
+            </span>
+          </div>
+          <div className="mobile-dock-amt">
+            {formatKRW(totalAvailableCapital * (Math.min(100, totalAllocatedPct) / 100))}
+          </div>
+        </div>
+        <button
+          className="btn-mobile-quick-trade"
+          disabled={totalAllocatedPct > 100 || isTrading}
+          onClick={handleExecuteTrade}
+        >
+          {isTrading ? '⚡ 체결 중...' : '🔥 장 개장 (풀매수)'}
         </button>
       </div>
 

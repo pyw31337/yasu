@@ -19,10 +19,15 @@ export default function BeastHeartRate({ leverage = 1, loan = 0, isTrading = fal
   const heartColor = isDanger ? '#ff334b' : isWarning ? '#ffbe1a' : '#00f37c';
   const beatDuration = (60 / bpm).toFixed(2);
 
-  // 실시간 ECG 심전도 파형 캔버스 애니메이션
+  // 실시간 ECG 심전도 파형 캔버스 애니메이션 (320px 모바일 완벽 대응)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
+    const parentWidth = canvas.parentElement?.clientWidth || 240;
+    canvas.width = parentWidth;
+    canvas.height = 52;
+
     const ctx = canvas.getContext('2d');
     let animationFrameId;
     let x = 0;

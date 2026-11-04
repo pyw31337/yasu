@@ -16,10 +16,16 @@ function StockArcadeCard({ stock, alloc, onSetAlloc, isTrading }) {
     return () => clearInterval(interval);
   }, []);
 
-  // 캔들스틱 차트 캔버스 드로잉 (실시간 틱 진동 & 이동평균선)
+  // 캔들스틱 차트 캔버스 드로잉 (실시간 틱 진동 & 이동평균선 & 320px 반응형)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    
+    // 부모 컨테이너 너비에 맞춰 캔버스 해상도 자동 동기화 (320px 완벽 대응)
+    const parentWidth = canvas.parentElement?.clientWidth || 260;
+    canvas.width = parentWidth;
+    canvas.height = 70;
+
     const ctx = canvas.getContext('2d');
     const width = canvas.width;
     const height = canvas.height;
@@ -36,10 +42,11 @@ function StockArcadeCard({ stock, alloc, onSetAlloc, isTrading }) {
       ctx.stroke();
     }
 
-    // 7개의 캔들스틱 데이터 생성 (마지막 캔들은 실제 수익률 반영)
-    const candleCount = 7;
-    const candleWidth = 14;
-    const gap = (width - candleWidth * candleCount) / (candleCount + 1);
+    // 화면 너비에 맞춘 동적 캔들 개수 및 너비 계산 (최소 5개 ~ 최대 8개)
+    const candleCount = Math.max(5, Math.min(8, Math.floor(width / 34)));
+    const candleWidth = Math.max(9, Math.floor(width / (candleCount * 2.3)));
+    const totalCandlesWidth = candleWidth * candleCount;
+    const gap = Math.max(2, (width - totalCandlesWidth) / (candleCount + 1));
     const midY = height * 0.52;
 
     const candleColors = [];
