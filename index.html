@@ -6,119 +6,105 @@
 <title>야수의 심장 1980</title>
 <style>
   :root {
-    --bg: #050508;
-    --card: #101018;
+    --bg: #05060a;
+    --panel: #0f1118;
     --accent: #ff4d00;
     --gold: #ffd54a;
-    --text: #f0f0f0;
     --good: #00e676;
     --bad: #ff5252;
-    --muted: #888;
-    --panel: #161622;
+    --text: #f5f5f5;
+    --muted: #8a8a9a;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     background: var(--bg);
     color: var(--text);
     font-family: 'Segoe UI', 'Noto Sans KR', system-ui, sans-serif;
-    line-height: 1.5;
     min-height: 100vh;
     overflow-x: hidden;
   }
-  .container { max-width: 980px; margin: 0 auto; padding: 12px; }
-  header {
-    text-align: center;
-    padding: 40px 16px 28px;
-    background: linear-gradient(180deg, #1a0808 0%, #050508 100%);
-    border-bottom: 2px solid var(--accent);
-    position: relative;
+  .bg-layer {
+    position: fixed; inset: 0; z-index: -1;
+    background: radial-gradient(ellipse at 50% 0%, #1a0a0a 0%, #05060a 60%);
   }
-  h1 { font-size: 2.4rem; color: var(--accent); text-shadow: 0 0 20px #ff4d0099; letter-spacing: -0.5px; }
-  .subtitle { margin-top: 6px; opacity: 0.85; }
+  .container { max-width: 1000px; margin: 0 auto; padding: 16px; position: relative; }
+  header { text-align: center; padding: 28px 16px 16px; }
+  h1 { font-size: 2.2rem; color: var(--accent); text-shadow: 0 0 18px #ff4d0088; }
+  .subtitle { opacity: 0.8; margin-top: 4px; }
   .btn {
-    background: #2563eb;
-    color: white;
-    border: none;
-    padding: 12px 26px;
-    font-size: 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    margin: 6px 4px;
+    background: #2563eb; color: white; border: none; padding: 12px 28px;
+    border-radius: 8px; cursor: pointer; font-weight: 600; margin: 6px;
     transition: 0.15s;
-    font-weight: 600;
   }
   .btn:hover { background: #1d4ed8; transform: translateY(-1px); }
-  .btn.danger { background: var(--bad); }
   .btn.secondary { background: #333; }
+  .btn.danger { background: var(--bad); }
   .card {
-    background: var(--card);
-    border-radius: 14px;
-    padding: 16px;
-    margin: 12px 0;
-    border: 1px solid #2a2a38;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    background: var(--panel); border-radius: 16px; padding: 18px; margin: 12px 0;
+    border: 1px solid #222230; box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }
+  .heart-wrap { display: flex; justify-content: center; margin: 8px 0 16px; }
+  .beast-heart {
+    width: 72px; height: 72px;
+    filter: drop-shadow(0 0 16px var(--accent));
   }
   .stat-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 10px;
-    margin: 12px 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px; margin: 12px 0;
   }
-  .stat { background: #0c0c14; padding: 10px; border-radius: 10px; text-align: center; }
-  .stat .label { font-size: 0.75rem; color: var(--muted); margin-bottom: 2px; }
-  .stat .value { font-size: 1.25rem; font-weight: 700; color: var(--gold); transition: color 0.3s; }
+  .stat { background: #0a0c12; padding: 12px; border-radius: 12px; text-align: center; }
+  .stat .label { font-size: 0.75rem; color: var(--muted); }
+  .stat .value { font-size: 1.3rem; font-weight: 700; color: var(--gold); margin-top: 2px; }
+  .risk-bar { height: 10px; background: #1a1a22; border-radius: 5px; overflow: hidden; margin: 8px 0 4px; }
+  .risk-fill { height: 100%; background: linear-gradient(90deg, #00e676, #ffd54a, #ff5252); width: 0%; transition: width 0.4s; }
+  canvas#chart { width: 100%; height: 160px; background: #080a10; border-radius: 12px; display: block; margin: 10px 0; }
   .news {
-    border-left: 4px solid var(--accent);
-    padding: 12px 14px;
-    margin: 10px 0;
-    background: #1a1012;
-    border-radius: 0 10px 10px 0;
-    animation: slideIn 0.4s ease-out;
+    border-left: 4px solid var(--accent); padding: 14px 16px; margin: 10px 0;
+    background: #1a1012; border-radius: 0 12px 12px 0;
+    animation: slideIn 0.45s ease-out;
   }
-  @keyframes slideIn { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: none; } }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(-16px); } to { opacity: 1; transform: none; } }
   input[type="range"] { width: 100%; accent-color: var(--accent); }
-  label { display: block; margin: 8px 0 4px; font-size: 0.9rem; }
+  label { display: block; margin: 10px 0 4px; }
   .hidden { display: none !important; }
-  .end-screen { text-align: center; padding: 40px 16px; }
+  .end-screen { text-align: center; padding: 48px 16px; }
   .positive { color: var(--good); }
   .negative { color: var(--bad); }
-  #log { max-height: 160px; overflow-y: auto; font-size: 0.82rem; color: #aaa; margin-top: 8px; }
-  #log div { padding: 2px 0; border-bottom: 1px solid #222; }
-  .year-badge { background: var(--accent); color: #000; font-weight: 800; padding: 3px 12px; border-radius: 20px; font-size: 0.85rem; }
-  .heart {
-    width: 48px; height: 48px; margin: 0 auto 8px;
-    background: radial-gradient(circle, #ff4d00 0%, #aa2200 70%);
-    border-radius: 50%;
-    animation: beat 1.2s infinite;
-    box-shadow: 0 0 20px #ff4d0066;
+  #log { max-height: 140px; overflow-y: auto; font-size: 0.82rem; color: #aaa; margin-top: 8px; }
+  #log div { padding: 3px 0; border-bottom: 1px solid #1a1a22; }
+  .year-badge { background: var(--accent); color: #000; font-weight: 800; padding: 4px 14px; border-radius: 20px; }
+  .choice-btn {
+    display: block; width: 100%; text-align: left; margin: 6px 0; padding: 12px;
+    background: #161822; border: 1px solid #333; border-radius: 10px; color: var(--text); cursor: pointer;
   }
-  @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
-  .risk-bar { height: 8px; background: #222; border-radius: 4px; overflow: hidden; margin: 6px 0; }
-  .risk-fill { height: 100%; background: linear-gradient(90deg, #00e676, #ffd54a, #ff5252); width: 0%; transition: width 0.4s; }
-  canvas { width: 100%; height: 140px; background: #0a0a12; border-radius: 8px; margin: 8px 0; display: block; }
+  .choice-btn:hover { border-color: var(--accent); background: #1e2030; }
   .toast {
-    position: fixed; top: 20px; right: 20px; background: #1a1a28; border: 1px solid var(--accent);
-    padding: 12px 16px; border-radius: 10px; z-index: 100; animation: toastIn 0.3s;
-    max-width: 280px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    position: fixed; top: 20px; right: 20px; background: #161822; border: 1px solid var(--accent);
+    padding: 14px 18px; border-radius: 12px; z-index: 100; animation: toastIn 0.3s;
+    max-width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
   }
-  @keyframes toastIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
-  .choice-btn { display: block; width: 100%; text-align: left; margin: 6px 0; padding: 10px; background: #1e1e2e; border: 1px solid #333; border-radius: 8px; color: var(--text); cursor: pointer; }
-  .choice-btn:hover { border-color: var(--accent); }
-  footer { text-align: center; padding: 16px; color: var(--muted); font-size: 0.75rem; }
+  @keyframes toastIn { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: none; } }
   .flash { animation: flash 0.5s; }
-  @keyframes flash { 0% { filter: brightness(1.8); } 100% { filter: none; } }
+  @keyframes flash { 0% { filter: brightness(1.6); } 100% { filter: none; } }
+  footer { text-align: center; padding: 16px; color: var(--muted); font-size: 0.75rem; }
 </style>
 </head>
 <body>
+<div class="bg-layer"></div>
+
 <div id="landing">
   <header>
-    <div class="heart" id="landingHeart"></div>
+    <div class="heart-wrap">
+      <svg class="beast-heart" viewBox="0 0 100 100">
+        <path d="M50 85 C20 60 5 40 20 20 C35 5 50 25 50 25 C50 25 65 5 80 20 C95 40 80 60 50 85Z" fill="#ff4d00"/>
+        <circle cx="50" cy="40" r="8" fill="#ffd54a"/>
+      </svg>
+    </div>
     <h1>야수의 심장 1980</h1>
     <p class="subtitle">1980년, 1,000만원으로 시작하는 주식 투자 생존 시뮬레이션</p>
     <p style="margin-top:10px;">레버리지·사채·역사의 파고를 넘고 2025년까지 살아남아라.</p>
-    <p style="margin-top:12px; font-size:0.85rem; opacity:0.7;">실제 코스피 수익률 · 주요 역사적 사건 · 게이미피케이션 요소</p>
   </header>
-  <div class="container" style="text-align:center; padding-top:32px;">
+  <div class="container" style="text-align:center; padding-top:24px;">
     <button class="btn" onclick="startGame()">게임 시작</button>
     <button class="btn secondary" onclick="loadGame()">이어하기</button>
   </div>
@@ -126,34 +112,41 @@
 
 <div id="game" class="hidden container">
   <div class="card">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-      <div>
-        <div class="heart" style="width:36px;height:36px;margin:0;"></div>
-        <h2 id="yearDisplay" style="margin:0; display:inline;">1980년</h2>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <svg class="beast-heart" id="gameHeart" viewBox="0 0 100 100" style="width:48px;height:48px;">
+          <path d="M50 85 C20 60 5 40 20 20 C35 5 50 25 50 25 C50 25 65 5 80 20 C95 40 80 60 50 85Z" fill="#ff4d00"/>
+        </svg>
+        <h2 id="yearDisplay" style="margin:0;">1980년</h2>
       </div>
       <span class="year-badge" id="progress">1 / 46</span>
     </div>
+
     <div class="stat-grid">
       <div class="stat"><div class="label">총자산</div><div class="value" id="assets">10,000,000</div></div>
       <div class="stat"><div class="label">부채</div><div class="value" id="debt">0</div></div>
       <div class="stat"><div class="label">순자산</div><div class="value" id="net">10,000,000</div></div>
       <div class="stat"><div class="label">레버리지</div><div class="value" id="lev">1.0x</div></div>
     </div>
+
     <div class="risk-bar"><div class="risk-fill" id="riskFill"></div></div>
     <div style="font-size:0.8rem; color:#aaa; text-align:center;" id="riskLabel">리스크: 낮음</div>
+
     <canvas id="chart"></canvas>
     <div id="newsArea"></div>
     <div id="choiceArea"></div>
-    <div class="card" style="margin-top:8px; background:var(--panel);">
+
+    <div class="card" style="margin-top:8px; background:#0c0e14;">
       <label>주식 비중: <span id="stockPct">60</span>%</label>
       <input type="range" id="stockSlider" min="0" max="100" value="60" oninput="document.getElementById('stockPct').textContent=this.value; updateRiskPreview()">
-      <label>레버리지 배율: <span id="levPct">1.0</span>x <span style="color:#888;font-size:0.8rem;">(사채·마진)</span></label>
+      <label>레버리지 배율: <span id="levPct">1.0</span>x</label>
       <input type="range" id="levSlider" min="10" max="50" value="10" oninput="document.getElementById('levPct').textContent=(this.value/10).toFixed(1); updateRiskPreview()">
-      <div style="margin-top:12px; text-align:center;">
-        <button class="btn" id="nextBtn" onclick="nextYear()">다음 해로 진행</button>
+      <div style="margin-top:14px; text-align:center;">
+        <button class="btn" onclick="nextYear()">다음 해로 진행</button>
         <button class="btn secondary" onclick="saveGame()">저장</button>
       </div>
     </div>
+
     <div id="log"></div>
     <div id="achievements" style="margin-top:8px; font-size:0.8rem; color:#aaa;"></div>
   </div>
@@ -163,14 +156,10 @@
   <h1 id="endTitle" style="font-size:2rem; margin-bottom:12px;"></h1>
   <p id="endMessage" style="font-size:1.05rem; line-height:1.7;"></p>
   <div id="endStats" style="margin:16px 0;"></div>
-  <div style="margin-top:20px;">
-    <button class="btn" onclick="location.reload()">다시 도전</button>
-  </div>
+  <button class="btn" onclick="location.reload()">다시 도전</button>
 </div>
 
-<footer>
-  야수의 심장 1980 · 역사적 사실 기반 코스피 생존 시뮬레이션 · 효과음은 Web Audio API로 생성
-</footer>
+<footer>야수의 심장 1980 · 역사적 사실 기반 코스피 생존 시뮬레이션</footer>
 
 <script>
 const KOSPI = {
@@ -213,72 +202,70 @@ const EVENTS = {
 
 const DECISIONS = {
   1997: [
-    { text: "보수적으로 레버리지 축소 (리스크 감소)", effect: { levMod: -0.5, retMod: 0 } },
+    { text: "보수적으로 레버리지 축소", effect: { levMod: -0.5 } },
     { text: "위기를 기회로 더 공격적 매수", effect: { levMod: 0.3, retMod: -0.05 } },
-    { text: "현상 유지", effect: { levMod: 0, retMod: 0 } }
+    { text: "현상 유지", effect: {} }
   ],
   1999: [
     { text: "닷컴 열풍에 적극 참여", effect: { retMod: 0.08 } },
     { text: "거품을 의심하고 현금 비중 확대", effect: { retMod: -0.1 } },
-    { text: "중립", effect: { retMod: 0 } }
+    { text: "중립", effect: {} }
   ],
   2008: [
     { text: "패닉 셀, 현금 확보", effect: { retMod: -0.08, debtRelief: 0.2 } },
     { text: "바닥 매수 시도", effect: { retMod: 0.05, levMod: 0.2 } },
-    { text: "버틴다", effect: { retMod: 0 } }
+    { text: "버틴다", effect: {} }
   ],
   2020: [
     { text: "코로나 폭락 때 풀매수", effect: { retMod: 0.1 } },
     { text: "유동성 장세 의심, 일부 차익", effect: { retMod: -0.05 } },
-    { text: "유지", effect: { retMod: 0 } }
+    { text: "유지", effect: {} }
   ]
 };
 
 let state = {
-  year: 1980,
-  cash: 10000000,
-  stocks: 0,
-  debt: 0,
-  history: [],
-  achievements: new Set(),
-  pendingEffect: null
+  year: 1980, cash: 10000000, stocks: 0, debt: 0,
+  history: [], achievements: new Set(), pendingEffect: null
 };
 
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-function playTone(freq, duration, type = 'sine', gain = 0.1) {
-  const osc = audioCtx.createOscillator();
-  const g = audioCtx.createGain();
-  osc.type = type;
-  osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-  g.gain.setValueAtTime(gain, audioCtx.currentTime);
-  g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-  osc.connect(g);
-  g.connect(audioCtx.destination);
-  osc.start();
-  osc.stop(audioCtx.currentTime + duration);
+function playTone(freq, duration, type = 'sine', gain = 0.08) {
+  try {
+    const osc = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    g.gain.setValueAtTime(gain, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+    osc.connect(g); g.connect(audioCtx.destination);
+    osc.start(); osc.stop(audioCtx.currentTime + duration);
+  } catch(e) {}
 }
+function playUp() { playTone(440, 0.12); setTimeout(() => playTone(550, 0.16), 80); }
+function playDown() { playTone(280, 0.22, 'sawtooth', 0.06); }
+function playAlert() { playTone(780, 0.08); setTimeout(() => playTone(580, 0.12), 100); }
+function playSuccess() { playTone(523, 0.18); setTimeout(() => playTone(659, 0.22), 140); setTimeout(() => playTone(784, 0.28), 280); }
 
-function playUp() { playTone(440, 0.15); setTimeout(() => playTone(550, 0.2), 100); }
-function playDown() { playTone(300, 0.25, 'sawtooth', 0.08); }
-function playAlert() { playTone(800, 0.1); setTimeout(() => playTone(600, 0.15), 120); }
-function playSuccess() { playTone(523, 0.2); setTimeout(() => playTone(659, 0.25), 150); setTimeout(() => playTone(784, 0.3), 300); }
+function format(n) { return Math.round(n).toLocaleString('ko-KR') + "원"; }
+function getNet() { return state.cash + state.stocks - state.debt; }
 
-function format(n) {
-  return Math.round(n).toLocaleString('ko-KR') + "원";
-}
-
-function getNet() {
-  return state.cash + state.stocks - state.debt;
+function updateHeart() {
+  const heart = document.getElementById("gameHeart");
+  if (!heart) return;
+  const lev = parseInt(document.getElementById("levSlider")?.value || 10) / 10;
+  const intensity = Math.min(1.4, 0.8 + (lev - 1) * 0.15);
+  heart.style.transform = `scale(${intensity})`;
+  heart.style.filter = `drop-shadow(0 0 ${12 + lev * 6}px #ff4d00)`;
 }
 
 function updateRiskPreview() {
   const lev = parseInt(document.getElementById("levSlider").value) / 10;
   const stock = parseInt(document.getElementById("stockSlider").value) / 100;
-  const risk = Math.min(100, (lev - 1) * 40 + stock * 30);
+  const risk = Math.min(100, (lev - 1) * 35 + stock * 28);
   document.getElementById("riskFill").style.width = risk + "%";
   const label = risk < 30 ? "낮음" : risk < 60 ? "중간" : risk < 85 ? "높음" : "매우 높음";
   document.getElementById("riskLabel").textContent = `리스크: ${label}`;
+  updateHeart();
 }
 
 function drawChart() {
@@ -286,7 +273,7 @@ function drawChart() {
   if (!canvas) return;
   const ctx = canvas.getContext("2d");
   const w = canvas.width = canvas.offsetWidth;
-  const h = canvas.height = 140;
+  const h = canvas.height = 160;
   ctx.clearRect(0, 0, w, h);
   if (state.history.length < 2) return;
   const nets = state.history.map(h => h.net);
@@ -294,17 +281,17 @@ function drawChart() {
   const max = Math.max(...nets);
   const range = max - min || 1;
   ctx.strokeStyle = "#ff4d00";
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 2.5;
   ctx.beginPath();
   nets.forEach((n, i) => {
-    const x = (i / (nets.length - 1)) * (w - 10) + 5;
-    const y = h - 10 - ((n - min) / range) * (h - 20);
+    const x = (i / (nets.length - 1)) * (w - 16) + 8;
+    const y = h - 12 - ((n - min) / range) * (h - 24);
     if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
   });
   ctx.stroke();
-  ctx.fillStyle = "rgba(255,77,0,0.15)";
-  ctx.lineTo(w - 5, h - 5);
-  ctx.lineTo(5, h - 5);
+  ctx.fillStyle = "rgba(255,77,0,0.12)";
+  ctx.lineTo(w - 8, h - 6);
+  ctx.lineTo(8, h - 6);
   ctx.fill();
 }
 
@@ -313,7 +300,7 @@ function showToast(msg) {
   t.className = "toast";
   t.textContent = msg;
   document.body.appendChild(t);
-  setTimeout(() => t.remove(), 2800);
+  setTimeout(() => t.remove(), 2600);
   playAlert();
 }
 
@@ -346,14 +333,14 @@ function showNews(y) {
   const area = document.getElementById("choiceArea");
   if (choices) {
     area.innerHTML = `<div style="margin:8px 0; font-size:0.9rem; color:#ffd54a;">⚡ 역사적 선택:</div>`;
-    choices.forEach((c, i) => {
+    choices.forEach(c => {
       const btn = document.createElement("button");
       btn.className = "choice-btn";
       btn.textContent = c.text;
       btn.onclick = () => {
         state.pendingEffect = c.effect;
         area.innerHTML = `<div style="color:#00e676; font-size:0.85rem;">선택됨: ${c.text}</div>`;
-        playTone(600, 0.1);
+        playTone(600, 0.08);
       };
       area.appendChild(btn);
     });
@@ -375,13 +362,11 @@ function updateUI() {
   document.getElementById("lev").textContent = (document.getElementById("levSlider").value / 10).toFixed(1) + "x";
   checkAchievements();
   drawChart();
+  updateHeart();
 }
 
 function nextYear() {
-  if (state.year >= 2025) {
-    endGame(true);
-    return;
-  }
+  if (state.year >= 2025) { endGame(true); return; }
 
   const stockPct = parseInt(document.getElementById("stockSlider").value) / 100;
   let lev = parseInt(document.getElementById("levSlider").value) / 10;
@@ -460,10 +445,7 @@ function endGame(survived) {
 }
 
 function saveGame() {
-  localStorage.setItem("yasu1980", JSON.stringify({
-    ...state,
-    achievements: [...state.achievements]
-  }));
+  localStorage.setItem("yasu1980", JSON.stringify({ ...state, achievements: [...state.achievements] }));
   showToast("저장 완료");
 }
 
