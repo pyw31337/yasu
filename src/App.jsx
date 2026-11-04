@@ -15,6 +15,8 @@ import { sound } from './utils/audio';
 import { fireVictoryCannon } from './utils/fx';
 import NewspaperModal from './components/NewspaperModal';
 import ResultModal from './components/ResultModal';
+import OfficeStage from './components/OfficeStage';
+import AnimatedCandleBoard from './components/AnimatedCandleBoard';
 import {
   TrendingUp,
   TrendingDown,
@@ -56,9 +58,10 @@ export default function App() {
   // 현재 연도 데이터
   const yearData = getYearData(year);
 
-  // 모달 제어
+  // 모달 및 애니메이션 제어
   const [showNewspaper, setShowNewspaper] = useState(false);
   const [resultData, setResultData] = useState(null);
+  const [isTrading, setIsTrading] = useState(false);
 
   // 주문 설정
   const [loan, setLoan] = useState(0); // 사채
@@ -92,6 +95,7 @@ export default function App() {
     setLoan(0);
     setLeverage(1);
     setResultData(null);
+    setIsTrading(false);
     setGameState('PLAYING');
   };
 
@@ -114,10 +118,13 @@ export default function App() {
   // 총 비중 합계 계산
   const totalAllocatedPct = Object.values(allocations).reduce((a, b) => a + b, 0);
 
-  // 투자 실행 (장 개장)
+  // 투자 실행 (장 개장 & 야수의 심장 발동 애니메이션)
   const handleExecuteTrade = () => {
     sound.init();
-    const result = processYearInvestment({
+    sound.playBuy();
+    setIsTrading(true);
+
+    const calculatedResult = processYearInvestment({
       year,
       currentAssets: assets,
       loan,
@@ -125,7 +132,11 @@ export default function App() {
       allocations
     });
 
-    setResultData(result);
+    // 800ms 동안 차트 펄스와 캐릭터 집중 애니메이션을 보여준 후 결산창 오픈
+    setTimeout(() => {
+      setIsTrading(false);
+      setResultData(calculatedResult);
+    }, 750);
   };
 
   // 다음 해로 진행
@@ -323,64 +334,23 @@ export default function App() {
         </div>
       </div>
 
-      {/* 실존 종목 시장 호가창 */}
-      <div className="market-section-title">
-        <span>📈 {year}년도 상장 실존 종목 호가창</span>
-        <span style={{ fontSize: '0.85rem', color: totalAllocatedPct > 100 ? 'var(--bull-red)' : 'var(--text-muted)' }}>
-          투자 비중 합계: <strong>{totalAllocatedPct}%</strong> / 100% {totalAllocatedPct > 100 && '(100% 초과 불가)'}
-        </span>
-      </div>
+      {/* 16-BIT RETRO ANIMATED OFFICE STAGE (그래픽 오피스 & 캐릭터 스프라이트 무대) */}
+      <OfficeStage
+        year={year}
+        assets={assets}
+        tier={currentTier}
+        loan={loan}
+        isTrading={isTrading}
+        lastResult={resultData}
+      />
 
-      <div className="stock-grid">
-        {yearData.stocks.map((stock) => {
-          const alloc = allocations[stock.code] || 0;
-          return (
-            <div key={stock.code} className={`stock-card ${alloc > 0 ? 'allocated' : ''}`}>
-              <div>
-                <div className="stock-card-top">
-                  <span className="stock-code-badge">{stock.code}</span>
-                  <span className="stock-category-tag">{stock.category}</span>
-                </div>
-                <div className="stock-card-name">{stock.name}</div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', minHeight: '36px' }}>
-                  {stock.detail}
-                </div>
-              </div>
-
-              <div>
-                <div className="stock-price-row">
-                  <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>기준가</span>
-                  <span className="stock-price">{stock.price.toLocaleString()}원</span>
-                </div>
-
-                <div className="stock-alloc-controls">
-                  <div className="alloc-label-row">
-                    <span>배분 비중</span>
-                    <strong className={alloc > 0 ? 'text-gold' : ''}>{alloc}%</strong>
-                  </div>
-
-                  <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    step="5"
-                    value={alloc}
-                    onChange={(e) => handleSetAlloc(stock.code, Number(e.target.value))}
-                    style={{ width: '100%', accentColor: 'var(--accent)' }}
-                  />
-
-                  <div className="alloc-quick-btns">
-                    <button className="btn-alloc-quick" onClick={() => handleSetAlloc(stock.code, 0)}>0%</button>
-                    <button className="btn-alloc-quick" onClick={() => handleSetAlloc(stock.code, 25)}>25%</button>
-                    <button className="btn-alloc-quick" onClick={() => handleSetAlloc(stock.code, 50)}>50%</button>
-                    <button className="btn-alloc-quick btn-alloc-allin" onClick={() => handleSetAlloc(stock.code, 100)}>풀매수🚀</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      {/* ANIMATED CANDLE BOARD (실시간 호가 시세판 & 캔들 차트) */}
+      <AnimatedCandleBoard
+        stocks={yearData.stocks}
+        allocations={allocations}
+        onSetAlloc={handleSetAlloc}
+        isTrading={isTrading}
+      />
 
       {/* 주문 터미널 (야수의 심장 콘솔) */}
       <div className="order-terminal">
@@ -458,10 +428,10 @@ export default function App() {
 
         <button
           className="btn-fire-order"
-          disabled={totalAllocatedPct > 100}
+          disabled={totalAllocatedPct > 100 || isTrading}
           onClick={handleExecuteTrade}
         >
-          <Flame size={24} /> {year}년 장 개장 및 주문 전송 (야수의 심장 발동!)
+          <Flame size={24} /> {isTrading ? '⚡ 주문 체결 중...' : `${year}년 장 개장 및 주문 전송 (야수의 심장 발동!)`}
         </button>
       </div>
 

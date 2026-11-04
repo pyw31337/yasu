@@ -739,3 +739,323 @@ body {
 .feature-item:last-child {
   margin-bottom: 0;
 }
+
+/* ==================== 16-BIT RETRO OFFICE STAGE & SPRITE ANIMATIONS ==================== */
+.office-stage-container {
+  position: relative;
+  border-radius: 14px;
+  border: 2px solid var(--panel-border);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  background: #090d14;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+  transition: all 0.3s ease;
+}
+
+.office-stage-container.office-1980s { border-color: #854d0e; }
+.office-stage-container.office-1990s { border-color: #2563eb; }
+.office-stage-container.office-2000s { border-color: #9333ea; }
+.office-stage-container.office-2026s { border-color: #ffbe1a; box-shadow: 0 0 25px rgba(255, 190, 26, 0.25); }
+.office-stage-container.office-bankrupt { border-color: #ff334b; }
+
+/* 전광판 티커 스크롤 */
+.office-marquee {
+  background: #000000;
+  border-bottom: 1px solid #222e40;
+  padding: 0.35rem 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee-content {
+  display: inline-block;
+  font-family: monospace;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #ffbe1a;
+  animation: marqueeRoll 25s linear infinite;
+  padding-left: 100%;
+}
+
+@keyframes marqueeRoll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+.office-scene-art {
+  width: 100%;
+  display: block;
+}
+
+/* 말풍선 대사 창 */
+.office-dialog-bubble {
+  background: #111827;
+  border-top: 1px solid #1f293d;
+  padding: 0.75rem 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.dialog-speaker-badge {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.dialog-text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #e2e8f0;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* 캐릭터 스프라이트 애니메이션 */
+@keyframes bounceDance {
+  0%, 100% { transform: translateY(0) scale(1, 1); }
+  50% { transform: translateY(-18px) scale(0.96, 1.06); }
+}
+
+@keyframes panicHead {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-8deg) translateY(3px); }
+  75% { transform: rotate(8deg) translateY(3px); }
+}
+
+@keyframes subtleBreathing {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes sharkEntrance {
+  0% { transform: translate(-30px, 120px); opacity: 0; }
+  100% { transform: translate(160px, 120px); opacity: 1; }
+}
+
+.char-bounce-dance { animation: bounceDance 0.45s infinite; }
+.char-panic-head { animation: panicHead 0.25s infinite; }
+.char-breathing { animation: subtleBreathing 2.2s infinite ease-in-out; }
+.char-shark-enter { animation: sharkEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+/* 돈다발 비 */
+.money-rain-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 20;
+}
+
+.falling-money {
+  position: absolute;
+  top: -30px;
+  font-size: 1.6rem;
+  animation: fallMoney 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+}
+
+@keyframes fallMoney {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(350px) rotate(360deg); opacity: 0; }
+}
+
+/* 사이렌 경보 오버레이 */
+.emergency-siren-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: rgba(255, 51, 75, 0.25);
+  animation: flashSiren 0.4s infinite alternate;
+  z-index: 15;
+}
+
+@keyframes flashSiren {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* 화면 흔들림 */
+.screen-shake {
+  animation: screenShake 0.45s ease-in-out;
+}
+
+@keyframes screenShake {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-8px, 6px); }
+  40% { transform: translate(8px, -6px); }
+  60% { transform: translate(-6px, -4px); }
+  80% { transform: translate(6px, 4px); }
+}
+
+/* ==================== ANIMATED CANDLE BOARD ==================== */
+.candle-board-container {
+  margin-bottom: 1.5rem;
+}
+
+.candle-board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.stock-candle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.stock-candle-card {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.stock-candle-card:hover {
+  transform: translateY(-2px);
+  border-color: #3f5170;
+}
+
+.stock-candle-card.card-selected {
+  border-color: var(--accent);
+  background: #151d2a;
+  box-shadow: 0 4px 15px rgba(255, 190, 26, 0.15);
+}
+
+.stock-candle-card.card-trading {
+  animation: pulseCard 0.4s infinite alternate;
+}
+
+@keyframes pulseCard {
+  0% { filter: brightness(1); }
+  100% { filter: brightness(1.2); }
+}
+
+.stock-code-tag {
+  font-family: monospace;
+  font-size: 0.7rem;
+  background: #1f2a3a;
+  color: #94a3b8;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+
+.stock-name-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin: 0.3rem 0 0.1rem 0;
+  color: #ffffff;
+}
+
+.stock-cat-pill {
+  font-size: 0.65rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  background: #202b3c;
+  color: var(--text-muted);
+}
+
+.stock-price-display {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.stock-rate-indicator {
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+/* 캔들 차트 비주얼 영역 */
+.candle-visual-area {
+  height: 60px;
+  background: #090d14;
+  border: 1px solid #1a2230;
+  border-radius: 6px;
+  margin: 0.8rem 0;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.candle-stick-line {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: #334155;
+}
+
+.candle-body-box {
+  width: 24px;
+  border-radius: 3px;
+  position: relative;
+  z-index: 2;
+  transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.candle-body-box.bg-bull {
+  background: linear-gradient(180deg, #ff4d63, #ff334b);
+  box-shadow: 0 0 10px rgba(255, 51, 75, 0.5);
+}
+
+.candle-body-box.bg-bear {
+  background: linear-gradient(180deg, #3b82f6, #2563eb);
+  box-shadow: 0 0 10px rgba(47, 128, 237, 0.5);
+}
+
+.candle-glow-dot {
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.stock-history-snippet {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  line-height: 1.4;
+  margin-bottom: 0.8rem;
+  min-height: 40px;
+}
+
+.btn-alloc-chip {
+  background: #1a2332;
+  border: 1px solid #28374d;
+  color: #e2e8f0;
+  padding: 0.35rem 0;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-alloc-chip:hover {
+  background: #2b3b52;
+}
+
+.btn-allin-red {
+  background: rgba(255, 51, 75, 0.2);
+  border-color: var(--bull-red);
+  color: var(--bull-red);
+}
+
+.btn-allin-red:hover {
+  background: var(--bull-red);
+  color: #ffffff;
+}
