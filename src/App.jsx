@@ -21,6 +21,8 @@ import BeastHeartRate from './components/BeastHeartRate';
 import RollingNumber from './components/RollingNumber';
 import ArcadeInfoModal from './components/ArcadeInfoModal';
 import ArcadeStage from './components/ArcadeStage';
+import NoirPrologueModal from './components/NoirPrologueModal';
+import DebtContractModal from './components/DebtContractModal';
 import {
   TrendingUp,
   TrendingDown,
@@ -68,7 +70,10 @@ export default function App() {
   const [resultData, setResultData] = useState(null);
   const [isTrading, setIsTrading] = useState(false);
   const [activeInfo, setActiveInfo] = useState(null); // (i) 정보 도감 팝업 제어
-  const [lobbyTheme, setLobbyTheme] = useState('noir'); // 'noir', 'casino', 'arcade'
+  const [lobbyTheme, setLobbyTheme] = useState('noir'); // 'noir', 'casino', 'arcade', 'webtoon'
+  const [showPrologue, setShowPrologue] = useState(false);
+  const [showDebtContract, setShowDebtContract] = useState(false);
+  const [showScenarioOps, setShowScenarioOps] = useState(false);
 
   // 주문 설정
   const [loan, setLoan] = useState(0); // 사채
@@ -92,17 +97,18 @@ export default function App() {
     setIsMuted(muted);
   };
 
-  const startGame = (startYear = 1980) => {
+  const startGame = (startYear = 1980, customAssets = null, customLoan = 0) => {
     sound.init();
     sound.playBuy();
-    const initialCapital = startYear === 1980 ? INITIAL_ASSETS :
+    const initialCapital = customAssets !== null ? customAssets :
+                           startYear === 1980 ? INITIAL_ASSETS :
                            startYear === 1997 ? 50000000 :
                            startYear === 1999 ? 100000000 : 200000000;
     setYear(startYear);
     setAssets(initialCapital);
+    setLoan(customLoan);
     setHistory([]);
     setAllocations({});
-    setLoan(0);
     setLeverage(1);
     setResultData(null);
     setIsTrading(false);
@@ -382,49 +388,119 @@ export default function App() {
             </div>
           </div>
 
-          {/* 메인 캠페인 시작 버튼 (컨셉별 타이틀 연동) */}
-          <button className="btn-fire-order" onClick={() => startGame(1980)} style={{ marginBottom: '1.2rem' }}>
-            <Flame size={24} /> 
-            {lobbyTheme === 'noir' && '⚔️ 01. 1980년 명동 사채골목 출진 (초기 1,000만 원)'}
-            {lobbyTheme === 'casino' && '⚡ 01. 하이롤러 VIP 카지노 입장 (초기 1,000만 원)'}
-            {lobbyTheme === 'arcade' && '🕹️ 01. INSERT COIN 1P 모드 시작 (초기 1,000만 원)'}
-          </button>
+          {/* 느와르 3대 메인 게임 버튼 (스프라이트 적용) */}
+          <div className="noir-lobby-btn-grid mb-4">
+            <button
+              type="button"
+              onClick={() => {
+                sound.playBuy();
+                setShowScenarioOps(!showScenarioOps);
+              }}
+              className="noir-sprite-button"
+            >
+              <img src="./assets/noir/btn_noir_scenario.webp" alt="시나리오 선택" className="noir-btn-bg" />
+              <span className="noir-btn-label">[시나리오 선택]</span>
+            </button>
 
-          {/* 시대별 결전 특수 작전 즉시 참전 */}
-          <div style={{ textAlign: 'left', marginBottom: '1rem' }}>
-            <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-gold)', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <Sparkles size={16} /> 시대별 결전 특수 작전 즉시 참전 (HISTORICAL OPS):
+            <button
+              type="button"
+              onClick={() => {
+                sound.playBuy();
+                setShowPrologue(true);
+              }}
+              className="noir-sprite-button beast-btn"
+            >
+              <img src="./assets/noir/btn_noir_beastmode.webp" alt="야수 모드 진입" className="noir-btn-bg" />
+              <span className="noir-btn-label">[야수 모드 진입]</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                sound.playBuy();
+                setShowDebtContract(true);
+              }}
+              className="noir-sprite-button"
+            >
+              <img src="./assets/noir/btn_noir_debt.webp" alt="사채 각서 열람" className="noir-btn-bg" />
+              <span className="noir-btn-label">[사채 각서 열람]</span>
+            </button>
+          </div>
+
+          {/* 시대별 결전 특수 작전 드롭다운/토글 */}
+          {showScenarioOps && (
+            <div className="noir-scenario-panel animate-fadeIn mb-4">
+              <div className="noir-scenario-title">
+                <Sparkles size={16} /> 시대별 결전 특수 작전 (HISTORICAL OPS):
+              </div>
+              <div className="lobby-scenario-grid">
+                <button 
+                  onClick={() => startGame(1997)}
+                  className="btn-scenario-chip"
+                  style={{ background: 'rgba(255, 51, 75, 0.15)', border: '1px solid #ff334b', color: '#ff4d63' }}
+                >
+                  <strong>⚡ 1997 IMF 환란 외환위기</strong>
+                  <span style={{ fontSize: '0.75rem', opacity: 0.85, display: 'block', marginTop: '2px' }}>대폭락장 공매도·달러 사투 (초기 5,000만)</span>
+                </button>
+
+                <button 
+                  onClick={() => startGame(1999)}
+                  className="btn-scenario-chip"
+                  style={{ background: 'rgba(255, 190, 26, 0.15)', border: '1px solid #ffbe1a', color: '#ffbe1a' }}
+                >
+                  <strong>🌐 1999 새롬기술 닷컴 광풍</strong>
+                  <span style={{ fontSize: '0.75rem', opacity: 0.85, display: 'block', marginTop: '2px' }}>100배 쩜상 롤러코스터 (초기 1억 원)</span>
+                </button>
+
+                <button 
+                  onClick={() => startGame(2020)}
+                  className="btn-scenario-chip"
+                  style={{ background: 'rgba(0, 243, 124, 0.15)', border: '1px solid #00f37c', color: '#00f37c' }}
+                >
+                  <strong>🔥 2020 동학개미운동</strong>
+                  <span style={{ fontSize: '0.75rem', opacity: 0.85, display: 'block', marginTop: '2px' }}>삼성전자·바이오 풀미수 (초기 2억 원)</span>
+                </button>
+              </div>
             </div>
-            <div className="lobby-scenario-grid">
-              <button 
-                onClick={() => startGame(1997)}
-                className="btn-scenario-chip"
-                style={{ background: 'rgba(255, 51, 75, 0.15)', border: '1px solid #ff334b', color: '#ff4d63' }}
-              >
-                <strong>⚡ 1997 IMF 환란 외환위기</strong>
-                <span style={{ fontSize: '0.75rem', opacity: 0.85, display: 'block', marginTop: '2px' }}>대폭락장 공매도·달러 사투 (초기 5,000만)</span>
-              </button>
+          )}
 
-              <button 
-                onClick={() => startGame(1999)}
-                className="btn-scenario-chip"
-                style={{ background: 'rgba(255, 190, 26, 0.15)', border: '1px solid #ffbe1a', color: '#ffbe1a' }}
-              >
-                <strong>🌐 1999 새롬기술 닷컴 광풍</strong>
-                <span style={{ fontSize: '0.75rem', opacity: 0.85, display: 'block', marginTop: '2px' }}>100배 쩜상 롤러코스터 (초기 1억 원)</span>
-              </button>
-
-              <button 
-                onClick={() => startGame(2020)}
-                className="btn-scenario-chip"
-                style={{ background: 'rgba(0, 243, 124, 0.15)', border: '1px solid #00f37c', color: '#00f37c' }}
-              >
-                <strong>🔥 2020 동학개미운동</strong>
-                <span style={{ fontSize: '0.75rem', opacity: 0.85, display: 'block', marginTop: '2px' }}>삼성전자·바이오 풀미수 (초기 2억 원)</span>
-              </button>
-            </div>
+          {/* 하단: 142 BPM ECG 심전도 모니터 스프라이트 바 */}
+          <div className="noir-ecg-monitor-frame">
+            <img src="./assets/noir/monitor_noir_ecg.webp" alt="142 BPM" className="noir-ecg-sprite-img" />
           </div>
         </div>
+
+        {/* 느와르 프롤로그 대화 모달 */}
+        <NoirPrologueModal
+          isOpen={showPrologue}
+          onClose={() => setShowPrologue(false)}
+          onSelectOption={(opt) => {
+            setShowPrologue(false);
+            if (opt === 'loan10b') {
+              startGame(1980, 1000000000, 1000000000);
+            } else if (opt === 'seed50m') {
+              startGame(1980, 50000000, 300000000);
+            } else {
+              startGame(1980, INITIAL_ASSETS, 0);
+            }
+          }}
+        />
+
+        {/* 사채 각서 열람 모달 */}
+        <DebtContractModal
+          isOpen={showDebtContract}
+          onClose={() => setShowDebtContract(false)}
+          loan={loan}
+          assets={assets}
+          onBorrow={(amt) => {
+            setLoan(l => l + amt);
+            setAssets(a => a + amt);
+          }}
+          onRepay={(amt) => {
+            setLoan(l => Math.max(0, l - amt));
+            setAssets(a => Math.max(0, a - amt));
+          }}
+        />
 
         {/* 정보 도감 모달 (로비) */}
         {activeInfo && (

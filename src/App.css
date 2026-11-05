@@ -2997,4 +2997,208 @@ html, body {
   }
 }
 
+/* ==================== NOIR 3D SPRITE BUTTONS & ECG MONITOR ==================== */
+.noir-lobby-btn-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8rem;
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto 1.2rem auto;
+}
+
+.noir-sprite-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1), filter 0.15s ease;
+  height: 58px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.noir-btn-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
+}
+
+.noir-btn-label {
+  position: relative;
+  z-index: 2;
+  font-size: clamp(0.78rem, 2.2vw, 1.05rem);
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.3px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 0.5rem;
+}
+
+.noir-sprite-button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.15) drop-shadow(0 0 12px rgba(255, 51, 75, 0.5));
+}
+
+.noir-sprite-button:active {
+  transform: translateY(2px) scale(0.97);
+  filter: brightness(0.92);
+}
+
+.noir-sprite-button.beast-btn {
+  animation: beastPulseBtn 2s infinite ease-in-out;
+}
+
+@keyframes beastPulseBtn {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(255, 51, 75, 0.4)); }
+  50% { filter: drop-shadow(0 0 20px rgba(255, 51, 75, 0.9)) brightness(1.1); }
+}
+
+/* 142 BPM ECG Monitor Bar */
+.noir-ecg-monitor-frame {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 51, 75, 0.3);
+  box-shadow: 0 0 15px rgba(255, 51, 75, 0.25);
+  background: #05080e;
+}
+
+.noir-ecg-sprite-img {
+  width: 100%;
+  height: 48px;
+  object-fit: cover;
+  opacity: 0.92;
+  filter: drop-shadow(0 0 8px rgba(255, 51, 75, 0.6));
+}
+
+.noir-scenario-panel {
+  background: rgba(12, 16, 26, 0.88);
+  border: 1px solid rgba(255, 190, 26, 0.4);
+  border-radius: 12px;
+  padding: 1rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+}
+
+.noir-scenario-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--text-gold);
+  margin-bottom: 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* ==================== GLOBAL TEXT OVERFLOW SAFEGUARD ENGINE ==================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+p, span, div, h1, h2, h3, h4, h5, h6, strong, button {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.hero-title {
+  font-size: clamp(2rem, 7.5vw, 3.8rem) !important;
+  line-height: 1.12 !important;
+  max-width: 100% !important;
+  word-break: keep-all !important;
+}
+
+.hero-subtitle {
+  font-size: clamp(0.78rem, 2.8vw, 1.05rem) !important;
+  line-height: 1.45 !important;
+  max-width: 100% !important;
+  word-break: keep-all !important;
+}
+
+.hero-badge-top {
+  font-size: clamp(0.68rem, 2.2vw, 0.82rem) !important;
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.btn-scenario-chip {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.btn-scenario-chip strong {
+  display: block !important;
+  font-size: clamp(0.82rem, 2.8vw, 0.95rem) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.btn-scenario-chip span {
+  font-size: clamp(0.7rem, 2.3vw, 0.78rem) !important;
+  line-height: 1.35 !important;
+}
+
+.card-char-name {
+  font-size: clamp(0.85rem, 3vw, 1.05rem) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.card-char-role {
+  font-size: clamp(0.7rem, 2.4vw, 0.82rem) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.hud-asset-badge {
+  max-width: 55% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.hud-asset-num {
+  font-size: clamp(0.78rem, 2.8vw, 1.05rem) !important;
+}
+
+.hud-return-rate {
+  font-size: clamp(0.68rem, 2.2vw, 0.85rem) !important;
+}
+
+/* Tablet & Mobile responsive for Noir buttons */
+@media (max-width: 640px) {
+  .noir-lobby-btn-grid {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+  .noir-sprite-button {
+    height: 52px;
+  }
+  .noir-btn-label {
+    font-size: 0.95rem;
+  }
+}
+
+
 
