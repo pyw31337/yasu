@@ -211,10 +211,12 @@ export default function App() {
   // ==================== LOBBY SCREEN (3대 게임 배리에이션 실시간 지원) ====================
   if (gameState === 'LOBBY') {
     const bgUrl = lobbyTheme === 'noir' 
-      ? './assets/concept_noir.jpg' 
+      ? './assets/concept1_noir_main.jpg' 
       : lobbyTheme === 'casino' 
-      ? './assets/concept_casino.jpg' 
-      : './assets/concept_arcade.jpg';
+      ? './assets/concept2_casino_main.jpg' 
+      : lobbyTheme === 'arcade'
+      ? './assets/concept3_arcade_main.jpg'
+      : './assets/concept4_webtoon_main.jpg';
 
     return (
       <div className="hero-lobby-container">
@@ -245,21 +247,30 @@ export default function App() {
             >
               🕹️ 03. 16비트 오락실
             </button>
+            <button
+              type="button"
+              onClick={() => { sound.playBuy(); setLobbyTheme('webtoon'); }}
+              className={`btn-theme-chip ${lobbyTheme === 'webtoon' ? 'active-webtoon' : ''}`}
+            >
+              🔥 04. K-웹툰 액션
+            </button>
           </div>
 
           <div className="hero-badge-top">
             {lobbyTheme === 'noir' && '★ 1980 명동 사채골목 느와르 금융 스릴러'}
             {lobbyTheme === 'casino' && '⚡ HIGH-ROLLER CYBER CASINO VIP TERMINAL'}
             {lobbyTheme === 'arcade' && '🪙 1988 SEOUL STOCK RETRO ARCADE CABINET'}
+            {lobbyTheme === 'webtoon' && '🔥 K-WEBTOON HYPER ACTION 올인 결전'}
           </div>
 
           <h1 className="hero-title">
-            {lobbyTheme === 'casino' ? 'BEAST MODE' : '야수의 심장'}
+            {lobbyTheme === 'casino' ? 'BEAST MODE' : lobbyTheme === 'webtoon' ? '야수의 각성' : '야수의 심장'}
           </h1>
           <p className="hero-subtitle">
             {lobbyTheme === 'noir' && 'THE HEART OF THE BEAST : 1980 ~ 2026 대한민국 증시 50년사'}
             {lobbyTheme === 'casino' && 'ULTRA HIGH-LEVERAGE CYBER STOCK MATRIX 2026'}
             {lobbyTheme === 'arcade' && 'INSERT COIN TO START : 50-YEAR CHRONICLE'}
+            {lobbyTheme === 'webtoon' && '전 재산과 목숨을 건 하이퍼 액션 트레이딩 배틀'}
           </p>
 
           {/* 주요 등장인물 쇼케이스 카드 (아케이드 컴팩트 디자인) */}

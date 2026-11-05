@@ -2978,6 +2978,14 @@ html, body {
   text-shadow: 0 0 8px rgba(255, 190, 26, 0.8);
 }
 
+.btn-theme-chip.active-webtoon {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.35), rgba(15, 23, 42, 0.9));
+  border-color: #c084fc;
+  color: #f3e8ff;
+  box-shadow: 0 0 16px rgba(192, 132, 252, 0.6), inset 0 0 10px rgba(192, 132, 252, 0.3);
+  text-shadow: 0 0 8px rgba(192, 132, 252, 0.8);
+}
+
 @media (max-width: 480px) {
   .lobby-concept-switcher-bar {
     gap: 0.35rem;
