@@ -734,16 +734,16 @@ html, body {
   inset: 0;
   background-size: cover;
   background-position: center 30%;
-  filter: brightness(0.4) contrast(1.2);
-  transform: scale(1.05);
+  filter: brightness(0.92) contrast(1.08);
+  transform: scale(1.02);
   z-index: 1;
 }
 
 .hero-lobby-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, rgba(10, 14, 20, 0.4) 0%, rgba(10, 14, 20, 0.95) 100%),
-              linear-gradient(180deg, rgba(10, 14, 20, 0.3) 0%, #0a0e14 100%);
+  background: radial-gradient(circle at center, rgba(10, 14, 20, 0.15) 30%, rgba(10, 14, 20, 0.75) 100%),
+              linear-gradient(180deg, rgba(10, 14, 20, 0.3) 0%, transparent 25%, transparent 75%, rgba(10, 14, 20, 0.8) 100%);
   z-index: 2;
 }
 
@@ -751,9 +751,14 @@ html, body {
   position: relative;
   z-index: 3;
   text-align: center;
-  max-width: 880px;
+  max-width: 960px;
   width: 100%;
   margin: 0 auto;
+  min-height: calc(100vh - 3rem);
+  min-height: calc(100dvh - 3rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   animation: fadeInLobby 0.8s ease-out;
 }
 
@@ -2268,7 +2273,7 @@ html, body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: calc(0.6rem + env(safe-area-inset-top, 0px)) 0.6rem calc(1rem + env(safe-area-inset-bottom, 0px)) 0.6rem;
+  padding: calc(0.6rem + env(safe-area-inset-top, 0px)) 0.6rem calc(2.5rem + env(safe-area-inset-bottom, 0px)) 0.6rem;
   box-sizing: border-box;
   overflow-x: hidden;
   gap: 0.5rem;
@@ -2728,26 +2733,16 @@ html, body {
 
 /* ==================== 순수 게임 스프라이트 기반 UI 그래픽스 ==================== */
 
-/* 1. HUD 헤더 바 스프라이트 프레임 (hud_header.png) */
-.sprite-hud-box {
+/* 1. HUD 헤더 바 (정밀 티타늄 아케이드 스타일) */
+.arcade-top-hud {
   position: relative;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  overflow: visible;
-}
-
-.hud-header-sprite-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
-  pointer-events: none;
-  z-index: 1;
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
+  background: linear-gradient(180deg, #18202c 0%, #0d1218 100%);
+  border: 1px solid #334155;
   border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  box-sizing: border-box;
+  margin-bottom: 0.6rem;
 }
 
 .hud-header-inner-row {
@@ -2761,26 +2756,16 @@ html, body {
   box-sizing: border-box;
 }
 
-/* 2. 메인 액티브 카드 스프라이트 프레임 (card_frame.png) */
-.arcade-active-stock-card.sprite-framed {
+/* 2. 메인 액티브 카드 프레임 (네온 아케이드 글래스) */
+.arcade-active-stock-card {
   position: relative;
-  background: rgba(14, 20, 28, 0.9) !important;
-  border: none !important;
-  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(16, 22, 32, 0.96) 0%, rgba(9, 13, 19, 0.98) 100%);
+  border: 1px solid #334155;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8) !important;
-  padding: 0.8rem 1rem !important;
-}
-
-.card-frame-sprite-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.85;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.85);
+  padding: 0.85rem 1rem;
+  box-sizing: border-box;
 }
 
 .active-stock-inner-content {
@@ -2788,7 +2773,7 @@ html, body {
   z-index: 2;
 }
 
-/* 3. 액션 버튼 스프라이트 (btn_loanshark.png, btn_leverage.png, btn_allin.png) */
+/* 3. 액션 버튼 스프라이트 (btn_loanshark.png, btn_leverage.png, btn_allin.png) - 자연스러운 가로세로비 유지 */
 .btn-sprite-button {
   position: relative;
   border: none;
@@ -2798,49 +2783,22 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  width: 100%;
+  max-width: 130px;
+  aspect-ratio: 1.8 / 1;
+  margin: 0 auto;
+  border-radius: 8px;
   transition: transform 0.08s ease, filter 0.15s ease;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
-  min-height: 52px;
 }
 
 .btn-sprite-texture {
   width: 100%;
-  height: 52px;
-  object-fit: fill;
+  height: 100%;
+  object-fit: contain;
   display: block;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7));
-  border-radius: 8px;
-}
-
-.btn-sprite-overlay-text {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-  pointer-events: none;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.95);
-  padding: 0 0.2rem;
-}
-
-.btn-sprite-title {
-  font-size: 0.75rem;
-  font-weight: 900;
-  color: #ffffff;
-  letter-spacing: -0.3px;
-  line-height: 1.1;
-}
-
-.btn-sprite-val {
-  font-size: 0.7rem;
-  font-weight: 800;
-  font-family: ui-monospace, monospace;
-  line-height: 1.1;
-  margin-top: 2px;
 }
 
 .btn-sprite-button:hover {
@@ -2848,7 +2806,7 @@ html, body {
 }
 
 .btn-sprite-button:active {
-  transform: translateY(3px) scale(0.97);
+  transform: translateY(2px) scale(0.97);
   filter: brightness(0.95);
 }
 
@@ -2856,13 +2814,17 @@ html, body {
   filter: drop-shadow(0 0 12px rgba(255, 51, 75, 0.6)) brightness(1.1);
 }
 
-/* 4. 메가 레드 푸시 버튼 스프라이트 (btn_big_red.png) */
+/* 4. 메가 레드 푸시 버튼 스프라이트 (btn_big_red.png) - 873x743 원본 비율 유지, 납작 늘어남 완벽 방지 */
 .mega-red-sprite-btn {
   position: relative;
   width: 100%;
-  height: 64px;
+  max-width: 200px;
+  aspect-ratio: 873 / 743;
+  height: auto;
+  margin: 0 auto;
   border: none;
   background: transparent;
+  padding: 0;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -2874,26 +2836,11 @@ html, body {
 }
 
 .mega-red-sprite-img {
-  position: absolute;
-  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: fill;
-  filter: drop-shadow(0 6px 16px rgba(255, 51, 75, 0.6));
-  border-radius: 12px;
-}
-
-.mega-red-btn-label {
-  position: relative;
-  z-index: 2;
-  color: #ffffff;
-  font-size: 1.25rem;
-  font-weight: 900;
-  letter-spacing: 0.5px;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.95);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 8px 20px rgba(255, 51, 75, 0.65));
 }
 
 .mega-red-sprite-btn:hover {
@@ -2901,7 +2848,7 @@ html, body {
 }
 
 .mega-red-sprite-btn:active {
-  transform: translateY(4px) scale(0.98);
+  transform: translateY(3px) scale(0.97);
   filter: brightness(0.95);
 }
 
@@ -2998,72 +2945,70 @@ html, body {
 }
 
 /* ==================== NOIR 3D SPRITE BUTTONS & ECG MONITOR ==================== */
-.noir-lobby-btn-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.8rem;
+.noir-main-buttons-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
   width: 100%;
-  max-width: 680px;
-  margin: 0 auto 1.2rem auto;
+  max-width: 900px;
+  margin: 1.2rem auto 1rem auto;
 }
 
-.noir-sprite-button {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.noir-image-btn {
   background: transparent;
   border: none;
   padding: 0;
   cursor: pointer;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  max-width: 280px;
+  transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1), filter 0.15s ease;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
-  transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1), filter 0.15s ease;
-  height: 58px;
-  border-radius: 8px;
-  overflow: hidden;
 }
 
-.noir-btn-bg {
-  position: absolute;
-  inset: 0;
+.noir-image-btn img {
   width: 100%;
-  height: 100%;
-  object-fit: fill;
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
+  height: auto;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.9));
+  border-radius: 6px;
+  transition: transform 0.12s ease, filter 0.15s ease;
 }
 
-.noir-btn-label {
-  position: relative;
-  z-index: 2;
-  font-size: clamp(0.78rem, 2.2vw, 1.05rem);
-  font-weight: 900;
-  color: #ffffff;
-  letter-spacing: -0.3px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding: 0 0.5rem;
+.noir-image-btn:hover img {
+  transform: translateY(-3px) scale(1.02);
+  filter: drop-shadow(0 10px 22px rgba(255, 51, 75, 0.5)) brightness(1.15);
 }
 
-.noir-sprite-button:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.15) drop-shadow(0 0 12px rgba(255, 51, 75, 0.5));
-}
-
-.noir-sprite-button:active {
+.noir-image-btn:active img {
   transform: translateY(2px) scale(0.97);
   filter: brightness(0.92);
 }
 
-.noir-sprite-button.beast-btn {
-  animation: beastPulseBtn 2s infinite ease-in-out;
+.noir-image-btn.beast-glow img {
+  animation: beastGlowPulse 2.2s infinite alternate ease-in-out;
 }
 
-@keyframes beastPulseBtn {
-  0%, 100% { filter: drop-shadow(0 0 8px rgba(255, 51, 75, 0.4)); }
-  50% { filter: drop-shadow(0 0 20px rgba(255, 51, 75, 0.9)) brightness(1.1); }
+@keyframes beastGlowPulse {
+  0% { filter: drop-shadow(0 4px 12px rgba(255, 51, 75, 0.4)); }
+  100% { filter: drop-shadow(0 6px 25px rgba(255, 51, 75, 0.85)) brightness(1.1); }
+}
+
+@media (max-width: 640px) {
+  .noir-main-buttons-container {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .noir-image-btn {
+    max-width: 320px;
+    width: 100%;
+  }
 }
 
 /* 142 BPM ECG Monitor Bar */
@@ -3198,6 +3143,554 @@ p, span, div, h1, h2, h3, h4, h5, h6, strong, button {
   .noir-btn-label {
     font-size: 0.95rem;
   }
+}
+
+/* ==================== GLOBAL IMAGE & HUD ICON CONSTRAINTS ==================== */
+img {
+  max-width: 100%;
+}
+
+.hud-gold-cash-icon {
+  width: 22px !important;
+  height: 22px !important;
+  object-fit: contain !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+  margin-right: 4px !important;
+  filter: drop-shadow(0 2px 6px rgba(255, 190, 26, 0.5));
+}
+
+/* ==================== NOIR MASTER RESPONSIVE LOBBY ==================== */
+.noir-stage-wrapper {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #06090e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* Desktop & Tablet: Pixel-perfect 16:9 arcade stage */
+.noir-stage-desktop {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  aspect-ratio: 1376 / 768;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 51, 75, 0.2);
+  border: 1px solid rgba(255, 51, 75, 0.3);
+  background: #000;
+  box-sizing: border-box;
+}
+
+.noir-stage-desktop-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Interactive hotspots mapped directly over the 3 buttons in the artwork */
+.noir-hotspot {
+  position: absolute;
+  top: 74.8%;
+  height: 12.6%;
+  cursor: pointer;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  transition: transform 0.1s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  z-index: 10;
+}
+
+.noir-hotspot:hover {
+  background: rgba(255, 51, 75, 0.15);
+  box-shadow: 0 0 15px rgba(255, 51, 75, 0.5), inset 0 0 10px rgba(255, 51, 75, 0.3);
+  border-color: rgba(255, 51, 75, 0.6);
+  transform: translateY(-2px);
+}
+
+.noir-hotspot:active {
+  transform: translateY(2px) scale(0.99);
+  background: rgba(255, 51, 75, 0.3);
+}
+
+.noir-hotspot-scenario {
+  left: 8.0%;
+  width: 23.6%;
+}
+
+.noir-hotspot-beastmode {
+  left: 36.9%;
+  width: 26.0%;
+}
+
+.noir-hotspot-debt {
+  left: 65.4%;
+  width: 26.2%;
+}
+
+/* Mobile Vertical Noir Layout (< 768px) */
+.noir-mobile-container {
+  display: none;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  box-sizing: border-box;
+  padding: 0.25rem 0.25rem 1.5rem 0.25rem;
+  overflow-x: hidden;
+}
+
+@media (max-width: 767px) {
+  .noir-stage-desktop {
+    display: none;
+  }
+  .noir-mobile-container {
+    display: flex;
+  }
+}
+
+.noir-mobile-art-frame {
+  position: relative;
+  width: 100%;
+  max-width: 305px;
+  margin: 0 auto;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 51, 75, 0.4);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.8);
+  aspect-ratio: 1376 / 565;
+  background: #000;
+  box-sizing: border-box;
+}
+
+.noir-mobile-art-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.noir-mobile-button-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.noir-mobile-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  width: 100%;
+  max-width: 270px;
+  margin: 0 auto;
+  transition: transform 0.1s ease, filter 0.15s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+.noir-mobile-btn img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 358 / 97;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
+  border-radius: 6px;
+  margin: 0 auto;
+}
+
+.noir-mobile-btn:hover img {
+  transform: translateY(-2px);
+  filter: brightness(1.15) drop-shadow(0 6px 16px rgba(255, 51, 75, 0.6));
+}
+
+.noir-mobile-btn:active img {
+  transform: translateY(2px) scale(0.97);
+}
+
+.noir-mobile-btn.beast-glow img {
+  animation: beastGlowPulse 2s infinite alternate ease-in-out;
+}
+
+.noir-mobile-ecg {
+  width: 100%;
+  max-width: 270px;
+  margin: 0 auto;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 51, 75, 0.3);
+  box-sizing: border-box;
+}
+
+.noir-mobile-ecg img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ==================== NOIR PROLOGUE & DEBT MODALS ==================== */
+.noir-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+/* Desktop & Tablet: Pixel-perfect 16:9 Visual Novel Cutscene Stage */
+.noir-prologue-stage-desktop {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  aspect-ratio: 1376 / 768;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.95), 0 0 25px rgba(255, 51, 75, 0.35);
+  border: 1px solid rgba(255, 51, 75, 0.4);
+  background: #000;
+  box-sizing: border-box;
+}
+
+.noir-prologue-desktop-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.noir-intro-hotspot {
+  position: absolute;
+  cursor: pointer;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  transition: transform 0.1s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  z-index: 10;
+}
+
+.noir-intro-hotspot:hover {
+  background: rgba(255, 51, 75, 0.15);
+  box-shadow: 0 0 18px rgba(255, 51, 75, 0.6), inset 0 0 10px rgba(255, 51, 75, 0.3);
+  border-color: rgba(255, 51, 75, 0.7);
+  transform: translateY(-2px);
+}
+
+.noir-intro-hotspot:active {
+  transform: translateY(2px) scale(0.98);
+}
+
+.noir-intro-hotspot-loan10b {
+  left: 29.8%;
+  top: 30.0%;
+  width: 40.7%;
+  height: 10.4%;
+}
+
+.noir-intro-hotspot-seed50m {
+  left: 29.8%;
+  top: 43.6%;
+  width: 40.7%;
+  height: 10.4%;
+}
+
+.noir-intro-hotspot-skip {
+  left: 81.5%;
+  top: 73.2%;
+  width: 6.8%;
+  height: 4.8%;
+}
+
+.noir-prologue-top-skip-btn {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  z-index: 20;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 51, 75, 0.5);
+  color: #fff;
+  padding: 0.35rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: all 0.15s ease;
+}
+
+.noir-prologue-top-skip-btn:hover {
+  background: rgba(255, 51, 75, 0.25);
+  border-color: #ff334b;
+  transform: translateY(-1px);
+}
+
+/* Mobile (< 768px): Responsive Story Stage */
+.noir-prologue-mobile-card {
+  display: none;
+  width: 100%;
+  max-width: 380px;
+  background: #0d1118;
+  border: 1px solid rgba(255, 51, 75, 0.4);
+  border-radius: 12px;
+  overflow: hidden;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.6rem;
+  box-sizing: border-box;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.95);
+}
+
+@media (max-width: 767px) {
+  .noir-prologue-stage-desktop {
+    display: none;
+  }
+  .noir-prologue-mobile-card {
+    display: flex;
+  }
+}
+
+.noir-mobile-prologue-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(255, 51, 75, 0.25);
+}
+
+.noir-mobile-prologue-art {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 51, 75, 0.3);
+  background: #000;
+}
+
+.noir-mobile-prologue-art-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.noir-mobile-dialogue-box {
+  background: rgba(15, 20, 28, 0.95);
+  border: 1px solid rgba(255, 51, 75, 0.35);
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  box-sizing: border-box;
+}
+
+.noir-speaker-name {
+  color: #ff6b7e;
+  font-weight: 900;
+  font-size: 0.8rem;
+  margin-bottom: 0.25rem;
+}
+
+.noir-dialogue-line {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: #f1f5f9;
+  margin: 0;
+  word-break: keep-all;
+}
+
+.noir-cursor-blink {
+  display: inline-block;
+  width: 6px;
+  height: 13px;
+  background: #ff334b;
+  margin-left: 4px;
+  vertical-align: middle;
+  animation: cursorBlink 0.8s infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.noir-mobile-choices-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.noir-choice-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  width: 100%;
+  transition: transform 0.1s ease, filter 0.15s ease;
+  user-select: none;
+}
+
+.noir-choice-btn img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 560 / 80;
+  object-fit: contain;
+  display: block;
+  border-radius: 6px;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
+}
+
+.noir-choice-btn:hover img {
+  transform: translateY(-2px);
+  filter: brightness(1.15) drop-shadow(0 6px 16px rgba(255, 51, 75, 0.6));
+}
+
+.noir-choice-btn:active img {
+  transform: translateY(2px) scale(0.98);
+}
+
+/* DEBT CONTRACT MODAL */
+.noir-debt-modal-box {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  background: #110e0b;
+  border: 2px solid #8e2a2a;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), 0 0 25px rgba(255, 51, 75, 0.3);
+}
+
+.noir-debt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 1rem;
+  background: rgba(36, 12, 14, 0.85);
+  border-bottom: 1px solid #751d1d;
+}
+
+.noir-debt-title {
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: #ff9999;
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.noir-debt-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  box-sizing: border-box;
+}
+
+.debt-parchment-card {
+  background: #1e1511;
+  border: 1px solid #5a3122;
+  border-radius: 8px;
+  padding: 0.8rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #e6c8a0;
+  word-break: keep-all;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+.debt-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.debt-stat-cell {
+  background: #090807;
+  border: 1px solid #332018;
+  border-radius: 6px;
+  padding: 0.5rem;
+}
+
+.debt-stat-label {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  margin-bottom: 0.2rem;
+}
+
+.debt-stat-val {
+  font-size: 0.95rem;
+  font-weight: 900;
+  font-family: ui-monospace, monospace;
+}
+
+.debt-actions-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  margin-top: 0.3rem;
+}
+
+.btn-debt-borrow {
+  background: linear-gradient(180deg, #b91c1c, #7f1d1d);
+  border: 1px solid #ef4444;
+  color: #fff;
+  padding: 0.6rem;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.btn-debt-borrow:active {
+  transform: translateY(2px);
+}
+
+.btn-debt-repay {
+  background: linear-gradient(180deg, #d97706, #92400e);
+  border: 1px solid #f59e0b;
+  color: #fff;
+  padding: 0.6rem;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.btn-debt-repay:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 

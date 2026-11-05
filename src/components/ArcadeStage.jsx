@@ -189,14 +189,8 @@ export default function ArcadeStage({
         </div>
       </div>
 
-      {/* 2. 메인 액티브 종목 카드 (스프라이트 프레임 card_frame.png 탑재) */}
-      <div className="arcade-active-stock-card sprite-framed">
-        <img 
-          src="./assets/card_frame.png" 
-          alt="Card Frame" 
-          className="card-frame-sprite-bg" 
-        />
-        
+      {/* 2. 메인 액티브 종목 카드 (네온 아케이드 글래스 프레임) */}
+      <div className="arcade-active-stock-card">
         <div className="active-stock-inner-content">
           <div className="active-stock-header">
             <div className="flex items-center gap-1.5">
@@ -294,74 +288,76 @@ export default function ArcadeStage({
         {/* 상단 3개 3D 게임 스프라이트 액션 버튼 */}
         <div className="arcade-btn-row">
           {/* 사채 대출 스프라이트 버튼 */}
-          <button
-            type="button"
-            onClick={() => {
-              sound.playBuy();
-              onCycleLoan();
-            }}
-            className={`btn-sprite-button ${loan > 0 ? 'active' : ''}`}
-            title="명동 사채 차입"
-          >
-            <img 
-              src="./assets/btn_loanshark.png" 
-              alt="사채 버튼" 
-              className="btn-sprite-texture" 
-            />
-            <div className="btn-sprite-overlay-text">
-              <span className="btn-sprite-title">명동 사채</span>
-              <span className="btn-sprite-val text-red-200">
-                {loan > 0 ? formatKRW(loan) : '0원 (클릭)'}
-              </span>
+          <div className="arcade-action-btn-col">
+            <button
+              type="button"
+              onClick={() => {
+                sound.playBuy();
+                onCycleLoan();
+              }}
+              className={`btn-sprite-button ${loan > 0 ? 'active' : ''}`}
+              title="명동 사채 차입"
+            >
+              <img 
+                src="./assets/btn_loanshark.png" 
+                alt="사채 버튼" 
+                className="btn-sprite-texture" 
+              />
+            </button>
+            <div className="btn-status-badge debt-badge">
+              <span className="badge-label">명동 사채</span>
+              <span className="badge-val">{loan > 0 ? formatKRW(loan) : '0원 (클릭)'}</span>
             </div>
-          </button>
+          </div>
 
           {/* 신용 레버리지 스프라이트 버튼 */}
-          <button
-            type="button"
-            onClick={() => {
-              sound.playBuy();
-              onCycleLeverage();
-            }}
-            className={`btn-sprite-button ${leverage > 1 ? 'active' : ''}`}
-            title="신용 미수 레버리지"
-          >
-            <img 
-              src="./assets/btn_leverage.png" 
-              alt="레버리지 버튼" 
-              className="btn-sprite-texture" 
-            />
-            <div className="btn-sprite-overlay-text">
-              <span className="btn-sprite-title">신용 레버리지</span>
-              <span className="btn-sprite-val text-cyan-200">
-                x{leverage}배 {leverage === 5 ? '🔥영끌' : leverage === 3 ? '불나방' : leverage === 2 ? '야수' : '기본'}
-              </span>
+          <div className="arcade-action-btn-col">
+            <button
+              type="button"
+              onClick={() => {
+                sound.playBuy();
+                onCycleLeverage();
+              }}
+              className={`btn-sprite-button ${leverage > 1 ? 'active' : ''}`}
+              title="신용 미수 레버리지"
+            >
+              <img 
+                src="./assets/btn_leverage.png" 
+                alt="레버리지 버튼" 
+                className="btn-sprite-texture" 
+              />
+            </button>
+            <div className="btn-status-badge lev-badge">
+              <span className="badge-label">레버리지</span>
+              <span className="badge-val">x{leverage}배 {leverage === 5 ? '🔥영끌' : leverage === 3 ? '불나방' : leverage === 2 ? '야수' : '기본'}</span>
             </div>
-          </button>
+          </div>
 
           {/* 100% 몰빵 스프라이트 버튼 */}
-          <button
-            type="button"
-            onClick={() => {
-              sound.playBuy();
-              onSetAlloc(activeStock.code, 100);
-            }}
-            className="btn-sprite-button"
-            title="선택 종목 100% 올인"
-          >
-            <img 
-              src="./assets/btn_allin.png" 
-              alt="올인 버튼" 
-              className="btn-sprite-texture" 
-            />
-            <div className="btn-sprite-overlay-text">
-              <span className="btn-sprite-title">몰빵 세팅</span>
-              <span className="btn-sprite-val text-emerald-200">100% 올인</span>
+          <div className="arcade-action-btn-col">
+            <button
+              type="button"
+              onClick={() => {
+                sound.playBuy();
+                onSetAlloc(activeStock.code, 100);
+              }}
+              className="btn-sprite-button"
+              title="선택 종목 100% 올인"
+            >
+              <img 
+                src="./assets/btn_allin.png" 
+                alt="올인 버튼" 
+                className="btn-sprite-texture" 
+              />
+            </button>
+            <div className="btn-status-badge allin-badge">
+              <span className="badge-label">몰빵 세팅</span>
+              <span className="badge-val">100% 올인</span>
             </div>
-          </button>
+          </div>
         </div>
 
-        {/* 하단: 초특대 3D 아케이드 레드 푸시 버튼 (btn_big_red.png 스프라이트 탑재) */}
+        {/* 하단: 초특대 3D 아케이드 레드 ALL-IN 푸시 버튼 (btn_big_red.png 스프라이트 - 원본 비율 유지, 텍스트 중복 가림 제거) */}
         <div className="arcade-big-button-wrapper">
           <button
             type="button"
@@ -371,17 +367,20 @@ export default function ArcadeStage({
               onExecuteTrade();
             }}
             className={`mega-red-sprite-btn ${isTrading ? 'trading' : ''}`}
+            title="장 개장 ALL-IN 주문 전송"
           >
             <img 
               src="./assets/btn_big_red.png" 
-              alt="장 개장 버튼" 
+              alt="ALL-IN 장 개장 버튼" 
               className="mega-red-sprite-img" 
             />
-            <div className="mega-red-btn-label">
-              <Flame size={24} className="inline mr-1 text-yellow-300 animate-pulse" />
-              <span>{isTrading ? '⚡ 주문 체결 중...' : `${year}년 장 개장 (주문 전송)`}</span>
-            </div>
           </button>
+          <div className="mega-red-status-plate">
+            <Flame size={18} className="text-yellow-300 animate-pulse" />
+            <span className="mega-plate-text">
+              {isTrading ? '⚡ 주문 체결 중...' : `${year}년 장 개장 (주문 전송)`}
+            </span>
+          </div>
         </div>
       </div>
     </div>

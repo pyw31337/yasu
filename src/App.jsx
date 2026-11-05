@@ -216,222 +216,116 @@ export default function App() {
 
   // ==================== LOBBY SCREEN (3대 게임 배리에이션 실시간 지원) ====================
   if (gameState === 'LOBBY') {
-    const bgUrl = lobbyTheme === 'noir' 
-      ? './assets/concept1_noir_main.jpg' 
-      : lobbyTheme === 'casino' 
-      ? './assets/concept2_casino_main.jpg' 
-      : lobbyTheme === 'arcade'
-      ? './assets/concept3_arcade_main.jpg'
-      : './assets/concept4_webtoon_main.jpg';
-
     return (
-      <div className="hero-lobby-container">
-        <div className="hero-lobby-bg" style={{ backgroundImage: `url('${bgUrl}')` }}></div>
-        <div className="hero-lobby-overlay"></div>
+      <div className="noir-stage-wrapper">
+        {/* 1. Desktop & Tablet: Pixel-perfect 16:9 Arcade Standoff Stage */}
+        <div className="noir-stage-desktop">
+          <img 
+            src="./assets/concept1_noir_main.jpg" 
+            alt="야수의 심장 - 범죄도시 명동 느와르" 
+            className="noir-stage-desktop-bg" 
+          />
 
-        <div className="hero-lobby">
-          {/* 게임 디자인 컨셉 배리에이션 실시간 스위처 */}
-          <div className="lobby-concept-switcher-bar mb-3">
-            <button
-              type="button"
-              onClick={() => { sound.playBuy(); setLobbyTheme('noir'); }}
-              className={`btn-theme-chip ${lobbyTheme === 'noir' ? 'active-noir' : ''}`}
-            >
-              ⚔️ 01. 범죄도시 느와르
-            </button>
-            <button
-              type="button"
-              onClick={() => { sound.playBuy(); setLobbyTheme('casino'); }}
-              className={`btn-theme-chip ${lobbyTheme === 'casino' ? 'active-casino' : ''}`}
-            >
-              ⚡ 02. 사이버 카지노
-            </button>
-            <button
-              type="button"
-              onClick={() => { sound.playBuy(); setLobbyTheme('arcade'); }}
-              className={`btn-theme-chip ${lobbyTheme === 'arcade' ? 'active-arcade' : ''}`}
-            >
-              🕹️ 03. 16비트 오락실
-            </button>
-            <button
-              type="button"
-              onClick={() => { sound.playBuy(); setLobbyTheme('webtoon'); }}
-              className={`btn-theme-chip ${lobbyTheme === 'webtoon' ? 'active-webtoon' : ''}`}
-            >
-              🔥 04. K-웹툰 액션
-            </button>
+          {/* Interactive tactile button hotspots mapped directly over the painted 3D buttons */}
+          <button
+            type="button"
+            className="noir-hotspot noir-hotspot-scenario"
+            title="시나리오 선택"
+            onClick={() => {
+              sound.playBuy();
+              setShowScenarioOps(!showScenarioOps);
+            }}
+          />
+
+          <button
+            type="button"
+            className="noir-hotspot noir-hotspot-beastmode"
+            title="야수 모드 진입"
+            onClick={() => {
+              sound.playBuy();
+              setShowPrologue(true);
+            }}
+          />
+
+          <button
+            type="button"
+            className="noir-hotspot noir-hotspot-debt"
+            title="사채 각서 열람"
+            onClick={() => {
+              sound.playBuy();
+              setShowDebtContract(true);
+            }}
+          />
+        </div>
+
+        {/* 2. Mobile Layout (< 768px): Dedicated vertical responsive flow with large touch targets */}
+        <div className="noir-mobile-container">
+          <div className="noir-mobile-art-frame">
+            <img 
+              src="./assets/noir/noir_mobile_hero.webp" 
+              alt="야수의 심장" 
+              className="noir-mobile-art-img" 
+            />
           </div>
 
-          <div className="hero-badge-top">
-            {lobbyTheme === 'noir' && '★ 1980 명동 사채골목 느와르 금융 스릴러'}
-            {lobbyTheme === 'casino' && '⚡ HIGH-ROLLER CYBER CASINO VIP TERMINAL'}
-            {lobbyTheme === 'arcade' && '🪙 1988 SEOUL STOCK RETRO ARCADE CABINET'}
-            {lobbyTheme === 'webtoon' && '🔥 K-WEBTOON HYPER ACTION 올인 결전'}
-          </div>
-
-          <h1 className="hero-title">
-            {lobbyTheme === 'casino' ? 'BEAST MODE' : lobbyTheme === 'webtoon' ? '야수의 각성' : '야수의 심장'}
-          </h1>
-          <p className="hero-subtitle">
-            {lobbyTheme === 'noir' && 'THE HEART OF THE BEAST : 1980 ~ 2026 대한민국 증시 50년사'}
-            {lobbyTheme === 'casino' && 'ULTRA HIGH-LEVERAGE CYBER STOCK MATRIX 2026'}
-            {lobbyTheme === 'arcade' && 'INSERT COIN TO START : 50-YEAR CHRONICLE'}
-            {lobbyTheme === 'webtoon' && '전 재산과 목숨을 건 하이퍼 액션 트레이딩 배틀'}
-          </p>
-
-          {/* 주요 등장인물 쇼케이스 카드 (아케이드 컴팩트 디자인) */}
-          <div className="lobby-character-showcase">
-            <div className="character-card card-trader">
-              <span className="hud-corner-tl"></span>
-              <span className="hud-corner-br"></span>
-              <div className="card-avatar-wrapper">
-                <img src="./assets/sprite_trader.png" alt="김트레이더" className="card-avatar-img" />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <div className="card-char-name text-amber-400">김트레이더 (주인공)</div>
-                  <button 
-                    type="button" 
-                    className="btn-arcade-info"
-                    title="캐릭터 스토리 보기"
-                    onClick={() => {
-                      sound.playBuy();
-                      setActiveInfo({
-                        title: '김트레이더 (주인공)',
-                        content: '1980년 종잣돈 1,000만 원으로 시작해 50년의 파도를 넘어 1조 원의 신화를 노리는 청년 투신. 신용 미수와 레버리지를 다루는 대담한 배짱을 지녔습니다.',
-                        tip: '1천만 원 종잣돈으로 1조 원 신화를 쓰고 여의도 꼭대기 펜트하우스로 진격하세요!'
-                      });
-                    }}
-                  >
-                    i
-                  </button>
-                </div>
-                <div className="card-char-role">🔥 야수의 심장을 품은 청년 투자자</div>
-              </div>
-            </div>
-
-            <div className="character-card card-shark">
-              <span className="hud-corner-tl"></span>
-              <span className="hud-corner-br"></span>
-              <div className="card-avatar-wrapper">
-                <img src="./assets/sprite_loanshark.png" alt="사채왕 마동석" className="card-avatar-img" />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <div className="card-char-name text-bull">명동 사채왕 마동석</div>
-                  <button 
-                    type="button" 
-                    className="btn-arcade-info"
-                    title="사채 규칙 보기"
-                    onClick={() => {
-                      sound.playBuy();
-                      setActiveInfo({
-                        title: '명동 사채왕 마동석',
-                        content: '지하 금융가의 거물. 원금의 최대 3배까지 즉시 대출해주지만 연이율 35%에 달하는 고금리와 가차 없는 강제 반대매매가 도사립니다.',
-                        tip: '이봐 김 사장, 원금 못 갚으면 각서대로 손모가지 날아가는 거야. 땡겨줄까?'
-                      });
-                    }}
-                  >
-                    i
-                  </button>
-                </div>
-                <div className="card-char-role">👺 지하 금융가 거물 (연이율 35%)</div>
-              </div>
-            </div>
-          </div>
-
-          {/* 군더더기 텍스트 제거 -> 심플 아케이드 뱃지 바 (클릭 시 i 도감 오픈) */}
-          <div className="lobby-arcade-badges">
-            <div 
-              className="arcade-pill" 
-              onClick={() => {
-                sound.playBuy();
-                setActiveInfo({
-                  title: '🏛️ 50년 대한민국 증시 실화',
-                  content: '1980년대 건설주 붐, 88 올림픽, 1997 IMF 환란, 1999 닷컴버블, 2008 금융위기, 2020 동학개미, 2024 AI 반도체까지 50년 실존 경제 사건과 실제 상장 종목이 100% 구현되어 있습니다.',
-                  tip: '각 연도마다 호외 신문을 확인하고 역사적 대세 상승주를 포착하세요!'
-                });
-              }}
-            >
-              <span>🏛️ 50년 실존 역사</span>
-              <button type="button" className="btn-arcade-info">i</button>
-            </div>
-
-            <div 
-              className="arcade-pill" 
-              onClick={() => {
-                sound.playBuy();
-                setActiveInfo({
-                  title: '⚡ 실시간 호가 & 캔들스틱',
-                  content: '매 턴마다 5단계 실시간 매수/매도 호가창 잔량과 캔들스틱 차트 파동이 요동치며, 상한가(쩜상)와 하한가의 도파민을 선사합니다.',
-                  tip: '호가창의 매수/매도 잔량 비율을 보면 그 해의 시장 심리를 읽을 수 있습니다.'
-                });
-              }}
-            >
-              <span>⚡ 실시간 호가 & 차트</span>
-              <button type="button" className="btn-arcade-info">i</button>
-            </div>
-
-            <div 
-              className="arcade-pill" 
-              onClick={() => {
-                sound.playBuy();
-                setActiveInfo({
-                  title: '💥 5배 레버리지 & 명동 사채',
-                  content: '합법적인 신용 미수 레버리지(최대 5배)와 지하 금융가 명동 사채 대출(최대 3배)을 활용해 단숨에 수백억을 벌거나 깡통 계좌로 전락할 수 있습니다.',
-                  tip: '과도한 레버리지는 마포대교 한강 수온 체크로 이어질 수 있으니 주의하세요!'
-                });
-              }}
-            >
-              <span>💥 5배 레버리지 & 사채</span>
-              <button type="button" className="btn-arcade-info">i</button>
-            </div>
-          </div>
-
-          {/* 느와르 3대 메인 게임 버튼 (스프라이트 적용) */}
-          <div className="noir-lobby-btn-grid mb-4">
+          <div className="noir-mobile-button-stack">
             <button
               type="button"
-              onClick={() => {
-                sound.playBuy();
-                setShowScenarioOps(!showScenarioOps);
-              }}
-              className="noir-sprite-button"
-            >
-              <img src="./assets/noir/btn_noir_scenario.webp" alt="시나리오 선택" className="noir-btn-bg" />
-              <span className="noir-btn-label">[시나리오 선택]</span>
-            </button>
-
-            <button
-              type="button"
+              className="noir-mobile-btn beast-glow"
+              title="야수 모드 진입"
               onClick={() => {
                 sound.playBuy();
                 setShowPrologue(true);
               }}
-              className="noir-sprite-button beast-btn"
             >
-              <img src="./assets/noir/btn_noir_beastmode.webp" alt="야수 모드 진입" className="noir-btn-bg" />
-              <span className="noir-btn-label">[야수 모드 진입]</span>
+              <img src="./assets/noir/btn_noir_beastmode.webp" alt="야수 모드 진입" />
             </button>
 
             <button
               type="button"
+              className="noir-mobile-btn"
+              title="시나리오 선택"
+              onClick={() => {
+                sound.playBuy();
+                setShowScenarioOps(!showScenarioOps);
+              }}
+            >
+              <img src="./assets/noir/btn_noir_scenario.webp" alt="시나리오 선택" />
+            </button>
+
+            <button
+              type="button"
+              className="noir-mobile-btn"
+              title="사채 각서 열람"
               onClick={() => {
                 sound.playBuy();
                 setShowDebtContract(true);
               }}
-              className="noir-sprite-button"
             >
-              <img src="./assets/noir/btn_noir_debt.webp" alt="사채 각서 열람" className="noir-btn-bg" />
-              <span className="noir-btn-label">[사채 각서 열람]</span>
+              <img src="./assets/noir/btn_noir_debt.webp" alt="사채 각서 열람" />
             </button>
           </div>
 
-          {/* 시대별 결전 특수 작전 드롭다운/토글 */}
-          {showScenarioOps && (
-            <div className="noir-scenario-panel animate-fadeIn mb-4">
-              <div className="noir-scenario-title">
-                <Sparkles size={16} /> 시대별 결전 특수 작전 (HISTORICAL OPS):
+          <div className="noir-mobile-ecg">
+            <img src="./assets/noir/monitor_noir_ecg.webp" alt="142 BPM" />
+          </div>
+        </div>
+
+        {/* 시대별 결전 특수 작전 팝업 */}
+        {showScenarioOps && (
+          <div className="noir-modal-backdrop" onClick={() => setShowScenarioOps(false)}>
+            <div className="noir-scenario-panel animate-fadeIn" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '520px', width: '100%', margin: '0 1rem' }}>
+              <div className="noir-scenario-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.95rem' }}>
+                  <Sparkles size={16} /> 시대별 결전 특수 작전 (HISTORICAL OPS)
+                </span>
+                <button 
+                  type="button"
+                  onClick={() => setShowScenarioOps(false)}
+                  style={{ background: 'transparent', border: 'none', color: '#cbd5e1', cursor: 'pointer', fontSize: '1.2rem', padding: '4px' }}
+                >
+                  ✕
+                </button>
               </div>
               <div className="lobby-scenario-grid">
                 <button 
@@ -462,13 +356,8 @@ export default function App() {
                 </button>
               </div>
             </div>
-          )}
-
-          {/* 하단: 142 BPM ECG 심전도 모니터 스프라이트 바 */}
-          <div className="noir-ecg-monitor-frame">
-            <img src="./assets/noir/monitor_noir_ecg.webp" alt="142 BPM" className="noir-ecg-sprite-img" />
           </div>
-        </div>
+        )}
 
         {/* 느와르 프롤로그 대화 모달 */}
         <NoirPrologueModal
@@ -603,9 +492,8 @@ export default function App() {
   // ==================== MAIN PLAYING SCREEN (10x 간소화 아케이드 HUD) ====================
   return (
     <div className="arcade-app-wrapper">
-      {/* 1. 슬림 탑 게임 HUD (hud_header.png 스프라이트 탑재) */}
-      <div className="arcade-top-hud sprite-hud-box">
-        <img src="./assets/hud_header.png" alt="HUD Header" className="hud-header-sprite-bg" />
+      {/* 1. 슬림 탑 게임 HUD (정밀 티타늄 아케이드 스타일) */}
+      <div className="arcade-top-hud">
         <div className="hud-header-inner-row">
           <div className="flex items-center gap-1.5">
             <div className="hud-year-badge">{year}년</div>
@@ -645,7 +533,7 @@ export default function App() {
             <img 
               src="./assets/item_cash_gold.png" 
               alt="자산" 
-              className="w-5 h-5 object-contain inline-block mr-1.5 filter drop-shadow(0 2px 6px rgba(255, 190, 26, 0.5))" 
+              className="hud-gold-cash-icon" 
             />
             <span className="hud-asset-num text-bull">
               <RollingNumber value={assets} suffix=" 원" />
